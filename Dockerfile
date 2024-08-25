@@ -43,9 +43,10 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 RUN yarn add esbuild --dev
 RUN yarn add esbuild-sass-plugin@latest --dev
-RUN yarn build
 
 COPY . .
+
+RUN yarn build
 
 RUN bundle exec bootsnap precompile app/ lib/
 
