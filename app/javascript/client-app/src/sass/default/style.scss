@@ -1,0 +1,65 @@
+
+// helpers
+@import "../helpers/variables";
+@import "../helpers/functions";
+@import "../helpers/mixins";
+
+// base
+@import "../base/base";
+
+
+// components
+@import "../components/section-title";
+@import "../components/buttons";
+@import "../components/form";
+@import "../components/social-links";
+@import "../components/page-title";
+@import "../components/preloader";
+@import "../components/blog-sidebar";
+@import "../components/pagination";
+
+// layout
+@import "../layout/header";
+@import "../layout/hero-slider";
+@import "../layout/footer";
+
+// components
+@import "../components/sticky-header";
+
+
+// page
+@import "../page/home-default";
+
+@import "../page/home-style2";
+
+@import "../page/home-style3";
+
+
+@import "../page/room-single";
+
+@import "../page/service";
+
+@import "../page/destination-single";
+
+@import "../page/cart";
+
+@import "../page/checkout";
+
+@import "../page/shop";
+
+@import "../page/shop-single";
+
+@import "../page/pricing";
+
+@import "../page/faq";
+
+@import "../page/blog";
+
+@import "../page/blog-single";
+
+@import "../page/contact";
+
+@import "../page/error-404";
+
+
+

@@ -1,0 +1,27 @@
+<%= form_with(model: reservation_room) do |form| %>
+  <% if reservation_room.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(reservation_room.errors.count, "error") %> prohibited this reservation_room from being saved:</h2>
+
+      <ul>
+        <% reservation_room.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :room_id, style: "display: block" %>
+    <%= form.text_field :room_id %>
+  </div>
+
+  <div>
+    <%= form.label :reservation_id, style: "display: block" %>
+    <%= form.text_field :reservation_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

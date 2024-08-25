@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+    environment:
+      - PORT=3001
+      - RUBY_ENV=development
+      - ENVIRONMENT=development
+      - RAILS_MASTER_KEY=d6c0e910d0b7c0d3658ddf67a47317f7
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/rails

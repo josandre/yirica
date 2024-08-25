@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @response %>
+
+<div>
+  <%= link_to "Edit this response", edit_response_path(@response) %> |
+  <%= link_to "Back to responses", responses_path %>
+
+  <%= button_to "Destroy this response", @response, method: :delete %>
+</div>

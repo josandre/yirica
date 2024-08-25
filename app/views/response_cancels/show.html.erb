@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @response_cancel %>
+
+<div>
+  <%= link_to "Edit this response cancel", edit_response_cancel_path(@response_cancel) %> |
+  <%= link_to "Back to response cancels", response_cancels_path %>
+
+  <%= button_to "Destroy this response cancel", @response_cancel, method: :delete %>
+</div>

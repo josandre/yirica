@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  checking_date: 2024-08-13
+  checkout_date: 2024-08-13
+  user_notes: MyText
+  is_refunded: false
+  reservation_state: one
+
+two:
+  checking_date: 2024-08-13
+  checkout_date: 2024-08-13
+  user_notes: MyText
+  is_refunded: false
+  reservation_state: two

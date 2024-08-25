@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @cancel_request %>
+
+<div>
+  <%= link_to "Edit this cancel request", edit_cancel_request_path(@cancel_request) %> |
+  <%= link_to "Back to cancel requests", cancel_requests_path %>
+
+  <%= button_to "Destroy this cancel request", @cancel_request, method: :delete %>
+</div>

@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Response cancels</h1>
+
+<div id="response_cancels">
+  <% @response_cancels.each do |response_cancel| %>
+    <%= render response_cancel %>
+    <p>
+      <%= link_to "Show this response cancel", response_cancel %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New response cancel", new_response_cancel_path %>

@@ -1,0 +1,61 @@
+.cart-recived-section .order-top {
+  padding: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-shadow: 0px 5px 15px 0px rgba(62, 65, 159, 0.1);
+          box-shadow: 0px 5px 15px 0px rgba(62, 65, 159, 0.1);
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .cart-recived-section .order-top {
+    padding: 20px;
+  }
+}
+
+.cart-recived-section .order-top h2 span {
+  display: block;
+  font-size: 18px;
+  color: #888;
+  margin-top: 10px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.cart-recived-section .cartStatus {
+  padding: 40px;
+  -webkit-box-shadow: 0px 5px 15px 0px rgba(62, 65, 159, 0.1);
+          box-shadow: 0px 5px 15px 0px rgba(62, 65, 159, 0.1);
+  margin-top: 40px;
+}
+
+@media (max-width: 767px) {
+  .cart-recived-section .cartStatus {
+    padding: 20px;
+  }
+}
+
+.cart-recived-section .cartStatus .cartTotals img {
+  width: 80px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-right: 10px;
+}
+
+.cart-recived-section .cartStatus .cartTotals tr:last-child td {
+  border-bottom: 0;
+}
+
+.cart-recived-section .cartStatus .MuiTableCell-body {
+  padding-left: 0;
+}
+/*# sourceMappingURL=style.css.map */

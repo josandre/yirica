@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  response: MyText
+  date: 2024-08-13
+  refund_information: MyText
+  is_refunded: false
+  cancel_request: one
+
+two:
+  response: MyText
+  date: 2024-08-13
+  refund_information: MyText
+  is_refunded: false
+  cancel_request: two

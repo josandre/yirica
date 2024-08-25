@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Reservation rooms</h1>
+
+<div id="reservation_rooms">
+  <% @reservation_rooms.each do |reservation_room| %>
+    <%= render reservation_room %>
+    <p>
+      <%= link_to "Show this reservation room", reservation_room %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New reservation room", new_reservation_room_path %>

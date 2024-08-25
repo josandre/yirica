@@ -1,0 +1,22 @@
+<%= form_with(model: reservation_state) do |form| %>
+  <% if reservation_state.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(reservation_state.errors.count, "error") %> prohibited this reservation_state from being saved:</h2>
+
+      <ul>
+        <% reservation_state.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :state, style: "display: block" %>
+    <%= form.text_field :state %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

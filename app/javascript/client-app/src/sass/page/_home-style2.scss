@@ -1,0 +1,238 @@
+/*======================================
+5. Home-style-2
+ =======================================*/
+
+/* 5.1 wpo-about-section-s2 */
+
+.wpo-about-section-s2 {
+    background: url(../../images/about-bg.jpg) no-repeat center center;
+    background-size: cover;
+
+    .wpo-about-content {
+        padding: 80px;
+        background: $white;
+
+
+        @media(max-width:1700px) {
+            padding: 40px 20px;
+        }
+
+        @media(max-width:1400px) {
+            padding-bottom: 20px;
+        }
+
+        @media(max-width:991px) {
+            margin-top: 0;
+        }
+
+        .about-title {
+            h2 {
+                @media(max-width:1400px) {
+                    font-size: 40px;
+                    line-height: 50px;
+                }
+
+                @media(max-width:575px) {
+                    font-size: 24px;
+                    line-height: 35px;
+                    margin-bottom: 0px;
+                }
+            }
+        }
+
+
+        .theme-btn {
+            margin-left: 40px;
+
+            @media(max-width:1400px) {
+                margin-left: 20px;
+            }
+
+            @media(max-width:430px) {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        }
+
+        .about-info-wrap {
+            margin-bottom: 0;
+            @media(max-width:500px) {
+                flex-wrap: wrap;
+                margin-top: 0;
+            }
+
+            .about-info-left {
+                @media(max-width:1400px) {
+                    padding-right: 15px;
+                }
+
+                p {
+                    @media(max-width:1400px) {
+                        font-size: 16px;
+                    }
+                }
+            }
+
+            .about-info-right {
+                @media(max-width:1400px) {
+                    padding-left: 15px;
+                }
+            }
+        }
+    }
+
+}
+
+/* 5.2 wpo-fun-fact-section-s2 */
+
+.wpo-fun-fact-section-s2 {
+    background: $white;
+    padding-left: 140px;
+    padding-right: 140px;
+
+    @media(max-width:1400px) {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    @media(max-width:991px) {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    &:before {
+        display: none;
+    }
+
+    .grid {
+        h3 {
+            color: $dark-gray;
+        }
+
+        p {
+            color: $text-color !important;
+        }
+
+        &:before {
+            background: #c6c6c6;
+        }
+    }
+}
+
+
+/* 5.3 wpo-service-area-s2 */
+
+.wpo-service-area-s2 {
+    .container-fluid {
+        padding: 0;
+    }
+
+    .wpo-service-items {
+        .wpo-service-item {
+            position: relative;
+
+            .wpo-service-text {
+                text-align: center;
+                background: rgba(255, 255, 255, .9);
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 215px;
+                height: 150px;
+                padding-top: 18px;
+
+                @media(max-width:1600px) {
+                    padding: 30px 15px;
+                }
+
+                .fi {
+                    &:before {
+                        font-size: 50px;
+                    }
+
+                    & {
+                        margin-bottom: 30px;
+                    }
+                }
+
+                a {
+                    display: block;
+                    font-size: 20px;
+                    color: $dark-gray;
+                    font-weight: 600;
+
+                    @media(max-width:1400px) {
+                        font-size: 15px;
+                    }
+
+                    &:hover {
+                        color: $theme-primary-color;
+                    }
+                }
+            }
+
+        }
+
+
+
+        // slider controls
+        .slick-prev,
+        .slick-next {
+            background-color: transparentize($theme-primary-color, 0.3);
+            width: 45px;
+            height: 45px;
+            z-index: 10;
+            @include rounded-border(50%);
+            opacity: 0;
+            visibility: hidden;
+            transition: all .3s;
+            border: 2px solid $theme-primary-color;
+
+            &:hover {
+                background-color: $theme-primary-color;
+            }
+        }
+
+        .slick-prev {
+            left: 0px;
+
+
+            &:before {
+                font-family: "themify";
+                content: "\e629";
+                opacity: 1;
+            }
+        }
+
+        .slick-next {
+            right: 0px;
+
+
+            &:before {
+                font-family: "themify";
+                content: "\e628";
+                opacity: 1;
+            }
+        }
+
+        &:hover {
+
+            .slick-next {
+                right: 20px;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .slick-prev {
+                left: 20px;
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+
+    @media(max-width:575px) {
+        padding-bottom: 0px;
+    }
+}

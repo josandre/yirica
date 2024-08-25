@@ -1,0 +1,31 @@
+ul.smothscroll {
+    position: fixed;
+    bottom: 25px;
+    right:30px;
+    list-style: none;
+    z-index: 99999;
+}
+ul.smothscroll a {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    border-radius:50%;
+    display: block;
+    text-align: center;
+    color: #fff;
+    background-color: #c36b7b;
+    border: 2px solid #c36b7b;
+}
+ul.smothscroll a:hover {
+    background-color: #913d4b;
+    border: 2px solid #913d4b;
+    color: #fff;
+}
+
+@media(max-width:767px){
+    ul.smothscroll a {
+        width: 30px;
+        height: 30px;
+        line-height: 25px;
+    }
+}

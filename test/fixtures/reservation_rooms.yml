@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  room: one
+  reservation: one
+
+two:
+  room: two
+  reservation: two

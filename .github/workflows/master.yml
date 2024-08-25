@@ -1,0 +1,39 @@
+name: Build and Deploy to Azure
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Azure Container Registry
+        run: echo "${{ secrets.AZURE_PASSWORD }}" | docker login hotelhubregistry.azurecr.io -u ${{ secrets.AZURE_USERNAME }} --password-stdin
+
+      - name: Build and Push Docker image
+        run: |
+          docker build -t hotelhubregistry.azurecr.io/hotel-hub:${{ github.sha }} \
+              --build-arg ENVIRONMENT=production \
+              --build-arg PORT=3000 \
+              --build-arg RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} .
+          
+          # Tag the Docker image with the latest tag
+          docker tag hotelhubregistry.azurecr.io/hotel-hub:${{ github.sha }} hotelhubregistry.azurecr.io/hotel-hub:latest
+          
+          # Push both tags to the Azure Container Registry
+          docker push hotelhubregistry.azurecr.io/hotel-hub:${{ github.sha }}
+          docker push hotelhubregistry.azurecr.io/hotel-hub:latest
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'hotelhub'
+          slot-name: 'production'
+          images: 'hotelhubregistry.azurecr.io/hotel-hub:${{ github.sha }}'
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}

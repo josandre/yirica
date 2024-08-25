@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reason: MyText
+  date: 2024-08-13
+  is_confirmed: false
+  reservation: one
+
+two:
+  reason: MyText
+  date: 2024-08-13
+  is_confirmed: false
+  reservation: two

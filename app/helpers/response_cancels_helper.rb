@@ -1,0 +1,2 @@
+module ResponseCancelsHelper
+end

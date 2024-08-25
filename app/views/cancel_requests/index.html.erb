@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Cancel requests</h1>
+
+<div id="cancel_requests">
+  <% @cancel_requests.each do |cancel_request| %>
+    <%= render cancel_request %>
+    <p>
+      <%= link_to "Show this cancel request", cancel_request %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New cancel request", new_cancel_request_path %>
