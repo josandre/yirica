@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Login to Azure Container Registry
         run: echo "${{ secrets.AZURE_PASSWORD }}" | docker login hotelhubregistry.azurecr.io -u ${{ secrets.AZURE_USERNAME }} --password-stdin
 

@@ -46,7 +46,7 @@ RUN yarn add esbuild-sass-plugin@latest --dev
 
 COPY . .
 
-RUN yarn build
+RUN yarn build --production
 
 RUN bundle exec bootsnap precompile app/ lib/
 
@@ -54,7 +54,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 ENV SECRET_KEY_BASE="dummy_secret_key_base"
 ENV DEVISE_JWT_SECRET_KEY="dummy_secret_key"
 
-RUN ./bin/rails assets:precompile --trace
+RUN ./bin/rails assets:precompile
 
 FROM base
 
