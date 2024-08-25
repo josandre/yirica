@@ -41,4 +41,3 @@ jobs:
           app-name: 'hotelhub'
           slot-name: 'production'
           images: 'hotelhubregistry.azurecr.io/hotel-hub:${{ github.sha }}'
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
