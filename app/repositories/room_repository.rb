@@ -13,13 +13,17 @@ class RoomRepository
 
   def search_availability(check_in, check_out, adults, children)
     available_rooms = available_between(check_in, check_out).joins(:room_type)
-    puts "rooms #{available_rooms}"
-
     available_rooms = available_rooms.where('room_types.max_people >= ?', adults + children)
-    available_rooms = available_rooms.where('room_types.kids_accepted = ?', true) if children > 0
+
+    if children > 0
+      available_rooms = available_rooms.where('room_types.kids_accepted = ?', true)
+    else
+      available_rooms = available_rooms.where('room_types.kids_accepted = ?', false)
+    end
 
     available_rooms
   end
+
 
   private
   def available_between(check_in, check_out)

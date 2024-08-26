@@ -13,28 +13,22 @@ import {queryParamsToObject} from "../../utils";
 
 const SearchResults =({ addToCart }) => {
   const location = useLocation();
-
   const searchParams =  useMemo(
     () => queryParamsToObject(location.search),
     [location]);
 
-
   const {data: availableRooms, error, isLoading} = useSearchAvailableRooms(searchParams);
-
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading rooms</div>;
-
-  console.log("available", availableRooms);
 
     const addToCartProduct = (product, qty = 1) => {
         addToCart(product, qty);
       };
 
-
     return(
         <Fragment>
-            <Navbar hclass={'wpo-header-style-3'} Logo={Logo}/>
+          <Navbar topbarBlock={'wpo-header-style-2'} Logo={Logo}/>
             <PageTitle pageTitle={'Hotel Booking Search'} pagesub={'Search'}/>
               <section className="wpo-shop-page">
                   <div className="container">

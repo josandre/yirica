@@ -17,8 +17,8 @@ const HomePage =() => {
             <Hero/>
             <SearchSection/>
             <Rooms/>
-            <FunFact fClass={'wpo-fun-fact-section-s2 section-padding'}/>
             <ServiceSection/>
+            <FunFact fClass={'wpo-fun-fact-section-s2 section-padding'}/>
             <Footer/>
             <Scrollbar/>
         </Fragment>

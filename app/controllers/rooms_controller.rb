@@ -19,7 +19,7 @@ class RoomsController < ApplicationController
     puts "params: #{request_params}"
     @available_rooms = @room_service.search_room_availability(check_in, check_out, adults, children)
     puts "result: #{@available_rooms}"
-    render json: @available_rooms.to_json
+    render json: @available_rooms.to_json(include: :room_type)
   end
 
 

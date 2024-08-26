@@ -4,7 +4,7 @@ import SectionTitleS2 from '../SectionTitleS2'
 
 const SearchRooms = ({ rooms, addToCartProduct }) => {
 
-  console.log("rooms", rooms)
+  console.log(rooms);
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
@@ -28,22 +28,33 @@ const SearchRooms = ({ rooms, addToCartProduct }) => {
                       <img src={'https://media.istockphoto.com/id/927375342/es/foto/mujer-bebiendo-t%C3%A9-en-el-balc%C3%B3n-con-vistas-a-campos-de-arroz.jpg?s=1024x1024&w=is&k=20&c=wCHTGz3SZXxmIqYlO-pmiOynZBLiHqTUj15psdRsXKQ='} alt="" />
                     </div>
                     <div className="room-content">
-                      <h2><Link onClick={ClickHandler} to={`/room-single/${room.id}`}>{'title'}</Link></h2>
+                      <div>
+                        <h2><Link onClick={ClickHandler} to={`/room-single/${room.id}`}>{room.room_type.name}</Link>
+                        </h2>
+                      </div>
                       <ul>
-                          <li><strong>Capacity:</strong> {10}</li>
-                          <li><strong>Max Children:</strong> {10}</li>
+                        <li><strong>Capacity</strong> {room.room_type.max_people}</li>
+                        {room.room_type.kids_accepted && (
+                          <li><strong>Children accepted</strong></li>
+                        )}
                       </ul>
-                      <h3>${10} <span>/ Night</span></h3>
+
+                        <h3>${room.adult_price} <span>Adult / Night</span></h3>
+                        {room.room_type.kids_accepted && (
+                          <h3>${room.kids_price} <span>Kid / Night</span></h3>
+                        )}
+
+
                       <div className="add-to-cart">
-                            <button
-                            className="theme-btn mt-3"
-                              data-bs-toggle="tooltip"
-                              data-bs-html="true"
-                              title="Add to Cart"
-                              onClick={() => addToCartProduct(room)}
-                            >
-                             Select this room
-                            </button>
+                        <button
+                          className="theme-btn mt-3"
+                          data-bs-toggle="tooltip"
+                          data-bs-html="true"
+                          title="Add to Cart"
+                          onClick={() => addToCartProduct(room)}
+                        >
+                          Select this room
+                        </button>
                       </div>
                     </div>
                   </div>

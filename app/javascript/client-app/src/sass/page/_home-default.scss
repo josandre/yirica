@@ -839,6 +839,7 @@
                     list-style: none;
                     display: flex;
                     margin-bottom: 15px;
+                    padding-left: 0 !important;
 
                     li {
                         display: flex;
@@ -1493,3 +1494,5 @@
         }
     }
 }
+
+
