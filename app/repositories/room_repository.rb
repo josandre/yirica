@@ -6,12 +6,13 @@ class RoomRepository
   end
 
   def most_used
-    @relation.where(is_active: true)
-             .order(usage_amount: :desc)
-             .limit(3)
+    Room.includes(:room_type, :image_rooms)
+        .where(is_active: true)
+        .order(usage_amount: :desc)
+        .limit(3)
   end
 
-  def search_availability(check_in, check_out, adults, children)
+  def search_availability(check_in, check_out, adults, children, rooms)
     available_rooms = available_between(check_in, check_out).joins(:room_type)
     available_rooms = available_rooms.where('room_types.max_people >= ?', adults + children)
 
@@ -21,6 +22,7 @@ class RoomRepository
       available_rooms = available_rooms.where('room_types.kids_accepted = ?', false)
     end
 
+    return available_rooms if available_rooms.size >= rooms
     available_rooms
   end
 

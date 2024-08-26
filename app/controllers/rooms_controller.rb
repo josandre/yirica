@@ -7,7 +7,10 @@ class RoomsController < ApplicationController
 
   def most_used
     @rooms = @room_service.most_used_rooms
-    render json: @rooms.to_json(include: :room_type)
+    render json: @rooms.to_json(include: {
+      room_type: {},
+      image_rooms: { only: :image, where: { is_principal: true } }
+      })
   end
 
   def search
@@ -16,10 +19,16 @@ class RoomsController < ApplicationController
     check_out = request_params[:check_out].to_date
     adults = request_params[:adults].to_i
     children = request_params[:kids].to_i
-    puts "params: #{request_params}"
-    @available_rooms = @room_service.search_room_availability(check_in, check_out, adults, children)
-    puts "result: #{@available_rooms}"
-    render json: @available_rooms.to_json(include: :room_type)
+    rooms = request_params[:rooms].to_i
+    @available_rooms = @room_service.search_room_availability(check_in, check_out, adults, children, rooms)
+
+    if @available_rooms.present?
+      render json: @available_rooms.to_json(include: :room_type)
+    else
+      render json: {
+        status: { code: 422, message: 'There are not enough rooms available.' }
+      }, status: :unprocessable_entity
+    end
   end
 
 
@@ -70,7 +79,7 @@ class RoomsController < ApplicationController
   end
 
   def search_params
-    params.permit(:check_in, :check_out, :adults, :kids)
+    params.permit(:check_in, :check_out, :adults, :kids, :rooms)
   end
 
   def initialize_room_service

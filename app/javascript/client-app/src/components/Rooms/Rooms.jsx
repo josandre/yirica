@@ -13,7 +13,7 @@ const Rooms = () => {
   const { data: rooms, error, isLoading } = useMostUsedRooms();
   console.log("lenght", rooms)
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !rooms) return <div>Loading...</div>;
   if (error) return <div>Error loading rooms</div>;
 
 
@@ -29,11 +29,13 @@ const Rooms = () => {
         <div className="room-wrap">
           <div className="row">
             {rooms.length > 0 &&
-              rooms.slice(0, 3).map((room, item) => (
-                <div className="col-lg-4 col-md-6 col-12" key={item}>
+              rooms.slice(0, 3).map((room, item) => {
+                console.log("ASB", room);
+
+                return <div className="col-lg-4 col-md-6 col-12" key={item}>
                   <div className="room-item">
                     <div className="room-img">
-                      <img src={'https://media.istockphoto.com/id/927375342/es/foto/mujer-bebiendo-t%C3%A9-en-el-balc%C3%B3n-con-vistas-a-campos-de-arroz.jpg?s=1024x1024&w=is&k=20&c=wCHTGz3SZXxmIqYlO-pmiOynZBLiHqTUj15psdRsXKQ='} alt="" />
+                      <img src={room.image_rooms.length > 0 ? room.image_rooms[0].image : "https://placehold.co/30/cccccc/000000/600x400.png?text=NO IMAGE"} alt=""/>
                     </div>
                     <div className="room-content">
                       <h2><Link onClick={ClickHandler} to={`/room-single/${room.id}`}>{room.room_type.name}</Link></h2>
@@ -46,7 +48,7 @@ const Rooms = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              })}
           </div>
         </div>
       </div>

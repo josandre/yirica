@@ -10,10 +10,10 @@ export const useMostUsedRooms = () => {
 }
 
 export const useSearchAvailableRooms = (params) => {
-  const { checkIn, checkOut, adults, kids } = params
+  const { checkIn, checkOut, adults, kids, rooms } = params
   return useQuery(
     'availableRooms',
-    () => fetchAvailableRooms(checkIn, checkOut, adults, kids)
+    () => fetchAvailableRooms(checkIn, checkOut, adults, kids, rooms)
   );
 }
 
@@ -23,9 +23,9 @@ const fetchMostUsedRooms = async () => {
   return response.data;
 }
 
-const fetchAvailableRooms = async (check_in, check_out, adults, kids) => {
+const fetchAvailableRooms = async (check_in, check_out, adults, kids, rooms) => {
   const endpoint = `${base_url}/search`
-  const params = {check_in, check_out, adults, kids}
+  const params = {check_in, check_out, adults, kids, rooms}
   const url = axios.getUri({url: endpoint, params })
 
   console.log("ASB", url)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -12,6 +12,16 @@ const SearchSection = (props) => {
     const [adult, setCount] = useState(0);
     const [child, setChild] = useState(0);
     const [room, setRoom] = useState(0);
+    const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+    useEffect(() => {
+        validateForm()
+    }, [startDate, endDate, adult, child, room]);
+
+    const validateForm = () => {
+        const isValid = startDate && endDate && adult > 0 && room >0
+        setIsButtonEnabled(isValid)
+    }
 
     const SubmitHandler = (e) => {
         e.preventDefault()
@@ -43,7 +53,8 @@ const SearchSection = (props) => {
             checkIn: formatDateToYYYYMMDD(startDate),
             checkOut: formatDateToYYYYMMDD(endDate),
             adults: adult,
-            kids: child
+            kids: child,
+            rooms: room
         }
 
         return objectToQueryParams(params);
@@ -116,7 +127,16 @@ const SearchSection = (props) => {
                                         </div>
                                     </div>
                                     <div className="select-sub">
-                                        <Link className="theme-btn" to={`/app/search-result?${getSelectedDataAsQueryParams()}`}>Check Availability</Link>
+                                        <Link className="theme-btn"
+                                              to={`/app/search-result?${getSelectedDataAsQueryParams()}`}
+                                              onClick={e => !isButtonEnabled && e.preventDefault()}
+                                              style={{
+                                                  backgroundColor: isButtonEnabled ? '#081424' : 'gray',
+                                                  cursor: isButtonEnabled ? 'pointer' : 'not-allowed',
+                                                  color: 'white'
+                                              }}>
+                                            Check Availability
+                                        </Link>
                                     </div>
                                 </form>
                             </div>

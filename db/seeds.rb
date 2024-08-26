@@ -1,20 +1,24 @@
+
+ReservationRoom.destroy_all
+Reservation.destroy_all
 ReservationState.destroy_all
 User.destroy_all
 Room.destroy_all
-Reservation.destroy_all
-ReservationRoom.destroy_all
+
 
 client_role = Role.create({ role: 'Client' })
 admin_role = Role.create({ role: 'Administrator' })
 user_client_1 = User.create({name: 'Jocselyn', last_name: 'Aguilar', password: 'User123!', phone: '63399135', role_id: client_role.id, email: 'jocselynaguilarchinchilla@gmail.com' })
 user_client_2 = User.create({name: 'Andrea', last_name: 'Chinchilla', password: 'User1234!', phone: '63399135', role_id: client_role.id, email: 'jaguilarc@ucenfotec.ac.cr' })
+puts 'client and roles created'
+
 
 deluxe = RoomType.create(name: 'Deluxe',description: 'A deluxe room with all amenities',max_people: '4',kids_accepted: true)
 suite = RoomType.create(name: 'Suite',description: 'A luxurious suite with multiple rooms',max_people: '6',kids_accepted: true)
 standard = RoomType.create(name: 'Standard',description: 'A standard room with basic amenities',max_people: '2',kids_accepted: false)
+puts 'room types created'
 
-
-Room.create(
+room_1 = Room.create(
   usage_amount: 20,
   adult_price: 150.0,
   kids_price: 50.0,
@@ -26,10 +30,11 @@ Room.create(
   sqm: 70,
   bathrooms: 2,
   beds: 2
-
 )
+room_1.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/junior-suite.png', is_principal: true)
 
-Room.create(
+
+room_2 = Room.create(
   usage_amount: 15,
   adult_price: 200.0,
   kids_price: 60.0,
@@ -42,8 +47,9 @@ Room.create(
   bathrooms: 3,
   beds: 5
 )
+room_2.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/family.png')
 
-Room.create(
+room_3 = Room.create(
   usage_amount: 10,
   adult_price: 100.0,
   kids_price: 0,
@@ -56,8 +62,9 @@ Room.create(
   bathrooms: 1,
   beds: 1
 )
+room_3.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/executive.png')
 
-Room.create(
+room_4 = Room.create(
   usage_amount: 2,
   adult_price: 20.0,
   kids_price: 0,
@@ -70,8 +77,10 @@ Room.create(
   bathrooms: 1,
   beds: 1
 )
+room_4.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/double-standard.png')
 
-Room.create(
+
+room_5 = Room.create(
   usage_amount: 5,
   adult_price: 120.0,
   kids_price: 40.0,
@@ -84,8 +93,9 @@ Room.create(
   bathrooms: 1,
   beds: 2
 )
+room_5.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/deluxe.png')
 
-Room.create(
+room_6 = Room.create(
   usage_amount: 8,
   adult_price: 250.0,
   kids_price: 80.0,
@@ -98,8 +108,9 @@ Room.create(
   bathrooms: 2,
   beds: 4
 )
+room_6.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/beach-front-standard-single.png')
 
-Room.create(
+room_7 = Room.create(
   usage_amount: 12,
   adult_price: 90.0,
   kids_price: 20.0,
@@ -112,8 +123,10 @@ Room.create(
   bathrooms: 1,
   beds: 1
 )
+room_7.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/suite.png')
 
-Room.create(
+
+room_8 = Room.create(
   usage_amount: 7,
   adult_price: 180.0,
   kids_price: 60.0,
@@ -126,8 +139,9 @@ Room.create(
   bathrooms: 2,
   beds: 2
 )
+room_8.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/deluxe.png')
 
-Room.create(
+room_9 = Room.create(
   usage_amount: 3,
   adult_price: 220.0,
   kids_price: 70.0,
@@ -140,6 +154,7 @@ Room.create(
   bathrooms: 3,
   beds: 5
 )
+room_9.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/beach-front-standard-single.png')
 
 active_reservation_state = ReservationState.create(state: "Active", description: "The reservation is active")
 canceled_reservation_state = ReservationState.create(state: "Canceled", description: "The reservation was canceled")

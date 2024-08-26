@@ -4,7 +4,7 @@ import SectionTitleS2 from '../SectionTitleS2'
 
 const SearchRooms = ({ rooms, addToCartProduct }) => {
 
-  console.log(rooms);
+
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
