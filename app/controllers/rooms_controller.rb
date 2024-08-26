@@ -23,7 +23,7 @@ class RoomsController < ApplicationController
     @available_rooms = @room_service.search_room_availability(check_in, check_out, adults, children, rooms)
 
     if @available_rooms.present?
-      render json: @available_rooms.to_json(include: :room_type)
+      render json: @available_rooms.to_json
     else
       render json: {
         status: { code: 422, message: 'There are not enough rooms available.' }

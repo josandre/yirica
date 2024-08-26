@@ -4,7 +4,6 @@ import SectionTitleS2 from '../SectionTitleS2'
 
 const SearchRooms = ({ rooms, addToCartProduct }) => {
 
-
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
@@ -25,7 +24,7 @@ const SearchRooms = ({ rooms, addToCartProduct }) => {
                 <div className="col-lg-4 col-md-6 col-12" key={item}>
                   <div className="room-item">
                     <div className="room-img">
-                      <img src={'https://media.istockphoto.com/id/927375342/es/foto/mujer-bebiendo-t%C3%A9-en-el-balc%C3%B3n-con-vistas-a-campos-de-arroz.jpg?s=1024x1024&w=is&k=20&c=wCHTGz3SZXxmIqYlO-pmiOynZBLiHqTUj15psdRsXKQ='} alt="" />
+                      <img src={room.image_rooms[0].image} alt="" />
                     </div>
                     <div className="room-content">
                       <div>
