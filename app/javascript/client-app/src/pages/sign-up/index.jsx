@@ -43,10 +43,9 @@ const SignUp = (props) => {
         e.preventDefault();
 
         if(validator.allValid()){
-            console.log("Mutation call")
             signUpMutation.mutate(value, {
                 onSuccess: (res) => {
-                    console.log("Mutation succeeded with response:", res);
+
                     setValue({
                         name: '',
                         last_name: '',
