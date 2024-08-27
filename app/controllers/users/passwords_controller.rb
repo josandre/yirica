@@ -4,7 +4,7 @@ class Users::PasswordsController < Devise::PasswordsController
 
 
   def update
-    user = User.find_by(email: user_params.dig[:email, :email])
+    user = User.find_by(email: user_params[:email])
     puts "user #{user} user_params[:email]"
 
     if user
@@ -27,7 +27,7 @@ class Users::PasswordsController < Devise::PasswordsController
   end
 
   def user_params
-    params.require(:user).permit(email: [:email])
+    params.require(:user).permit(:email)
   end
 
 
