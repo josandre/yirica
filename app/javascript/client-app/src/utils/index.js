@@ -8,8 +8,22 @@ function getFeaturedProducts(products) {
 
 function totalPrice(items) {
     return items.reduce((itemAcc, item) => {
-        return itemAcc += (item.price * item.qty);
+        return itemAcc += (item.total);
     }, 0);
+}
+
+function totalAdults(adults, price){
+    const adultsPrice = parseInt(price);
+    return adultsPrice * adults
+}
+
+function totalKids(kids, price){
+    const kidsPrice = parseInt(price);
+    return kidsPrice * kids
+}
+
+function totalByRoom(adultsPrice, kidsPrice, qty ){
+    return (adultsPrice + kidsPrice) * qty
 }
 
 function isWishListed(productId, wishList) {
@@ -132,4 +146,7 @@ export {
     objectToQueryParams,
     queryParamsToObject,
     formatDateToYYYYMMDD,
+    totalAdults,
+    totalKids,
+    totalByRoom
 };

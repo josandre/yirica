@@ -4,6 +4,7 @@ import Home from "../pages/home/home";
 import SignIn from "../pages/sign-in";
 import SearchResults from "../pages/search-results";
 import SignUp from "../pages/sign-up";
+import ForgotPassword from "../pages/ForgotPassword";
 
 
 const AllRoute = () => {
@@ -17,6 +18,7 @@ const AllRoute = () => {
           <Route path='/app/sign-in' element={<SignIn />} />
           <Route path='/app/search-result' element={<SearchResults />} />
           <Route path='/app/sign-up' element={<SignUp />} />
+          <Route path='/app/forgot-password' element={<ForgotPassword />} />
         </Routes>
       </BrowserRouter>
 

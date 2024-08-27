@@ -28,7 +28,6 @@ const fetchAvailableRooms = async (check_in, check_out, adults, kids, rooms) => 
   const params = {check_in, check_out, adults, kids, rooms}
   const url = axios.getUri({url: endpoint, params })
 
-  console.log("ASB", url)
   const response = await axios.get(url);
   return response.data;
 }

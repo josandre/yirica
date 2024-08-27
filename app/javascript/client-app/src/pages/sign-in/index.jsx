@@ -9,13 +9,15 @@ import Checkbox from "@mui/material/Checkbox";
 import {Link, useNavigate} from "react-router-dom";
 
 import './style.scss';
+import {useSignIn} from "../../api/users/user-service";
 
 const SignIn = (props) => {
     const push = useNavigate()
+    const signInMutation = useSignIn()
 
     const [value, setValue] = useState({
-        email: 'user@gmail.com',
-        password: '123456',
+        email: '',
+        password: '',
         remember: false,
     });
 
@@ -32,23 +34,37 @@ const SignIn = (props) => {
         className: 'errorMessage'
     }));
 
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
         if (validator.allValid()) {
-            setValue({
-                email: '',
-                password: '',
-                remember: false
-            });
-            validator.hideMessages();
 
-            const userRegex = /^user+.*/gm;
-            const email = value.email;
+            signInMutation.mutate(value, {
+               onSuccess: (response) => {
+                   const token = response.headers.getAuthorization()
+                   if (token && token.startsWith('Bearer ')) {
+                       const jwtToken = token.split(' ')[1];
+                       localStorage.setItem('token', jwtToken);
+                   }
 
-            if (email.match(userRegex)) {
-                toast.success('You successfully Login on Parador !');
-                push('/app/home');
-            }
+                   setValue({
+                       email: '',
+                       password: '',
+                       remember: false
+                   });
+                   validator.hideMessages()
+                   toast.success('You successfully Login on Yiri ca!');
+                   push('/app');
+               },
+                onError: (err) => {
+                    if (err.response && err.response.data) {
+                        const errors = err.response.data;
+                        toast.error(errors);
+                    }else{
+                        toast.error('Log in failed')
+                    }
+                }
+            })
+
         } else {
             validator.showMessages();
             toast.error('Empty field is not allowed!');
@@ -102,7 +118,7 @@ const SignIn = (props) => {
                                     control={<Checkbox checked={value.remember} onChange={rememberHandler}/>}
                                     label="Remember Me"
                                 />
-                                <Link to="/forgot-password">Forgot Password?</Link>
+                                <Link to="/app/forgot-password">Forgot Password?</Link>
                             </Grid>
                             <Grid className="formFooter">
                                 <Button fullWidth className="cBtnTheme" type="submit">Login</Button>

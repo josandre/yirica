@@ -18,12 +18,13 @@ const SearchResults =({ addToCart }) => {
     [location]);
 
   const {data: availableRooms, error, isLoading} = useSearchAvailableRooms(searchParams);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading rooms</div>;
 
-    const addToCartProduct = (product, qty = 1) => {
-        addToCart(product, qty);
+    const addToCartProduct = (room, qty = 1) => {
+        room.kids = searchParams.kids
+        room.adults = searchParams.adults
+        addToCart(room, qty);
       };
 
     return(
@@ -37,7 +38,7 @@ const SearchResults =({ addToCart }) => {
                               <SearchRooms
                                       addToCartProduct={addToCartProduct}
                                       rooms={availableRooms}
-                                  />
+                              />
                           </div>
                       </div>
                   </div>

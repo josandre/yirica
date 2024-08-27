@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import MobileMenu from "../MobileMenu";
 import { removeFromCart } from "../../store/actions/action";
 import { Link } from 'react-router-dom'
-import { totalPrice } from "../../utils";
+import { totalPrice, totalAdults, totalKids, totalByRoom } from "../../utils";
 import shape from "../../images/hotel.png"
 
 const Header = (props) => {
-
   const [menuActive, setMenuState] = useState(false);
   const [cartActive, setcartState] = useState(false);
+
   const SubmitHandler = (e) => {
       e.preventDefault()
   }
@@ -17,8 +17,8 @@ const Header = (props) => {
   const ClickHandler = () => {
       window.scrollTo(10, 0);
   }
-
   const { carts } = props;
+  console.log("carts", carts)
     return (
       <header id="header" className={props.topbarBlock}>
         <div className={`wpo-site-header ${props.hclass}`}>
@@ -41,15 +41,9 @@ const Header = (props) => {
                   <div id="navbar" className="collapse navbar-collapse navigation-holder">
                     <button className="menu-close"><i className="ti-close"></i></button>
                     <ul className="nav navbar-nav mb-2 mb-lg-0">
-                      <li><Link onClick={ClickHandler} to="/app" >Home</Link></li>
+                      <li><Link onClick={ClickHandler} to="/app">Home</Link></li>
                       <li><Link onClick={ClickHandler} to="/about">About</Link></li>
-                      <li className="menu-item-has-children">
-                        <Link onClick={ClickHandler} to="/">Room</Link>
-                        <ul className="sub-menu">
-                          <li><Link onClick={ClickHandler} to="/room">Room</Link></li>
-                          <li><Link onClick={ClickHandler} to="/room-single/1">Room single</Link></li>
-                        </ul>
-                      </li>
+                      <li><Link onClick={ClickHandler} to="/app/sign-in">Sign in</Link></li>
                       <li className="menu-item-has-children">
                         <Link onClick={ClickHandler} to="/app/sign-up">Sign up</Link>
                       </li>
@@ -125,14 +119,22 @@ const Header = (props) => {
                               <div className="mini-cart-item clearfix" key={crt}>
                                 <div className="mini-cart-item-image">
                                   <span>
-                                    <img src={catItem.proImg} alt="icon" />
+                                    <img src={catItem.image_rooms[0].image} alt="icon" />
                                   </span>
                                 </div>
                                 <div className="mini-cart-item-des">
                                   <p>{catItem.title} </p>
                                   <span className="mini-cart-item-price">
-                                    ${catItem.price} x {" "} {catItem.qty}
+                                    ${catItem.totalAdults = totalAdults(catItem.adults, catItem.adult_price)} x {" "} {catItem.adults} adults
                                   </span>
+                                  {catItem.kids > 0 && (
+                                    <span className="mini-cart-item-price">
+                                    ${catItem.totalKids = totalKids(catItem.kids, catItem.kids_price)} x {catItem.kids} kids
+                                  </span>)}
+                                  <span className="mini-cart-item-price">
+                                    ${catItem.total = totalByRoom(catItem.totalAdults, catItem.totalKids, catItem.qty)} x {" "} {catItem.qty}
+                                  </span>
+
                                   <span className="mini-cart-item-quantity">
                                     <button
                                       onClick={() =>
@@ -141,14 +143,15 @@ const Header = (props) => {
                                       className="btn btn-sm btn-danger"
                                     >
                                       <i className="ti-close"></i>
-                                    </button>{" "}
+                                    </button>
+                                    {" "}
                                   </span>
                                 </div>
                               </div>
                             ))}
                         </div>
                         <div className="mini-cart-action clearfix">
-                          <span className="mini-checkout-price">Subtotal: <span> ${totalPrice(carts)}</span></span>
+                        <span className="mini-checkout-price">Subtotal: <span> ${totalPrice(carts)}</span></span>
                           <div className="mini-btn">
                             <Link onClick={ClickHandler} to="/checkout" className="view-cart-btn s1">Checkout</Link>
                             <Link onClick={ClickHandler} to="/cart" className="view-cart-btn">View Cart</Link>

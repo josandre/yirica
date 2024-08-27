@@ -17,14 +17,15 @@ export const receiveProducts = (products) => ({
   products,
 });
 
-export const addToCart = (product, qty, color, size) => (dispatch) => {
+export const addToCart = (room, qty, color, size) => (dispatch) => {
+  console.log("entra", room, qty, color, size)
   toast.success("Room Added to Cart");
   dispatch({
     type: types.ADD_TO_CART,
-    product,
+    room,
     qty,
     color,
-    size,
+    size
   });
 };
 

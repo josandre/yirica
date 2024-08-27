@@ -11,24 +11,29 @@ const init = {
 };
 
 export const cartReducer = (state = init, action) => {
+
   switch (action.type) {
     case ADD_TO_CART:
-      const productId = action.product.id;
+
+      const room = action.room
+      console.log("room", action)
+      const roomId = room.id;
       const productQty = action.qty ? action.qty : 1;
-      if (state.cart.findIndex((product) => product.id === productId) !== -1) {
-        const cart = state.cart.reduce((cartAcc, product) => {
-          if (product.id === productId) {
+      if (state.cart.findIndex((room) => room.id === roomId) !== -1) {
+        console.log("room in the if", room)
+        const cart = state.cart.reduce((cartAcc, room) => {
+          if (room.id === roomId) {
             cartAcc.push({
-              ...product,
+              ...room,
               selected_color: action.color,
               selected_size: action.size,
-              qty: product.qty + productQty,
+              qty: room.qty + productQty,
               sum:
-                ((product.price * product.discount) / 100) *
-                (product.qty + productQty),
-            }); // Increment qty
+                ((room.adult_price * room.kids_price) / 100) *
+                (room.qty + productQty),
+            });
           } else {
-            cartAcc.push(product);
+            cartAcc.push(room);
           }
 
           return cartAcc;
@@ -42,12 +47,12 @@ export const cartReducer = (state = init, action) => {
         cart: [
           ...state.cart,
           {
-            ...action.product,
+            ...action.room,
             selected_color: action.color,
             selected_size: action.size,
             qty: action.qty,
             sum:
-              ((action.product.price * action.product.discount) / 100) *
+              ((action.room.adult_price * action.room.kids_price) / 100) *
               action.qty,
           },
         ],
@@ -59,15 +64,15 @@ export const cartReducer = (state = init, action) => {
       };
 
     case INCREMENT_QUANTITY:
-      const inc_productId = action.product_id;
-      const new_cart = state.cart.reduce((cartAcc, product) => {
-        if (product.id === inc_productId) {
+      const inc_productId = action.room.id;
+      const new_cart = state.cart.reduce((cartAcc, room) => {
+        if (room.id === inc_productId) {
           cartAcc.push({
-            ...product,
-            qty: product.qty + 1,
+            ...room,
+            qty: room.qty + 1,
           });
         } else {
-          cartAcc.push(product);
+          cartAcc.push(room);
         }
         return cartAcc;
       }, []);

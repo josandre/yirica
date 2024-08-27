@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   devise_for :users, path: '', path_names: {
     sign_in: 'login',
     sign_out: 'logout',
-    registration: 'signup'
+    registration: 'signup',
+    password: 'reset-password',
   },
              controllers: {
                sessions: 'users/sessions',
-               registrations: 'users/registrations'
+               registrations: 'users/registrations',
+               passwords: 'users/passwords',
              }
 
   resources :rooms do

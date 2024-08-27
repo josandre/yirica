@@ -30,7 +30,6 @@ const Rooms = () => {
           <div className="row">
             {rooms.length > 0 &&
               rooms.slice(0, 3).map((room, item) => {
-                console.log("ASB", room);
 
                 return <div className="col-lg-4 col-md-6 col-12" key={item}>
                   <div className="room-item">
