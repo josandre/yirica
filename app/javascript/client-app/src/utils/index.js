@@ -23,7 +23,11 @@ function totalKids(kids, price){
 }
 
 function totalByRoom(adultsPrice, kidsPrice, qty ){
-    return (adultsPrice + kidsPrice) * qty
+    console.log("kids", kidsPrice)
+    console.log("total, ", (adultsPrice + kidsPrice) * qty)
+
+    return (adultsPrice + kidsPrice) * qty ? kidsPrice : adultsPrice * qty
+
 }
 
 function isWishListed(productId, wishList) {
