@@ -118,7 +118,7 @@ const SignIn = (props) => {
                                     control={<Checkbox checked={value.remember} onChange={rememberHandler}/>}
                                     label="Remember Me"
                                 />
-                                <Link to="/forgot-password">Forgot Password?</Link>
+                                <Link to="/app/forgot-password">Forgot Password?</Link>
                             </Grid>
                             <Grid className="formFooter">
                                 <Button fullWidth className="cBtnTheme" type="submit">Login</Button>
