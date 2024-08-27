@@ -154,4 +154,15 @@
   font-weight: 500;
   cursor: pointer;
 }
-/*# sourceMappingURL=style.css.map */
+.noteHelp {
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  .line {
+    flex: 1;
+    height: 1px;
+    background-color: #d7dbde;
+    margin: 0 10px;
+  }
+}

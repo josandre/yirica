@@ -4,7 +4,8 @@ class Users::PasswordsController < Devise::PasswordsController
 
 
   def update
-    user = User.find_by(email: params[:user][:email])
+    user = User.find_by(email: user_params.dig[:email, :email])
+    puts "user #{user} user_params[:email]"
 
     if user
       new_password = generate_random_password
@@ -23,6 +24,10 @@ class Users::PasswordsController < Devise::PasswordsController
   def generate_random_password(length = 12)
     chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=_+[]{}|;:,.<>?'
     Array.new(length) { chars[rand(chars.length)] }.join
+  end
+
+  def user_params
+    params.require(:user).permit(email: [:email])
   end
 
 

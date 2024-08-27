@@ -12,6 +12,10 @@ export const useSignIn = () => {
   return useMutation(signIn)
 }
 
+export const useResetPassword = () => {
+  return useMutation(resetPassword)
+}
+
 const signUp = (data) => {
   const endpoint = `${base_url}/signup`
 
@@ -38,4 +42,15 @@ const signIn = (data) => {
   }
 
   return axios.post(endpoint, userData)
+}
+
+const resetPassword = (email) => {
+  const endpoint = `${base_url}/reset-password`
+  const data = {
+    user: {
+      email: email,
+    }
+  }
+
+  return axios.put(endpoint, data);
 }
