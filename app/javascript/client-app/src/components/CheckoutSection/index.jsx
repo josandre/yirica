@@ -50,7 +50,6 @@ const cardType = [
 
 
 const CheckoutSection = ({cartList}) => {
-    // states
     const [tabs, setExpanded] = React.useState({
         cupon: false,
         billing_adress: false,
@@ -88,7 +87,6 @@ const CheckoutSection = ({cartList}) => {
 
     const [dif_ship, setDif_ship] = React.useState(false);
 
-    // tabs handler
     function faqHandler(name) {
         setExpanded({
             cupon: false,
@@ -97,7 +95,6 @@ const CheckoutSection = ({cartList}) => {
         });
     }
 
-    // forms handler
     const changeHandler = e => {
         setForms({...forms, [e.target.name]: e.target.value})
     };
@@ -109,29 +106,6 @@ const CheckoutSection = ({cartList}) => {
                 <Grid className="container" container spacing={3}>
                     <Grid item md={6} xs={12}>
                         <div className="check-form-area">
-                            <Grid className="cuponWrap checkoutCard">
-                                <Button className="collapseBtn" fullWidth onClick={() => faqHandler('cupon')}>
-                                    Have a coupon ? Click here to enter your code.
-                                    <FontAwesome name={tabs.cupon ? 'minus' : 'plus'}/>
-                                </Button>
-                                <Collapse in={tabs.cupon} timeout="auto"
-                                        unmountOnExit>
-                                    <Grid className="chCardBody">
-                                        <p>If you have coupon code,please apply it</p>
-                                        <form className="cuponForm">
-                                            <TextField
-                                                fullWidth
-                                                type="text"
-                                                className="formInput radiusNone"
-                                                value={forms.cupon_key}
-                                                name="cupon_key"
-                                                onChange={(e) => changeHandler(e)}
-                                            />
-                                            <Button className="cBtn cBtnBlack">Apply</Button>
-                                        </form>
-                                    </Grid>
-                                </Collapse>
-                            </Grid>
                             <Grid className="cuponWrap checkoutCard">
                                 <Button className="collapseBtn" fullWidth onClick={() => faqHandler('billing_adress')}>
                                     Billing Address
