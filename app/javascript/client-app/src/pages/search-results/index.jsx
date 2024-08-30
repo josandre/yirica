@@ -17,13 +17,19 @@ const SearchResults =({ addToCart }) => {
     () => queryParamsToObject(location.search),
     [location]);
 
-  const {data: availableRooms, error, isLoading} = useSearchAvailableRooms(searchParams);
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading rooms</div>;
+    const {data: availableRooms, error, isLoading} = useSearchAvailableRooms(searchParams);
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error loading rooms</div>;
+
+    const reservation = {
+      checkIn: searchParams.checkIn,
+      checkOut: searchParams.checkOut,
+    }
 
     const addToCartProduct = (room, qty = 1) => {
         room.kids = searchParams.kids
         room.adults = searchParams.adults
+        room.reservation = reservation
         addToCart(room, qty);
       };
 

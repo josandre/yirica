@@ -5,9 +5,12 @@ import { toast } from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import './style.scss';
+import {useSignUp} from "../../api/users/user-service";
+import {useCheckout} from "../../api/checkout/checkout-service";
 
-const CheckWrap = (props) => {
-
+const CheckWrap = ({cartList}) => {
+    console.log("$", cartList)
+    const checkoutMutation = useCheckout()
     const [value, setValue] = useState({
         card_holder: '',
         card_number: '',
@@ -33,6 +36,8 @@ const CheckWrap = (props) => {
             }
 
             value = value.replace(/(.{4})/g, '$1 ').trim();
+
+            console.log("ASB", value)
         }
 
         if (name === "expire_month") {
@@ -50,17 +55,35 @@ const CheckWrap = (props) => {
 
     const submitForm = (e) => {
         e.preventDefault();
+
+        validator.showMessages()
+
         console.log("Form Values:", value);
         if (validator.allValid()) {
-            setValue({
-                card_holder: '',
-                card_number: '',
-                cvv: '',
-                expire_month: '',
-                expire_year: '',
-            });
-            validator.hideMessages();
-            toast.success('Successfully submitted!');
+
+            checkoutMutation.mutate(value, {
+                onSuccess: (response) => {
+                    setValue({
+                        card_holder: '',
+                        card_number: '',
+                        cvv: '',
+                        expire_month: '',
+                        expire_year: '',
+                    });
+                    validator.hideMessages();
+                    toast.success('Successfully submitted!');
+                },
+                onError: (err) => {
+                    console.log(err)
+                    if (err.response && err.response.data) {
+                        const errors = err.response.data.status.message;
+                        toast.error(errors);
+                    }else{
+                        toast.error('Registration failed')
+                    }
+                }
+            })
+
 
         } else {
             console.log("Validation Messages:");

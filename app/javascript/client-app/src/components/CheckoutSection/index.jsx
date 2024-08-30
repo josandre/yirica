@@ -14,6 +14,7 @@ import mastercard from '../../images/icon/mastercard.png';
 import CheckWrap from '../CheckWrap'
 
 import './style.scss';
+import {useCheckout} from "../../api/checkout/checkout-service";
 
 const cardType = [
     {
@@ -28,24 +29,11 @@ const cardType = [
 
 
 const CheckoutSection = ({cartList}) => {
-    const [tabs, setExpanded] = React.useState({
-        payment: true
-    });
-    const [forms, setForms] = React.useState({
-        payment_method: 'cash',
-        card_type: '',
 
-        card_holder: '',
-        card_number: '',
-        cvv: '',
-        expire_date: '',
-    });
-
-
-    const changeHandler = e => {
-        setForms({...forms, [e.target.name]: e.target.value})
-    };
-
+    let totalRooms = 0;
+    for (let i = 0; i < cartList.length; i++) {
+        totalRooms += cartList[i].qty;
+    }
 
     return (
         <Fragment>
@@ -58,30 +46,16 @@ const CheckoutSection = ({cartList}) => {
                                     Payment Method
                                 </Button>
                                 <Grid className="chCardBody">
-                                    <Collapse in={tabs.payment} timeout="auto">
-
-                                        <Collapse in={forms.payment_method === 'cash'} timeout="auto">
-                                            <Grid className="cardType">
-                                                {cardType.map((item, i) => (
-
-                                                    <Grid
-                                                        key={i}
-                                                        className={`cardItem ${forms.card_type === item.title ? 'active' : null}`}
-                                                        onClick={() => setForms({...forms, card_type: item.title})}>
-                                                        <img src={item.img} alt={item.title}/>
-                                                    </Grid>
-                                                ))}
+                                    <Grid className="cardType">
+                                        {cardType.map((item, i) => (
+                                            <Grid key={i} className={`cardItem`}>
+                                                <img src={item.img} alt={item.title}/>
                                             </Grid>
-                                            <Grid>
-                                                <CheckWrap/>
-                                            </Grid>
-                                        </Collapse>
-                                        <Collapse in={forms.payment_method === 'card'} timeout="auto">
-                                            <Grid className="cardType">
-                                                <Link to='/order_received' className="cBtn cBtnLarge cBtnTheme mt-20 ml-15" type="submit">Proceed to Checkout</Link>
-                                            </Grid>
-                                        </Collapse>
-                                    </Collapse>
+                                        ))}
+                                    </Grid>
+                                    <Grid>
+                                        <CheckWrap cartList={cartList}/>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </div>
@@ -96,24 +70,38 @@ const CheckoutSection = ({cartList}) => {
                                             <TableBody>
                                                 {cartList.map(item => (
                                                     <TableRow key={item.id}>
-                                                        <TableCell>{item.title} ${item.price} x {item.qty}</TableCell>
-                                                        <TableCell
-                                                            align="right">${item.qty * item.price}</TableCell>
+                                                        <TableCell>{item.adult_price} x {item.adults}  ${item.totalAdults} Adults</TableCell>
+                                                        {item.kids > 0 ? (
+                                                          <TableCell>
+                                                              {item.kids_price} x {item.kids}  ${item.totalKids} Kids
+                                                          </TableCell>
+                                                        ) : (
+                                                          <TableCell>
+                                                              No Kids
+                                                          </TableCell>
+                                                        )}
+                                                        <TableCell>{item.room_type.name}  x {item.qty} {item.qty > 1 ? 'Rooms' : 'Room'}</TableCell>
+                                                        <TableCell>${item.total} Total</TableCell>
+
                                                     </TableRow>
                                                 ))}
                                                 <TableRow className="totalProduct">
                                                     <TableCell>Total Room</TableCell>
-                                                    <TableCell align="right">{cartList.length}</TableCell>
+                                                    <TableCell align="right">{totalRooms}</TableCell>
                                                 </TableRow>
+
                                                 <TableRow>
-                                                    <TableCell>Sub Price</TableCell>
-                                                    <TableCell align="right">${totalPrice(cartList)}</TableCell>
+                                                    <TableCell>Is refundable</TableCell>
+                                                    <TableCell
+                                                      align="right">Yes</TableCell>
                                                 </TableRow>
+
                                                 <TableRow>
                                                     <TableCell>Total Price</TableCell>
                                                     <TableCell
-                                                        align="right">${totalPrice(cartList)}</TableCell>
+                                                      align="right">${totalPrice(cartList)}</TableCell>
                                                 </TableRow>
+
                                             </TableBody>
                                         </Table>
                                     </Grid>

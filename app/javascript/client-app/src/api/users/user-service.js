@@ -45,11 +45,9 @@ const signIn = (data) => {
 }
 
 const resetPassword = (email) => {
-
   const endpoint = `${base_url}/reset-password`
   const data = {
     user: email
   }
-  console.log("email", data)
   return axios.put(endpoint, data);
 }

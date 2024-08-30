@@ -18,7 +18,6 @@ const Header = (props) => {
       window.scrollTo(10, 0);
   }
   const { carts } = props;
-  console.log("carts", carts)
     return (
       <header id="header" className={props.topbarBlock}>
         <div className={`wpo-site-header ${props.hclass}`}>
