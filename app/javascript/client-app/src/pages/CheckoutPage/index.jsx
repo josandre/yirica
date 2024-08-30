@@ -5,12 +5,12 @@ import CheckoutSection from '../../components/CheckoutSection'
 import Footer from '../../components/footer'
 import Scrollbar from '../../components/scrollbar'
 import {connect} from "react-redux";
-import Logo from '../../images/logo2.png'
+import Logo from '../../images/logo.png'
 
 const CheckoutPage =({cartList}) => {
     return(
         <Fragment>
-            <Navbar hclass={'wpo-header-style-3'} Logo={Logo} />
+            <Navbar topbarBlock={'wpo-header-style-2'} Logo={Logo}/>
             <PageTitle pageTitle={'Checkout'} pagesub={'Checkout'}/> 
             <CheckoutSection cartList={cartList}/>
             <Footer/>
