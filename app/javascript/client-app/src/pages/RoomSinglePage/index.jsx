@@ -15,7 +15,7 @@ const RoomSinglePage = () => {
   const { data: roomData, error, isLoading } = useGetRoomById(id);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading room</div>;
-  const { room, room_type, image_rooms } = roomData || {};
+  const { room, room_type, image_rooms, amenities, services } = roomData || {};
   if (!room) return <div>No room data found</div>;
 
   return (
@@ -62,7 +62,7 @@ const RoomSinglePage = () => {
               </div>
             </div>
           </div>
-          <RoomDetails room={room} room_type={room_type} image_rooms={image_rooms} />
+          <RoomDetails room={room} room_type={room_type} image_rooms={image_rooms} amenities={amenities} services={services} />
         </div>
       </div>
 

@@ -27,7 +27,9 @@ class RoomService
     {
       room: room,
       room_type: room.room_type,
-      image_rooms: room.image_rooms.select(:id, :image, :is_principal)
+      image_rooms: room.image_rooms.select(:id, :image, :is_principal),
+      amenities: room.room_type.amenities.select(:id, :name),
+      services: room.room_type.services.select(:id, :name)
     }
   rescue ActiveRecord::RecordNotFound
     { error: 'Room not found' }.to_json

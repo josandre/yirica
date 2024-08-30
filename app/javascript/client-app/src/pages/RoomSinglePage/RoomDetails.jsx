@@ -6,11 +6,9 @@ import rv1 from '../../images/room/r1.jpg'
 import rv2 from '../../images/room/r2.jpg'
 
 
-const RoomDetails = ({ room, room_type, image_rooms })  => {
-    console.log("***", room)
-    console.log("***", room_type)
-    console.log("description", room_type.description)
-    console.log("***", image_rooms)
+const RoomDetails = ({ room, room_type, image_rooms, amenities, services })  => {
+    console.log("amenities", amenities)
+    console.log("services", services)
 
     const SubmitHandler = (e) => {
         e.preventDefault()
@@ -41,24 +39,24 @@ const RoomDetails = ({ room, room_type, image_rooms })  => {
                                                     <h2>Amenities</h2>
                                                 </div>
                                                 <ul>
-                                                    <li><Link onClick={ClickHandler} to="#">Refrigerator and water</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="#">Air Conditioner Facilities</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="#">Fruits are always available</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="#">2 Sets of nightwear</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="#">Tables and Chairs</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="#">2 Elevator Available</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="#">Room Side Belcony</Link></li>
+                                                    {amenities.map((amenity, index) => (
+                                                      <li key={index}>
+                                                          <Link onClick={ClickHandler} to="#">
+                                                              {amenity.name}
+                                                          </Link>
+                                                      </li>
+                                                    ))}
                                                 </ul>
                                             </div>
                                         </div>
                                         <div className="col-md-7 col-sm-7">
                                             <div className="room-d-img">
-                                                <img src={simg1} alt=""/>
+                                                <img src={image_rooms[0].image} alt=""/>
                                             </div>
                                         </div>
                                         <div className="col-md-7 col-sm-7">
                                             <div className="room-d-img">
-                                                <img src={simg2} alt=""/>
+                                                <img src={image_rooms[0].image} alt=""/>
                                             </div>
                                         </div>
                                         <div className="col-md-5 col-sm-5">
@@ -67,13 +65,13 @@ const RoomDetails = ({ room, room_type, image_rooms })  => {
                                                     <h2>Room Services</h2>
                                                 </div>
                                                 <ul>
-                                                    <li><Link onClick={ClickHandler} to="/room-single/1">Daily Cleaning</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="/room-single/1">Special Swimming Pool</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="/room-single/1">Free Parking</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="/room-single/1">Free-to-use smartphone </Link></li>
-                                                    <li><Link onClick={ClickHandler} to="/room-single/1">Free Wifi</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="/room-single/1">2 Elevator Available</Link></li>
-                                                    <li><Link onClick={ClickHandler} to="/room-single/1">Room Side Belcony</Link></li>
+                                                    {services.map((service, index) => (
+                                                      <li key={index}>
+                                                          <Link onClick={ClickHandler} to="#">
+                                                              {service.name}
+                                                          </Link>
+                                                      </li>
+                                                    ))}
                                                 </ul>
                                             </div>
                                         </div>
