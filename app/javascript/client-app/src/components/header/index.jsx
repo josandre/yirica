@@ -1,17 +1,31 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { connect } from "react-redux";
 import MobileMenu from "../MobileMenu";
 import { removeFromCart } from "../../store/actions/action";
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import { totalPrice, totalAdults, totalKids, totalByRoom } from "../../utils";
 import shape from "../../images/hotel.png"
 
 const Header = (props) => {
   const [menuActive, setMenuState] = useState(false);
   const [cartActive, setcartState] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
   const SubmitHandler = (e) => {
       e.preventDefault()
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
   }
 
   const ClickHandler = () => {
@@ -42,10 +56,22 @@ const Header = (props) => {
                     <ul className="nav navbar-nav mb-2 mb-lg-0">
                       <li><Link onClick={ClickHandler} to="/app">Home</Link></li>
                       <li><Link onClick={ClickHandler} to="/about">About</Link></li>
-                      <li><Link onClick={ClickHandler} to="/app/sign-in">Sign in</Link></li>
-                      <li className="menu-item-has-children">
-                        <Link onClick={ClickHandler} to="/app/sign-up">Sign up</Link>
+
+                      <li>
+                        {isLoggedIn ? (
+                          <Link onClick={handleSignOut} to="/app">Sign out</Link>
+                        ): (
+                          <Link onClick={ClickHandler} to="/app/sign-in">Sign in</Link>
+                        )}
+
                       </li>
+
+                      {!isLoggedIn && (
+                        <li className="menu-item-has-children">
+                          <Link onClick={ClickHandler} to="/app/sign-up">Sign up</Link>
+                        </li>
+                      )}
+
                       <li className="menu-item-has-children">
                         <Link onClick={ClickHandler} to="/blog">Blog</Link>
                         <ul className="sub-menu">

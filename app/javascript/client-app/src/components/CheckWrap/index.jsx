@@ -1,15 +1,20 @@
-import React, {useState, useEffect, useRef, useMemo} from 'react';
+import React, {useState,  useRef, useMemo} from 'react';
 import Grid from "@mui/material/Grid";
 import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import './style.scss';
-import {useSignUp} from "../../api/users/user-service";
 import {useCheckout} from "../../api/checkout/checkout-service";
+import {useNavigate} from "react-router-dom";
+
+
+import { decodeJWT } from "../../utils"
+import {data} from "autoprefixer";
 
 const CheckWrap = ({cartList}) => {
-    console.log("$", cartList)
+
+    const navigate = useNavigate();
     const checkoutMutation = useCheckout()
     const [value, setValue] = useState({
         card_holder: '',
@@ -33,6 +38,26 @@ const CheckWrap = ({cartList}) => {
     }));
 
     const validator = useMemo(() => validatorRef.current, [validatorRef]);
+
+    const reservationData = cartList[0].reservation;
+    let roomsIds = [];
+    let metadataObjects = [];
+
+    const createMetaData = cartList.map((data) => {
+        let metadata = {
+            "roomType": data.room_type.name,
+            "kids": data.kids,
+            "adults": data.adults,
+            "totalAdults": data.totalAdults,
+            "totalKids": data.totalKids,
+            "rooms": data.qty,
+            "total": data.total,
+            "reservation": data.reservation,
+        }
+        roomsIds.push(data.id)
+        metadataObjects.push(metadata)
+    })
+
 
     const changeHandler = (e) => {
         let { name, value } = e.target;
@@ -62,11 +87,29 @@ const CheckWrap = ({cartList}) => {
     const submitForm = (e) => {
         e.preventDefault();
 
-        console.log("Form Values:", value);
+        const token = localStorage.getItem('token')
+        if(!token){
+            navigate('/app/sign-in');
+            return;
+        }else{
+            createMetaData()
+            const user_id = decodeJWT(token)
+        }
 
         if (validator.allValid()) {
-
-            checkoutMutation.mutate(value, {
+            const payload = {
+                user_id: user_id,
+                card: {
+                    number: value.card_number,
+                    exp_month: value.expire_month,
+                    exp_year: value.expire_year,
+                    cvc: value.cvv,
+                },
+                reservation: reservationData,
+                rooms: roomsIds,
+                metadata: metadataObjects,
+            };
+            checkoutMutation.mutate(payload, {
                 onSuccess: (response) => {
                     setValue({
                         card_holder: '',
