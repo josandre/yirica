@@ -17,6 +17,10 @@ export const useSearchAvailableRooms = (params) => {
   );
 }
 
+export const useGetRoomById = (id) => {
+  return useQuery('roomById', () =>fetchById(id));
+}
+
 const fetchMostUsedRooms = async () => {
   const endpoint = `${base_url}/most_used`
   const response = await axios.get(endpoint);
@@ -30,4 +34,16 @@ const fetchAvailableRooms = async (check_in, check_out, adults, kids, rooms) => 
 
   const response = await axios.get(url);
   return response.data;
+}
+
+const fetchById = async (id) => {
+  const endpoint = `http://localhost:3000/rooms/${id}`
+  try {
+    const response = await axios.get(endpoint);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+
 }

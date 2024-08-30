@@ -28,7 +28,7 @@ const SearchRooms = ({ rooms, addToCartProduct }) => {
                     </div>
                     <div className="room-content">
                       <div>
-                        <h2><Link onClick={ClickHandler} to={`/room-single/${room.id}`}>{room.room_type.name}</Link>
+                        <h2><Link onClick={ClickHandler} to={`/app/room-single/${room.id}`}>{room.room_type.name}</Link>
                         </h2>
                       </div>
                       <ul>
