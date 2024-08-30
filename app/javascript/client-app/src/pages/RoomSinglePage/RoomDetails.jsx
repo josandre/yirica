@@ -1,7 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import simg1 from '../../images/room/img-7.jpg'
-import simg2 from '../../images/room/img-8.jpg'
 import rv1 from '../../images/room/r1.jpg'
 import rv2 from '../../images/room/r2.jpg'
 

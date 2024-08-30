@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import Grid from "@mui/material/Grid";
 import SimpleReactValidator from "simple-react-validator";
 import { toast } from "react-toastify";
@@ -19,11 +19,20 @@ const CheckWrap = ({cartList}) => {
         expire_year: '',
     });
 
-
-
-    const [validator] = useState(new SimpleReactValidator({
-        className: 'errorMessage'
+    const validatorRef = useRef(new SimpleReactValidator({
+        className: 'errorMessage',
+        validators: {
+            card_format: {
+                message: 'The card number must be in the format XXXX XXXX XXXX XXXX and cannot start with "0000".',
+                rule: (val) => {
+                    const regex = /^\d{4}\s\d{4}\s\d{4}\s\d{4}$/;
+                    return regex.test(val) && !val.startsWith('0000');
+                }
+            }
+        }
     }));
+
+    const validator = useMemo(() => validatorRef.current, [validatorRef]);
 
     const changeHandler = (e) => {
         let { name, value } = e.target;
@@ -36,8 +45,6 @@ const CheckWrap = ({cartList}) => {
             }
 
             value = value.replace(/(.{4})/g, '$1 ').trim();
-
-            console.log("ASB", value)
         }
 
         if (name === "expire_month") {
@@ -52,13 +59,11 @@ const CheckWrap = ({cartList}) => {
         }));
     };
 
-
     const submitForm = (e) => {
         e.preventDefault();
 
-        validator.showMessages()
-
         console.log("Form Values:", value);
+
         if (validator.allValid()) {
 
             checkoutMutation.mutate(value, {
@@ -132,7 +137,7 @@ const CheckWrap = ({cartList}) => {
                             }}
                             className="formInput radiusNone"
                           />
-                          {validator.message('card_number', value.card_number, 'required|regex:/^\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}$/')}
+                          {validator.message('card_number', value.card_number, 'required|card_format')}
                       </Grid>
                       <Grid item sm={6} xs={12}>
                           <TextField
