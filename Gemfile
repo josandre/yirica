@@ -13,6 +13,8 @@ gem "sqlite3", "~> 1.4"
 
 gem 'rack-cors'
 
+gem 'sidekiq'
+
 gem 'sendgrid-actionmailer'
 
 # Use the Puma web server [https://github.com/puma/puma]

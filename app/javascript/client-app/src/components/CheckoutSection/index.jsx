@@ -35,6 +35,7 @@ const CheckoutSection = ({cartList}) => {
         totalRooms += cartList[i].qty;
     }
 
+    const total = totalPrice(cartList)
     return (
         <Fragment>
             <Grid className="checkoutWrapper section-padding">
@@ -54,7 +55,7 @@ const CheckoutSection = ({cartList}) => {
                                         ))}
                                     </Grid>
                                     <Grid>
-                                        <CheckWrap cartList={cartList}/>
+                                        <CheckWrap cartList={cartList} total={total}/>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -99,7 +100,7 @@ const CheckoutSection = ({cartList}) => {
                                                 <TableRow>
                                                     <TableCell>Total Price</TableCell>
                                                     <TableCell
-                                                      align="right">${totalPrice(cartList)}</TableCell>
+                                                      align="right">${total}</TableCell>
                                                 </TableRow>
 
                                             </TableBody>
