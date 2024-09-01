@@ -31,7 +31,9 @@ class PaymentSuccessJob < ApplicationJob
       total: total,
       refund_price: 100
     )
+
     CheckoutMailer.bill_mail(user, bill, metadata ).deliver_now
+    CheckoutMailer.reservation_mail(user, metadata, reservation).deliver_now
     Rails.logger.info "PaymentSuccessJob finished for User: #{user} at #{Time.current}"
   end
 

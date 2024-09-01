@@ -8,11 +8,13 @@ import './style.scss';
 import {useCheckout} from "../../api/checkout/checkout-service";
 import {useNavigate} from "react-router-dom";
 import { decodeJWT } from "../../utils"
+import BookingSuccessModal from "../BookingSuccesModal/BookingSuccessModal";
 
 
 const CheckWrap = ({cartList, total}) => {
 
     const navigate = useNavigate();
+
     const checkoutMutation = useCheckout()
     const [value, setValue] = useState({
         card_holder: '',
@@ -22,6 +24,7 @@ const CheckWrap = ({cartList, total}) => {
         expire_year: '',
     });
 
+    const [showModal, setShowModal] = useState(false);
     const validatorRef = useRef(new SimpleReactValidator({
         className: 'errorMessage',
         validators: {
@@ -120,6 +123,7 @@ const CheckWrap = ({cartList, total}) => {
                         expire_year: '',
                     });
                     validator.hideMessages();
+                    setShowModal(true);
                     toast.success('Successfully submitted!');
                 },
                 onError: (err) => {
@@ -249,6 +253,7 @@ const CheckWrap = ({cartList, total}) => {
                   </Grid>
               </form>
           </Grid>
+          <BookingSuccessModal show={showModal} onClose={() => setShowModal(false)} />
       </Grid>
     );
 };
