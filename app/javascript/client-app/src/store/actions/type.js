@@ -1,7 +1,7 @@
 //default action
 export const FETCH_PRODUCTS_BEGIN = 'FETCH_PRODUCTS_BEGIN';
 export const RECEIVE_PRODUCTS = 'RECEIVE_PRODUCTS';
-export const FETCH_SINGLE_PRODUCT = 'FETCH_SINGLE_PRODUCT';
+
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const CLEAR_CART = 'CLEAR_CART';

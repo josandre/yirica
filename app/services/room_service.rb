@@ -21,6 +21,10 @@ class RoomService
     })
   end
 
+  def get_room_by_id(room_id)
+    @room_repository.get_room_by_id(room_id)
+  end
+
 
   def get_room_with_details(room_id)
     room = @room_repository.get_room_by_id(room_id)

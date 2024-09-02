@@ -9,12 +9,12 @@ class CheckoutMailer < ApplicationMailer
     end
   end
 
-  def reservation_mail(user, metadata, reservation)
+  def reservation_mail(user, metadata, reservation, search_code)
     @user = user
     @reservation = reservation
     @metadata = metadata
     @state = reservation.reservation_state.state
-    puts "state: #{ @state }"
+    @search_code = search_code
 
     mail(to: @user.email, subject: 'Reservation information') do |format|
       format.html {render layout: false}

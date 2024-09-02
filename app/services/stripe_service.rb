@@ -4,16 +4,17 @@ class StripeService
 
   def initialize
     @user_service = UserService.new
+    @reservation_service = ReservationService.new
   end
 
 
   def payment_intend(user_id, reservation_info, rooms, metadata, total)
     user = @user_service.get_by_id(user_id)
-    puts "total #{total}"
     flattened_metadata = flatten_metadata(metadata)
+
     begin
       @payment_intend = Stripe::PaymentIntent.create({
-                                     amount: total,
+                                     amount: total * 100,
                                      currency: 'usd',
                                      payment_method: 'pm_card_visa',
                                      confirm: true,
@@ -27,7 +28,9 @@ class StripeService
 
 
       if @payment_intend.status == 'succeeded'
-        PaymentSuccessJob.perform_later(user, reservation_info, rooms, metadata, total)
+        search_code = @reservation_service.create_search_code
+        payment_id = @payment_intend.id
+        PaymentSuccessJob.perform_later(user, reservation_info, rooms, metadata, total, search_code, payment_id)
       end
       return @payment_intend
     rescue Stripe::StripeError => e
@@ -46,6 +49,8 @@ class StripeService
     end
     flattened_metadata
   end
+
+
 
 
 end
