@@ -1,5 +1,5 @@
 import {
-  ADD_TO_CART,
+  ADD_TO_CART, CLEAR_CART,
   DECREMENT_QUANTITY,
   INCREMENT_QUANTITY,
   REMOVE_FROM_CART,
@@ -62,6 +62,11 @@ export const cartReducer = (state = init, action) => {
       return {
         cart: state.cart.filter((item) => item.id !== action.product_id),
       };
+
+    case CLEAR_CART:
+      return {
+        cart: []
+      }
 
     case INCREMENT_QUANTITY:
       const inc_productId = action.room.id;

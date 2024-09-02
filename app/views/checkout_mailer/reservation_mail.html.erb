@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 0;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+      }
+
+      .container {
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+          background-color: #081424;
+          padding: 20px;
+          text-align: center;
+          color: #ffffff;
+      }
+
+      .header img {
+          max-width: 100px;
+          margin-bottom: 10px;
+      }
+
+      .header h1 {
+          margin: 0;
+          font-size: 24px;
+      }
+
+      .content {
+          padding: 20px;
+      }
+
+      .content h2 {
+          font-size: 22px;
+          color: #333333;
+      }
+
+      .content p {
+          font-size: 16px;
+          color: #666666;
+          line-height: 1.5;
+      }
+
+      .reservation-details {
+          margin: 20px 0;
+          padding: 10px;
+          background-color: #f8f8f8;
+          border-radius: 8px;
+          font-size: 16px;
+          color: #333333;
+      }
+
+      .reservation-details h3 {
+          margin-top: 0;
+          font-size: 18px;
+          color: #333333;
+      }
+
+      .reservation-details h3 {
+          padding-top: 20px;
+      }
+
+      .room-separator {
+          border-top: 1px solid #e0e0e0;
+          margin: 10px 0;
+      }
+
+      .footer {
+          background-color: #081424;
+          padding: 10px;
+          text-align: center;
+          color: #ffffff;
+          font-size: 14px;
+      }
+
+      .footer a {
+          color: #ffffff;
+          text-decoration: none;
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <%= image_tag 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/logo.png', alt: 'Yiri Ca Logo', style: 'max-width: 100px;' %>
+    <h1>Reservation Information</h1>
+  </div>
+  <div class="content">
+    <h2>Hello <%= @user.name %> <%= @user.last_name %>,</h2>
+    <p>Thank you for your reservation at Yiri Ca. Below are the details of your reservation:</p>
+
+    <div class="reservation-details">
+      <h3 >Reservation Details</h3>
+      <p><strong>Check In:</strong> <%= @reservation.checking_date %></p>
+      <p><strong>Check Out:</strong> <%= @reservation.checkout_date %></p>
+      <p><strong>State:</strong> <%= @state %></p>
+      <p><strong>Is refundable:</strong> <%= @reservation.is_refunded ? 'Yes' : 'No' %></p>
+
+      <h3>Room Details</h3>
+      <% @metadata.each do |room| %>
+        <p><strong>Room Type:</strong> <%= room[:roomType] %></p>
+        <p><strong>Rooms amount:</strong> <%= room[:rooms] %></p>
+        <p><strong>Adults:</strong> <%= room[:adults] %></p>
+        <p><strong>Kids:</strong> <%= room[:kids] %></p>
+        <div class="room-separator"></div>
+      <% end %>
+    </div>
+
+    <p>
+      If you have any questions or concerns regarding your reservation, please do not hesitate to contact us.
+    </p>
+
+    <p>
+      Warm regards,<br>
+      The Yiri Ca Team
+    </p>
+  </div>
+  <div class="footer">
+    <p>&copy; 2024 Yiri Ca. All rights reserved.</p>
+    <p>
+      <a href="https://www.yirica.com">Visit our website</a> |
+      <a href="mailto:support@yirica.com">Contact Support</a>
+    </p>
+  </div>
+</div>
+</body>
+</html>

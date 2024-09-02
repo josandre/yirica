@@ -133,7 +133,8 @@ const SearchSection = (props) => {
                                               style={{
                                                   backgroundColor: isButtonEnabled ? '#081424' : 'gray',
                                                   cursor: isButtonEnabled ? 'pointer' : 'not-allowed',
-                                                  color: 'white'
+                                                  color: 'white',
+                                                  marginTop: 0
                                               }}>
                                             Check Availability
                                         </Link>

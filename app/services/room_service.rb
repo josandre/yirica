@@ -20,4 +20,19 @@ class RoomService
       image_rooms: {only:[:image], where: {is_principal: true}},
     })
   end
+
+
+  def get_room_with_details(room_id)
+    room = @room_repository.get_room_by_id(room_id)
+    {
+      room: room,
+      room_type: room.room_type,
+      image_rooms: room.image_rooms.select(:id, :image, :is_principal),
+      amenities: room.room_type.amenities.select(:id, :name),
+      services: room.room_type.services.select(:id, :name)
+    }
+  rescue ActiveRecord::RecordNotFound
+    { error: 'Room not found' }.to_json
+  end
+
 end

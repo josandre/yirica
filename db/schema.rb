@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_26_004643) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_30_181957) do
+  create_table "amenities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "bills", force: :cascade do |t|
     t.decimal "discount"
     t.decimal "taxes"
@@ -110,6 +116,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_26_004643) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "room_type_amenities", force: :cascade do |t|
+    t.integer "room_type_id", null: false
+    t.integer "amenity_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amenity_id"], name: "index_room_type_amenities_on_amenity_id"
+    t.index ["room_type_id"], name: "index_room_type_amenities_on_room_type_id"
+  end
+
+  create_table "room_type_services", force: :cascade do |t|
+    t.integer "room_type_id", null: false
+    t.integer "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_type_id"], name: "index_room_type_services_on_room_type_id"
+    t.index ["service_id"], name: "index_room_type_services_on_service_id"
+  end
+
   create_table "room_types", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -134,6 +158,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_26_004643) do
     t.integer "bathrooms"
     t.integer "beds"
     t.index ["room_type_id"], name: "index_rooms_on_room_type_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -168,6 +198,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_26_004643) do
   add_foreign_key "response_cancels", "cancel_requests"
   add_foreign_key "responses", "comments"
   add_foreign_key "responses", "users"
+  add_foreign_key "room_type_amenities", "amenities"
+  add_foreign_key "room_type_amenities", "room_types"
+  add_foreign_key "room_type_services", "room_types"
+  add_foreign_key "room_type_services", "services"
   add_foreign_key "rooms", "room_types"
   add_foreign_key "users", "roles"
 end

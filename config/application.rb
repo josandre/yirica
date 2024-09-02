@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require "active_job/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :generated, :development, or :production.
@@ -12,6 +13,7 @@ module HotelHub
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
     config.api_only = true
+    config.active_job.queue_adapter = :sidekiq
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

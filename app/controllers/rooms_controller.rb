@@ -1,8 +1,8 @@
 class RoomsController < ApplicationController
-  load_and_authorize_resource except: [:most_used, :search]
+  load_and_authorize_resource except: [:most_used, :search, :show]
   before_action :set_room, only: %i[ show edit update destroy ]
   before_action :initialize_room_service
-  skip_before_action :authenticate_request, only: [:most_used, :search]
+  skip_before_action :authenticate_request, only: [:most_used, :search, :show]
 
 
   def most_used
@@ -31,27 +31,21 @@ class RoomsController < ApplicationController
     end
   end
 
-
-
   def index
     @rooms = Room.all
   end
 
 
   def show
-    render json: @room
-  end
+    json_response = @room_service.get_room_with_details(params[:id])
 
-  # POST /rooms or /rooms.json
-  def create
-    @room = Room.new(room_params)
-
-    if @room.save
-      render :show, status: :created, location: @room
+    if json_response[:error]
+      render json: json_response, status: :not_found
     else
-      render json: @room.errors, status: :unprocessable_entity
+      render json: json_response, status: :ok
     end
   end
+
 
   # PATCH/PUT /rooms/1 or /rooms/1.json
   def update

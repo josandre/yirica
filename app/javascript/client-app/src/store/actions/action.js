@@ -18,7 +18,6 @@ export const receiveProducts = (products) => ({
 });
 
 export const addToCart = (room, qty, color, size) => (dispatch) => {
-  console.log("entra", room, qty, color, size)
   toast.success("Room Added to Cart");
   dispatch({
     type: types.ADD_TO_CART,
@@ -37,44 +36,11 @@ export const removeFromCart = (product_id) => (dispatch) => {
   });
 };
 
-export const incrementQuantity = (product_id) => (dispatch) => {
+export const clearCart = () => (dispatch) => {
   dispatch({
-    type: types.INCREMENT_QUANTITY,
-    product_id,
-  });
-};
+    type: types.CLEAR_CART,
+  })
+}
 
-export const decrementQuantity = (product_id) => (dispatch) => {
-  dispatch({
-    type: types.DECREMENT_QUANTITY,
-    product_id,
-  });
-};
 
-export const addToWishList = (product) => (dispatch) => {
-  dispatch({
-    type: ADD_TO_WISHLIST,
-    product,
-  });
-};
 
-export const removeFromWishList = (id) => (dispatch) => {
-  toast.error("Item removed from WishList");
-  dispatch({
-    type: REMOVE_FROM_WISHLIST,
-    id,
-  });
-};
-
-export const addToCompareList = (product) => (dispatch) => {
-  dispatch({
-    type: ADD_TO_COMPARE,
-    product,
-  });
-};
-export const removeFromCompareList = (product) => (dispatch) => {
-  dispatch({
-    type: REMOVE_FROM_COMPARE_LIST,
-    product,
-  });
-};

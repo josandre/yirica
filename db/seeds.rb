@@ -3,6 +3,10 @@ ReservationRoom.destroy_all
 Reservation.destroy_all
 ReservationState.destroy_all
 User.destroy_all
+RoomTypeAmenity.destroy_all
+RoomTypeService.destroy_all
+Amenity.destroy_all
+Service.destroy_all
 Room.destroy_all
 
 
@@ -12,11 +16,38 @@ user_client_1 = User.create({name: 'Jocselyn', last_name: 'Aguilar', password: '
 user_client_2 = User.create({name: 'Andrea', last_name: 'Chinchilla', password: 'User1234!', phone: '63399135', role_id: client_role.id, email: 'jaguilarc@ucenfotec.ac.cr' })
 puts 'client and roles created'
 
-
 deluxe = RoomType.create(name: 'Deluxe',description: 'A deluxe room with all amenities',max_people: '4',kids_accepted: true)
 suite = RoomType.create(name: 'Suite',description: 'A luxurious suite with multiple rooms',max_people: '6',kids_accepted: true)
 standard = RoomType.create(name: 'Standard',description: 'A standard room with basic amenities',max_people: '2',kids_accepted: false)
 puts 'room types created'
+
+amenities = [
+  'Free Wi-Fi', 'Air Conditioning', 'Flat-screen TV', 'Mini Fridge', 'Coffee Maker',
+  'Room Safe', 'Iron & Ironing Board', 'Hairdryer', 'Private Balcony', 'In-room Dining',
+  'Complimentary Toiletries', 'Bathrobe & Slippers', 'Blackout Curtains', 'Desk & Chair',
+  'Telephone', 'Alarm Clock', 'Wardrobe or Closet', 'Seating Area', 'Soundproofing',
+  'Heating'
+].map { |name| Amenity.create(name: name) }
+
+services = [
+  'Room Service', 'Daily Housekeeping', 'Laundry Service', '24-hour Reception',
+  'Concierge Service', 'Airport Shuttle', 'Valet Parking', 'Fitness Center',
+  'Spa Services', 'Massage Services', 'Swimming Pool Access', 'Business Center',
+  'Conference Room', 'Babysitting Service', 'Pet-friendly Rooms', 'Restaurant on Site',
+  'Bar/Lounge Access', 'Free Breakfast', 'High-speed Internet Access', 'Wake-up Service'
+].map { |name| Service.create(name: name) }
+
+
+def assign_random_amenities_and_services(room_type, amenities, services)
+  room_type.amenities << amenities.sample(7)
+  room_type.services << services.sample(7)
+end
+
+assign_random_amenities_and_services(deluxe, amenities, services)
+assign_random_amenities_and_services(suite, amenities, services)
+assign_random_amenities_and_services(standard, amenities, services)
+
+puts 'Amenities and Services associated with Room Types'
 
 room_1 = Room.create(
   usage_amount: 20,

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  resources :image_rooms
 
+  resources :image_rooms
+  resources :checkout, only: [:create]
   devise_for :users, path: '', path_names: {
     sign_in: 'login',
     sign_out: 'logout',

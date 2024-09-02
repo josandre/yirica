@@ -2,7 +2,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   skip_before_action :verify_authenticity_token, if: -> { request.format.json? }
   respond_to :json
 
-
   def create
     build_resource(user_params)
     if resource.save
@@ -10,7 +9,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
     respond_with resource
   end
-
 
   private
   def respond_with(current_user, _opts = {})

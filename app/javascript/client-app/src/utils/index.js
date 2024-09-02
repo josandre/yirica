@@ -12,6 +12,21 @@ function totalPrice(items) {
     }, 0);
 }
 
+function decodeJWT(token){
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error('Failed to parse JWT:', e);
+        return null;
+    }
+}
+
 function totalAdults(adults, price){
     const adultsPrice = parseInt(price);
     return adultsPrice * adults
@@ -23,34 +38,24 @@ function totalKids(kids, price){
 }
 
 function totalByRoom(adultsPrice, kidsPrice, qty ){
-    return (adultsPrice + kidsPrice) * qty
+    console.log("kids", kidsPrice)
+    console.log("total, ", (adultsPrice + kidsPrice) * qty)
+
+    if(kidsPrice === undefined){
+        return adultsPrice * qty;
+    }
+
+    return (adultsPrice + kidsPrice) * qty;
+
+
 }
 
-function isWishListed(productId, wishList) {
-    return wishList.findIndex(product => product.id === productId) !== -1;
-}
 
-function getCompareList(items) {
-    return items.slice(0, 4);
-}
-
-function searchFilter(row, search) {
-    return row.title.toLowerCase().includes(search.toLowerCase()) || !search;
-}
-
-// short helper function
 function checkLengNull(data) {
     if (data !== null) {
         return data.length > 0;
     }
     return false;
-}
-
-function isEquals(a, b) {
-    if (a !== null && b !== null) {
-        return a.toLowerCase() === b.toLowerCase();
-    }
-    return a === b
 }
 
 function minValueOne(qty) {
@@ -134,19 +139,16 @@ export {
     getFlashProducts,
     getFeaturedProducts,
     totalPrice,
-    isWishListed,
     filterProductByCategory,
     filterProductByPrice,
     filterProductByColor,
     filterProductBySize,
-    isEquals,
     minValueOne,
-    getCompareList,
-    searchFilter,
     objectToQueryParams,
     queryParamsToObject,
     formatDateToYYYYMMDD,
     totalAdults,
     totalKids,
-    totalByRoom
+    totalByRoom,
+    decodeJWT
 };

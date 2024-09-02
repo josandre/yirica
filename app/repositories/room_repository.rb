@@ -26,6 +26,10 @@ class RoomRepository
     available_rooms
   end
 
+  def get_room_by_id(id)
+    Room.find(id)
+  end
+
 
   private
   def available_between(check_in, check_out)
