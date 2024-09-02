@@ -9,9 +9,11 @@ import {useCheckout} from "../../api/checkout/checkout-service";
 import {useNavigate} from "react-router-dom";
 import { decodeJWT } from "../../utils"
 import BookingSuccessModal from "../BookingSuccesModal/BookingSuccessModal";
+import { clearCart } from "../../store/actions/action";
+import {connect} from "react-redux";
 
 
-const CheckWrap = ({cartList, total}) => {
+const CheckWrap = ({cartList, total, clearCart}) => {
 
     const navigate = useNavigate();
 
@@ -40,7 +42,7 @@ const CheckWrap = ({cartList, total}) => {
 
     const validator = useMemo(() => validatorRef.current, [validatorRef]);
 
-    const reservationData = cartList[0].reservation;
+    const reservationData = cartList.length > 0 ? cartList[0].reservation : undefined;
     let roomsIds = [];
     let metadataObjects = [];
 
@@ -122,7 +124,9 @@ const CheckWrap = ({cartList, total}) => {
                         expire_month: '',
                         expire_year: '',
                     });
+
                     validator.hideMessages();
+                    clearCart()
                     setShowModal(true);
                     toast.success('Successfully submitted!');
                 },
@@ -258,4 +262,4 @@ const CheckWrap = ({cartList, total}) => {
     );
 };
 
-export default CheckWrap;
+export default connect(null, { clearCart })(CheckWrap);
