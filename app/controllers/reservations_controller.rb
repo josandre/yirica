@@ -1,13 +1,52 @@
 class ReservationsController < ApplicationController
-  before_action :set_reservation, only: %i[ show edit update destroy ]
+  before_action :set_reservation, only: %i[ edit update destroy ]
+  before_action :initialize_reservation_service
 
   # GET /reservations or /reservations.json
   def index
-    @reservations = Reservation.all
+    begin
+      @reservations = @reservation_service.get_reservations
+
+      if @reservations.present?
+        render json: @reservations.as_json(
+          only: [:id, :checking_date, :checkout_date],
+          include: { reservation_room: { include: :room }, bill: {}, reservation_state: {} }
+        )
+      else
+        render json: { error: 'No reservations found for the user' }, status: :not_found
+      end
+
+    rescue StandardError => e
+      render json: { error: 'An unexpected error occurred', details: e.message }, status: :internal_server_error
+    end
+
+
   end
 
   # GET /reservations/1 or /reservations/1.json
   def show
+    puts "entra"
+    search_code = params[:id]
+
+    begin
+      @reservations = @reservation_service.get_reservations_by_code(search_code)
+
+      if @reservations.present?
+        render json: @reservations.as_json(
+          only: [:id, :checking_date, :checkout_date],
+          include: { reservation_room: { include: :room }, bill: {}, reservation_state: {} }
+        )
+      else
+        render json: { error: 'No reservations found for the user' }, status: :not_found
+      end
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e.message }, status: :not_found
+
+    rescue StandardError => e
+      render json: { error: 'An unexpected error occurred', details: e.message }, status: :internal_server_error
+    end
+
   end
 
   # GET /reservations/new
@@ -66,5 +105,9 @@ class ReservationsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def reservation_params
       params.require(:reservation).permit(:checking_date, :checkout_date, :user_notes, :is_refunded, :reservation_state_id)
+    end
+
+    def initialize_reservation_service
+      @reservation_service = ReservationService.new
     end
 end

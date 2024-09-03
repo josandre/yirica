@@ -1,11 +1,20 @@
 import React, {useEffect, useState} from 'react'
 import "react-datepicker/dist/react-datepicker.css";
-import {formatDateToYYYYMMDD, objectToQueryParams} from "../../utils";
 import "./styles.css"
+import {decodeJWT} from "../../utils";
 
 
 
 const SearchBar = () => {
+
+  const token = localStorage.getItem('token');
+
+  if(token){
+    const user_id = decodeJWT(token)
+  }
+
+
+
 
   const SubmitHandler = () => {
     console.log("hello")

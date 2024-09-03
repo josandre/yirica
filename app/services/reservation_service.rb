@@ -9,15 +9,23 @@ class ReservationService
     @reservation_state_service = ReservationStateService.new
   end
 
-  def get_reservations_by_user(user_id)
-    reservations = @reservation_repository.get_reservations_by_user(user_id)
+  def get_reservations
+    @reservation_repository.get_reservations
+  end
+
+  def get_reservations_by_code(search_code)
+    @reservation_repository.get_reservation_by_code(search_code)
+  end
+
+  def get_reservations_by_user(user)
+    reservations = @reservation_repository.get_reservations_by_user(user)
 
     reservations.each do |reservation|
       puts "Reservation ID: #{reservation.id}"
-      puts "Check-in Date: #{reservation.checkingDate}"
-      puts "Check-out Date: #{reservation.checkoutDate}"
-      puts "User Notes: #{reservation.userNotes}"
-      puts "Is Refunded: #{reservation.isRefunded}"
+      puts "Check-in Date: #{reservation.checking_date}"
+      puts "Check-out Date: #{reservation.checkout_date}"
+      puts "User Notes: #{reservation.user_notes}"
+      puts "Is Refunded: #{reservation.is_refunded}"
       puts "Reservation State: #{reservation.reservation_state.state}"
 
       if reservation.bill
@@ -27,15 +35,24 @@ class ReservationService
         puts "Taxes: #{reservation.bill.taxes}"
       end
 
-      reservation.reservation_rooms.each do |reservation_room|
-        room = reservation_room.room
-        puts "Room ID: #{room.id}"
-        puts "Room Type: #{room.roomType}"
-        puts "Room Number: #{room.roomNumber}"
-      end
+      # reservation.reservation_rooms.each do |reservation_room|
+      #   room = reservation_room.room
+      #   puts "Room ID: #{room.id}"
+      #   puts "Room Type: #{room.room_type}"
+      #   puts "Room Number: #{room.number}"
+      #   puts "Room Adult price: #{room.adult_price}"
+      #   puts "Room Kids price: #{room.kids_price}"
+      #   puts "Room location: #{room.location}"
+      # end
 
       puts "-----------------------------------"
     end
+
+    reservations
+  end
+
+  def get_user_reservation_by_id(user, reservation_id)
+    @reservation_repository.get_user_reservation_by_id(user, reservation_id)
   end
 
 

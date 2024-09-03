@@ -21,6 +21,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :users do
+    resources :reservations, only: [:index, :show], controller: 'user_reservations'
+  end
+
+
   resources :response_cancels
   resources :cancel_requests
   resources :bills
