@@ -31,6 +31,7 @@ const Header = (props) => {
   const ClickHandler = () => {
       window.scrollTo(10, 0);
   }
+
   const { carts } = props;
     return (
       <header id="header" className={props.topbarBlock}>
@@ -56,41 +57,21 @@ const Header = (props) => {
                     <ul className="nav navbar-nav mb-2 mb-lg-0">
                       <li><Link onClick={ClickHandler} to="/app">Home</Link></li>
                       <li><Link onClick={ClickHandler} to="/about">About</Link></li>
-
                       <li>
                         {isLoggedIn ? (
                           <Link onClick={handleSignOut} to="/app">Sign out</Link>
                         ): (
                           <Link onClick={ClickHandler} to="/app/sign-in">Sign in</Link>
                         )}
-
                       </li>
-
                       {!isLoggedIn && (
                         <li className="menu-item-has-children">
                           <Link onClick={ClickHandler} to="/app/sign-up">Sign up</Link>
                         </li>
                       )}
 
-                      <li className="menu-item-has-children">
-                        <Link onClick={ClickHandler} to="/blog">Blog</Link>
-                        <ul className="sub-menu">
-                          <li><Link onClick={ClickHandler} to="/blog">Blog right sidebar</Link></li>
-                          <li><Link onClick={ClickHandler} to="/blog-left-sidebar">Blog left sidebar</Link></li>
-                          <li><Link onClick={ClickHandler} to="/blog-fullwidth">Blog fullwidth</Link></li>
-                          <li className="menu-item-has-children">
-                            <Link onClick={ClickHandler} to="/">Blog details</Link>
-                            <ul className="sub-menu">
-                              <li><Link onClick={ClickHandler} to="/blog-single/1">Blog details right sidebar</Link>
-                              </li>
-                              <li><Link onClick={ClickHandler} to="/blog-single-left-sidebar/1">Blog details left
-                                sidebar</Link></li>
-                              <li><Link onClick={ClickHandler} to="/blog-single-fullwidth/1">Blog details
-                                fullwidth</Link></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
+                      <li><Link onClick={ClickHandler} to="/app/reservations">Reservations</Link></li>
+
                       <li className="menu-item-has-children">
                         <Link onClick={ClickHandler} to="/">Pages</Link>
                         <ul className="sub-menu">
