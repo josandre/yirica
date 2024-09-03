@@ -24,7 +24,7 @@ class ReservationRepository
     Reservation.find_or_initialize_by(search_code: search_code)
   end
 
-  def assign_atributes_to_reservation(reservation, reservation_info, user, default_reservation_state, payment_id)
+  def assign_atributes_to_reservation(reservation, reservation_info, user, default_reservation_state, payment_id, search_code)
     reservation.assign_attributes(
       checking_date: reservation_info[:checkIn],
       checkout_date: reservation_info[:checkOut],
@@ -32,7 +32,8 @@ class ReservationRepository
       user_id: user.id,
       reservation_state_id: default_reservation_state.id,
       is_refunded: true,
-      payment_id: payment_id
+      payment_id: payment_id,
+      search_code: search_code,
     )
     reservation.save!
   end

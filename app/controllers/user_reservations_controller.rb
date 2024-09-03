@@ -9,7 +9,6 @@
 
         if @reservations.present?
           render json: @reservations.as_json(
-            only: [:id, :checking_date, :checkout_date],
             include: { reservation_room: { include: :room }, bill: {}, reservation_state: {} }
           )
         else
@@ -50,6 +49,7 @@
 
     private
       def set_user
+        puts "user #{params[:user_id]}"
         @user = User.find(params[:user_id])
       end
 

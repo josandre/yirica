@@ -637,6 +637,44 @@
     }
 }
 
+
+
+
+.destination-content .sub {
+    margin-right: 10px;
+}
+
+.status.active {
+    color: green;
+    font-weight: bold;
+}
+
+.status.canceled {
+    color: red;
+    font-weight: bold;
+}
+
+.status.pending-payment {
+    color: orange;
+    font-weight: bold;
+}
+
+.destination-content .status {
+    font-weight: bold;
+    color: green;
+}
+
+.destination-content .reservation-header {
+    display: flex;
+    justify-content: space-between; /* Align items to the left and right */
+    align-items: center;
+    margin-bottom: 10px; /* Adjust spacing as needed */
+}
+
+.date-reservation-title{
+    font-size: 20px !important;
+}
+
 /* 3.5 wpo-fun-fact-section */
 
 .wpo-fun-fact-section,

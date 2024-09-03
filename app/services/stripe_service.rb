@@ -12,6 +12,8 @@ class StripeService
     user = @user_service.get_by_id(user_id)
     flattened_metadata = flatten_metadata(metadata)
 
+    puts "metadata #{metadata}"
+
     begin
       @payment_intend = Stripe::PaymentIntent.create({
                                      amount: total * 100,

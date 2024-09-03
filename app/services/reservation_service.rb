@@ -18,37 +18,7 @@ class ReservationService
   end
 
   def get_reservations_by_user(user)
-    reservations = @reservation_repository.get_reservations_by_user(user)
-
-    reservations.each do |reservation|
-      puts "Reservation ID: #{reservation.id}"
-      puts "Check-in Date: #{reservation.checking_date}"
-      puts "Check-out Date: #{reservation.checkout_date}"
-      puts "User Notes: #{reservation.user_notes}"
-      puts "Is Refunded: #{reservation.is_refunded}"
-      puts "Reservation State: #{reservation.reservation_state.state}"
-
-      if reservation.bill
-        puts "Bill ID: #{reservation.bill.id}"
-        puts "Total: #{reservation.bill.total}"
-        puts "Discount: #{reservation.bill.discount}"
-        puts "Taxes: #{reservation.bill.taxes}"
-      end
-
-      # reservation.reservation_rooms.each do |reservation_room|
-      #   room = reservation_room.room
-      #   puts "Room ID: #{room.id}"
-      #   puts "Room Type: #{room.room_type}"
-      #   puts "Room Number: #{room.number}"
-      #   puts "Room Adult price: #{room.adult_price}"
-      #   puts "Room Kids price: #{room.kids_price}"
-      #   puts "Room location: #{room.location}"
-      # end
-
-      puts "-----------------------------------"
-    end
-
-    reservations
+    @reservation_repository.get_reservations_by_user(user)
   end
 
   def get_user_reservation_by_id(user, reservation_id)
@@ -62,7 +32,7 @@ class ReservationService
     if reservation.persisted?
       Rails.logger.info "Reservation already exists with search_code: #{search_code}. Skipping creation."
     else
-      reservation = @reservation_repository.assign_atributes_to_reservation(reservation, reservation_info, user, default_reservation_state, payment_id)
+      reservation = @reservation_repository.assign_atributes_to_reservation(reservation, reservation_info, user, default_reservation_state, payment_id, search_code)
       Rails.logger.info "Reservation created with search_code: #{search_code}"
     end
 
