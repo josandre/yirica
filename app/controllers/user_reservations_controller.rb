@@ -9,7 +9,17 @@
 
         if @reservations.present?
           render json: @reservations.as_json(
-            include: { reservation_room: { include: :room }, bill: {}, reservation_state: {} }
+            include: {
+              reservation_room: {
+                include: {
+                  room: {
+                    include: :room_type
+                  }
+                }
+              },
+              bill: {},
+              reservation_state: {}
+            }
           )
         else
           render json: { error: 'No reservations found for the user' }, status: :not_found

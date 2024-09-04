@@ -1,34 +1,55 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
-import "./styles.css"
-import {decodeJWT} from "../../utils";
-import {useMostUsedRooms} from "../../api/rooms/room-service";
-import {useGetReservationByUser} from "../../api/reservations/reservation-service";
+import "./styles.css";
+import { decodeJWT } from "../../utils";
+import { useGetReservationByUser } from "../../api/reservations/reservation-service";
 import ReservationList from "../ReservationList/ReservationList";
 
 
-
 const SearchBar = () => {
-
   const token = localStorage.getItem('token');
 
-  let reservationsList = []
-  if(token){
-    const token_decoded = decodeJWT(token)
-    const user_id = token_decoded.user_id
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredReservations, setFilteredReservations] = useState([]);
+
+  let reservationsList = [];
+  if (token) {
+    const token_decoded = decodeJWT(token);
+    const user_id = token_decoded.user_id;
     const { data: reservations, error, isLoading } = useGetReservationByUser(user_id, token);
     reservationsList = reservations;
+
+    useEffect(() => {
+      if (reservations) {
+        setFilteredReservations(reservations);
+      }
+    }, [reservations]);
 
     if (isLoading || !reservations) return <div>Loading...</div>;
     if (error) return <div>Error loading reservations</div>;
   }
 
+  console.log(reservationsList);
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+    const filtered = reservationsList.filter((reservation) =>
+      reservation.search_code &&
+      reservation.search_code.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredReservations(filtered);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const filtered = reservationsList.filter((reservation) =>
+      reservation.search_code &&
+      reservation.search_code.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredReservations(filtered);
+  };
 
 
-
-  const SubmitHandler = () => {
-    console.log("hello")
-  }
 
 
   return (
@@ -38,12 +59,14 @@ const SearchBar = () => {
           <div className="col-lg-12">
             <div className="wpo-select-wrap">
               <div className="wpo-select-area">
-                <form onSubmit={SubmitHandler}>
+                <form onSubmit={handleSubmit}>
                   <div className="search-container">
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Search here..."
+                      placeholder="Search here by reservation code..."
+                      value={searchQuery}
+                      onChange={handleSearchInputChange}
                     />
                     <button type="submit">
                       <i className="fi flaticon-search"></i>
@@ -51,17 +74,13 @@ const SearchBar = () => {
                   </div>
                 </form>
               </div>
-
             </div>
           </div>
         </div>
-        <ReservationList reservations={reservationsList}/>
+        <ReservationList reservations={filteredReservations} />
       </div>
     </div>
-
-  )
-}
-
+  );
+};
 
 export default SearchBar;
-

@@ -1,77 +1,73 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 import SectionTitleS2 from "../SectionTitleS2";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const options = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+  const options = { day: '2-digit', month: 'short', year: 'numeric' };
 
   const parts = date.toLocaleDateString('en-US', options).replace(/,/g, '').split(' ');
 
-  // Format: Fri-Sep20-2024
-  return `${parts[0]}-${parts[1]}${parts[2]}-${parts[3]}`;
+  return `${parts[0]} ${parts[1]}  ${parts[2]}`;
 };
 
 
+const ReservationList = ({ reservations }) => {
 
-const ReservationList = ({reservations}) => {
-  console.log("reservations", reservations);
-
-  const ClickHandler = () => {
-    window.scrollTo(10, 0);
-  }
+  const rowClass = reservations.length === 1 ? 'row justify-content-center' : 'row';
 
   return (
-    <div className={`wpo-destination-area `}>
+    <div className={`wpo-destination-area`}>
       <div className="container">
-        <SectionTitleS2 MainTitle={''} link={'/destination'}/>
+        <SectionTitleS2 MainTitle={''} link={'/destination'} />
         <div className="destination-wrap">
-          <div className="row">
-
+          <div className={rowClass}>
             {reservations.map((reservation, index) => (
-              <div className="col-lg-4 col-md-6 col-12">
+              <div className="col-lg-4 col-md-6 col-12" key={reservation.id}>
                 <div className="destination-item">
                   <div className="destination-img">
-                    {/*<img  alt="test"/>*/}
+
                   </div>
                   <div className="destination-content">
                     <div className="reservation-header">
-                        <span className="sub">
-                          {reservation.search_code || "No code"}
-                        </span>
-                          <span className={`status ${reservation.reservation_state.state.toLowerCase().replace(/\s+/g, '-')}`}>
-                          {reservation.reservation_state.state}
-                        </span>
+                      <span className="sub">
+                        {reservation.search_code || "No code"}
+                      </span>
+                      <span className={`status ${reservation.reservation_state.state.toLowerCase().replace(/\s+/g, '-')}`}>
+                        {reservation.reservation_state.state}
+                      </span>
                     </div>
-
-                    <h2 className='date-reservation-title'>
-                      {formatDate(reservation.checking_date)} to {formatDate(reservation.checkout_date)}
+                    <h2 className="date-reservation-title">
+                      {formatDate(reservation.checking_date)} - {formatDate(reservation.checkout_date)}
                     </h2>
-                    <div className="destination-bottom">
-                      <p>$00 Per Night</p>
-                      <div className="destination-bottom-right">
-                        <ul>
-                          <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                          <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                          <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                          <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                          <li><span><i className="fa fa-star" aria-hidden="true"></i></span></li>
-                        </ul>
-                        <small>4.5</small>
+
+                    {reservation.reservation_room.map((reservationRoom, roomIndex) => (
+                      <div className="destination-bottom" key={roomIndex}>
+                        <div className="room-details">
+                          {/* Room Type */}
+                          <h3 className="room-type">
+                            <u>{reservationRoom.room.room_type.name}</u>
+                          </h3>
+
+                          {/* Capacity and Children Accepted */}
+                          <p className="room-capacity">
+                            Capacity <strong>{reservationRoom.room.room_type.max_people}</strong>
+                            <span className="children-accepted">
+          {reservationRoom.room.room_type.kids_accepted ? 'Children accepted' : 'Children not accepted'}
+        </span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    ))}
+
                   </div>
                 </div>
               </div>
             ))}
-
           </div>
         </div>
       </div>
     </div>
-
-  )
-
-}
+  );
+};
 
 export default ReservationList;
