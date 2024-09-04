@@ -1,56 +1,97 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import "./styles.css";
 import { decodeJWT } from "../../utils";
-import { useGetReservationByUser } from "../../api/reservations/reservation-service";
+import {useGetReservationBySearchCode, useGetReservationByUser} from "../../api/reservations/reservation-service";
 import ReservationList from "../ReservationList/ReservationList";
 
 
 const SearchBar = () => {
   const token = localStorage.getItem('token');
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchCode, setSearchCode] = useState('');
+  const [manualSearch, setManualSearch] = useState(false);
+  const [searched, setSearched] = useState(false);
+  const [allReservations, setAllReservations] = useState([]);
   const [filteredReservations, setFilteredReservations] = useState([]);
 
-  let reservationsList = [];
-  if (token) {
-    const token_decoded = decodeJWT(token);
-    const user_id = token_decoded.user_id;
-    const { data: reservations, error, isLoading } = useGetReservationByUser(user_id, token);
-    reservationsList = reservations;
+  let userId = useMemo(() => {
+    if(!token) {
+      return undefined
+    }
 
-    useEffect(() => {
-      if (reservations) {
-        setFilteredReservations(reservations);
-      }
-    }, [reservations]);
+    const decoded_token = decodeJWT(token);
 
-    if (isLoading || !reservations) return <div>Loading...</div>;
-    if (error) return <div>Error loading reservations</div>;
-  }
+    return decoded_token.user_id
+  }, [token]);
 
-  console.log(reservationsList);
+  let isUserLoggedIn = useMemo(() => userId !== undefined, [userId])
+
+  const { data: reservation, error: searchByCodeError, isLoading: searchByCodeLoading } = useGetReservationBySearchCode(searchCode, {
+    enabled: !isUserLoggedIn && manualSearch,
+    onError: (err) => {
+      setManualSearch(false);
+      setSearched(true);
+      setFilteredReservations([]);
+    },
+    retry: () => false
+  })
+
+  const { data: reservations, error, isLoading } = useGetReservationByUser(userId, token, {
+    enabled: isUserLoggedIn
+  });
+
+
+  useEffect(() => {
+    if (isUserLoggedIn && reservations) {
+      setAllReservations(reservations ?? [])
+      setFilteredReservations(reservations);
+    }
+    else if(!isUserLoggedIn && reservation) {
+      const reservationFound = []
+      reservationFound.push(reservation)
+      setManualSearch(false)
+      setSearched(true);
+      setFilteredReservations(reservationFound);
+    }
+
+  }, [reservations, reservation]);
+
   const handleSearchInputChange = (e) => {
-    setSearchQuery(e.target.value);
-    const filtered = reservationsList.filter((reservation) =>
-      reservation.search_code &&
-      reservation.search_code.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setFilteredReservations(filtered);
+    const value = e.target.value;
+
+    console.log(value)
+    if(isUserLoggedIn) {
+      setFilteredReservations(allReservations.filter(reservation => {
+        return reservation.search_code?.includes(value)
+      }));
+    }
+
+    setSearchCode(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const filtered = reservationsList.filter((reservation) =>
-      reservation.search_code &&
-      reservation.search_code.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredReservations(filtered);
+    if (isUserLoggedIn) {
+      const filtered = allReservations.filter((reservation) =>
+        reservation.search_code &&
+        reservation.search_code.toLowerCase().includes(searchCode.toLowerCase())
+      );
+
+      setFilteredReservations(filtered);
+    }else{
+      setManualSearch(true);
+    }
   };
 
+  if (isLoading || searchByCodeLoading) {
+    return <div>Loading...</div>;
+  }
 
-
+  if (error || searchByCodeLoading) {
+    return <div>Error loading reservations</div>;
+  }
 
   return (
     <div className="wpo-select-section">
@@ -65,7 +106,7 @@ const SearchBar = () => {
                       type="text"
                       className="form-control"
                       placeholder="Search here by reservation code..."
-                      value={searchQuery}
+                      value={searchCode}
                       onChange={handleSearchInputChange}
                     />
                     <button type="submit">
@@ -77,7 +118,7 @@ const SearchBar = () => {
             </div>
           </div>
         </div>
-        <ReservationList reservations={filteredReservations} />
+        <ReservationList reservations={filteredReservations} isUserLogged={isUserLoggedIn} manualSearch={manualSearch || searched} />
       </div>
     </div>
   );

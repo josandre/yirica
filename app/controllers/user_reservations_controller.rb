@@ -6,7 +6,6 @@
     def index
       begin
         @reservations = @reservation_service.get_reservations_by_user(@user)
-
         if @reservations.present?
           render json: @reservations.as_json(
             include: {

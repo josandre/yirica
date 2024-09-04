@@ -1,7 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: %i[ edit update destroy ]
   before_action :initialize_reservation_service
-
+  skip_before_action :authenticate_request, only: [:show]
   # GET /reservations or /reservations.json
   def index
     begin
@@ -25,7 +25,6 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/1 or /reservations/1.json
   def show
-    puts "entra"
     search_code = params[:id]
 
     begin
@@ -33,8 +32,17 @@ class ReservationsController < ApplicationController
 
       if @reservations.present?
         render json: @reservations.as_json(
-          only: [:id, :checking_date, :checkout_date],
-          include: { reservation_room: { include: :room }, bill: {}, reservation_state: {} }
+          include: {
+            reservation_room: {
+              include: {
+                room: {
+                  include: :room_type
+                }
+              }
+            },
+            bill: {},
+            reservation_state: {}
+          }
         )
       else
         render json: { error: 'No reservations found for the user' }, status: :not_found

@@ -7,7 +7,7 @@ class ReservationRepository
   def get_reservation_by_code(search_code)
     Reservation
       .includes(:reservation_state, :bill, reservation_room: :room)
-      .find(search_code: search_code)
+      .find_by(search_code: search_code)
   end
 
   def get_reservations_by_user(user)
