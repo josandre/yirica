@@ -30,6 +30,7 @@ const cardType = [
 
 const CheckoutSection = ({cartList}) => {
 
+
     let totalRooms = 0;
     for (let i = 0; i < cartList.length; i++) {
         totalRooms += cartList[i].qty;

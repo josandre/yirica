@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
   resources :image_rooms
@@ -21,6 +23,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :users do
+    resources :reservations, only: [:index, :show], controller: 'user_reservations'
+  end
+
+
   resources :response_cancels
   resources :cancel_requests
   resources :bills
@@ -32,6 +39,14 @@ Rails.application.routes.draw do
   resources :room_types
   resources :users
   resources :roles
+
+  if Rails.env.development? || Rails.env.production?
+    Sidekiq::Web.use ActionDispatch::Cookies
+    Sidekiq::Web.use ActionDispatch::Session::CookieStore, key: '_my_app_session'
+
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

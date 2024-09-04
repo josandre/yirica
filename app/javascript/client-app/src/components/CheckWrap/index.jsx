@@ -49,6 +49,7 @@ const CheckWrap = ({cartList, total, clearCart}) => {
     const createMetadata = () => {
         cartList.map((data) => {
             let metadata = {
+                "roomId": data.id,
                 "roomType": data.room_type.name,
                 "kids": data.kids,
                 "adults": data.adults,
@@ -62,7 +63,9 @@ const CheckWrap = ({cartList, total, clearCart}) => {
             metadataObjects.push(metadata)
 
         })
+        console.log("metadata", metadataObjects)
     }
+
 
     const changeHandler = (e) => {
         let { name, value } = e.target;
@@ -131,7 +134,6 @@ const CheckWrap = ({cartList, total, clearCart}) => {
                     toast.success('Successfully submitted!');
                 },
                 onError: (err) => {
-                    console.log(err)
                     if (err.response && err.response.data) {
                         const errors = err.response.data.status.message;
                         toast.error(errors);

@@ -13,6 +13,7 @@ import {queryParamsToObject} from "../../utils";
 
 const SearchResults =({ addToCart }) => {
   const location = useLocation();
+
   const searchParams =  useMemo(
     () => queryParamsToObject(location.search),
     [location]);
@@ -26,7 +27,9 @@ const SearchResults =({ addToCart }) => {
       checkOut: searchParams.checkOut,
     }
 
-    const addToCartProduct = (room, qty = 1) => {
+
+  const addToCartProduct = (room, qty = 1) => {
+        console.log("room")
         room.kids = searchParams.kids
         room.adults = searchParams.adults
         room.reservation = reservation

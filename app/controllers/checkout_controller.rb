@@ -52,7 +52,7 @@ class CheckoutController < ApplicationController
 
   def metadata_array_params(metadata_array)
     metadata_array.map do |metadata|
-      metadata.permit(:roomType, :kids, :adults, :totalAdults, :totalKids, :rooms, :total, reservation: [:checkIn, :checkOut]).to_h
+      metadata.permit(:roomType, :kids, :adults, :totalAdults, :totalKids, :rooms, :roomId,  :total, reservation: [:checkIn, :checkOut]).to_h
     end
 
   end

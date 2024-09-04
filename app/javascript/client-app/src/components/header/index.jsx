@@ -31,7 +31,10 @@ const Header = (props) => {
   const ClickHandler = () => {
       window.scrollTo(10, 0);
   }
+
   const { carts } = props;
+
+  console.log("carts", carts)
     return (
       <header id="header" className={props.topbarBlock}>
         <div className={`wpo-site-header ${props.hclass}`}>
@@ -56,41 +59,21 @@ const Header = (props) => {
                     <ul className="nav navbar-nav mb-2 mb-lg-0">
                       <li><Link onClick={ClickHandler} to="/app">Home</Link></li>
                       <li><Link onClick={ClickHandler} to="/about">About</Link></li>
-
                       <li>
                         {isLoggedIn ? (
                           <Link onClick={handleSignOut} to="/app">Sign out</Link>
                         ): (
                           <Link onClick={ClickHandler} to="/app/sign-in">Sign in</Link>
                         )}
-
                       </li>
-
                       {!isLoggedIn && (
                         <li className="menu-item-has-children">
                           <Link onClick={ClickHandler} to="/app/sign-up">Sign up</Link>
                         </li>
                       )}
 
-                      <li className="menu-item-has-children">
-                        <Link onClick={ClickHandler} to="/blog">Blog</Link>
-                        <ul className="sub-menu">
-                          <li><Link onClick={ClickHandler} to="/blog">Blog right sidebar</Link></li>
-                          <li><Link onClick={ClickHandler} to="/blog-left-sidebar">Blog left sidebar</Link></li>
-                          <li><Link onClick={ClickHandler} to="/blog-fullwidth">Blog fullwidth</Link></li>
-                          <li className="menu-item-has-children">
-                            <Link onClick={ClickHandler} to="/">Blog details</Link>
-                            <ul className="sub-menu">
-                              <li><Link onClick={ClickHandler} to="/blog-single/1">Blog details right sidebar</Link>
-                              </li>
-                              <li><Link onClick={ClickHandler} to="/blog-single-left-sidebar/1">Blog details left
-                                sidebar</Link></li>
-                              <li><Link onClick={ClickHandler} to="/blog-single-fullwidth/1">Blog details
-                                fullwidth</Link></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
+                      <li><Link onClick={ClickHandler} to="/app/reservations">Reservations</Link></li>
+
                       <li className="menu-item-has-children">
                         <Link onClick={ClickHandler} to="/">Pages</Link>
                         <ul className="sub-menu">
@@ -113,22 +96,7 @@ const Header = (props) => {
                 </div>
                 <div className="col-lg-1 col-md-2 col-2">
                   <div className="header-right">
-                    <div className="header-search-form-wrapper">
-                      <div className="cart-search-contact">
-                        <button onClick={() => setMenuState(!menuActive)} className="search-toggle-btn"><i
-                          className={`fi ${menuActive ? "ti-close" : "fi flaticon-search"}`}></i></button>
-                        <div className={`header-search-form ${menuActive ? "header-search-content-toggle" : ""}`}>
-                          <form onSubmit={SubmitHandler}>
-                            <div>
-                              <input type="text" className="form-control"
-                                placeholder="Search here..." />
-                              <button type="submit"><i
-                                className="fi flaticon-search"></i></button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
+
                     <div className="mini-cart">
                       <button className="cart-toggle-btn" onClick={() => setcartState(!cartActive)}>
                         {" "}
@@ -142,10 +110,21 @@ const Header = (props) => {
                             carts.length > 0 &&
                             carts.map((catItem, crt) => (
                               <div className="mini-cart-item clearfix" key={crt}>
+                                <div className='container-dates'>
+                                  <span className="dates-in-out">
+                                    from {catItem.reservation.checkIn}
+                                  </span>
+                                  <span className='dates-in-out to'> to </span>
+                                  <span className="dates-in-out">
+                                    {catItem.reservation.checkOut}
+                                  </span>
+                                </div>
+
                                 <div className="mini-cart-item-image">
                                   <span>
-                                    <img src={catItem.image_rooms[0].image} alt="icon" />
+                                    <img src={catItem.image_rooms[0].image} alt="icon"/>
                                   </span>
+
                                 </div>
                                 <div className="mini-cart-item-des">
                                   <p>{catItem.title} </p>
@@ -176,7 +155,7 @@ const Header = (props) => {
                             ))}
                         </div>
                         <div className="mini-cart-action clearfix">
-                        <span className="mini-checkout-price">Subtotal: <span> ${totalPrice(carts)}</span></span>
+                          <span className="mini-checkout-price"> Subtotal:<span>${totalPrice(carts)}</span></span>
                           <div className="mini-btn">
                             <Link onClick={ClickHandler} to="/app/checkout" className="view-cart-btn s1">Checkout</Link>
                           </div>

@@ -97,9 +97,11 @@
   <div class="header">
     <%= image_tag 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/logo.png', alt: 'Yiri Ca Logo', style: 'max-width: 100px;' %>
     <h1>Reservation Information</h1>
+    <h1>Search code <%= @search_code %></h1>
   </div>
   <div class="content">
-    <h2>Hello <%= @user.name %> <%= @user.last_name %>,</h2>
+    <h2>Hello <%= @user.name %> <%= @user.last_name %></h2>
+    <p>Your reservation has been successfully confirmed! You can use the search code provided below to quickly access your reservation details on our website. Additionally, this code will expedite your check-in process upon arrival.</p>
     <p>Thank you for your reservation at Yiri Ca. Below are the details of your reservation:</p>
 
     <div class="reservation-details">

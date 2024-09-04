@@ -1,0 +1,40 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 50px; /* Make sure this is rounded */
+    overflow: hidden;
+    width: 100%;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+.search-container input[type="text"] {
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    flex-grow: 1;
+    border-radius: 50px;
+    width: 100%;
+    box-shadow: none;
+}
+
+.search-container button {
+    background-color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 50px;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-container button i {
+    font-size: 16px;
+    color: #333;
+}
+
+.search-container input[type="text"]::placeholder {
+    color: #999;
+}

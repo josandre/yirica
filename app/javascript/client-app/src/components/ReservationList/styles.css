@@ -1,0 +1,64 @@
+.room-details {
+    width: 100%;
+}
+
+.content-rooms{
+    display: flex;
+
+}
+
+.single-reservation .row {
+    justify-content: center;
+}
+
+
+.dates-in-out{
+    font-size: 13px;
+    color: #888;
+    display: block;
+    margin-top: 3px;
+}
+
+.to{
+    font-size: 13px;
+    color: #888;
+    display: block;
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.container-dates{
+    display: flex;
+    justify-content: center;
+
+}
+
+.room-type {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    margin-bottom: 8px !important;
+    padding-left: 5px !important;
+    margin-top: 3px !important;
+}
+
+.wpo-destination-area .destination-wrap .destination-item .destination-content h2, .wpo-destination-area-s2 .destination-wrap .destination-item .destination-content h2{
+    margin-bottom: 8px !important;
+}
+
+.room-capacity {
+    font-size: 1em;
+    color: #6c757d;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 0 !important;
+
+}
+
+.separator {
+    font-weight: bold;
+    color: #6c757d;
+}
+
+

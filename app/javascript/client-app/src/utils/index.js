@@ -1,10 +1,4 @@
-function getFlashProducts(products) {
-    return products.filter(item => item.sale === true).slice(0, 8);
-}
 
-function getFeaturedProducts(products) {
-    return products.filter(item => item.sale === true).slice(0, 12);
-}
 
 function totalPrice(items) {
     return items.reduce((itemAcc, item) => {
@@ -136,8 +130,7 @@ const queryParamsToObject = (queryParams) => {
 
 
 export {
-    getFlashProducts,
-    getFeaturedProducts,
+
     totalPrice,
     filterProductByCategory,
     filterProductByPrice,
