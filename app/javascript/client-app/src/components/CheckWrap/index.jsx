@@ -134,7 +134,6 @@ const CheckWrap = ({cartList, total, clearCart}) => {
                     toast.success('Successfully submitted!');
                 },
                 onError: (err) => {
-                    console.log(err)
                     if (err.response && err.response.data) {
                         const errors = err.response.data.status.message;
                         toast.error(errors);

@@ -27,7 +27,8 @@ const SearchResults =({ addToCart }) => {
       checkOut: searchParams.checkOut,
     }
 
-    const addToCartProduct = (room, qty = 1) => {
+
+  const addToCartProduct = (room, qty = 1) => {
         console.log("room")
         room.kids = searchParams.kids
         room.adults = searchParams.adults
