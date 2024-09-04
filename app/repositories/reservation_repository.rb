@@ -35,7 +35,9 @@ class ReservationRepository
       payment_id: payment_id,
       search_code: search_code,
     )
+
     reservation.save!
+    reservation
   end
 
 end

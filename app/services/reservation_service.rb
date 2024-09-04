@@ -26,7 +26,7 @@ class ReservationService
   end
 
 
-  def create_reservation(user, reservation_info, rooms, total, search_code, payment_id)
+  def create_reservation(user, metadata, reservation_info, rooms, total, search_code, payment_id)
     reservation = @reservation_repository.find_or_initialized_by_search_code(search_code)
 
     if reservation.persisted?
@@ -36,14 +36,18 @@ class ReservationService
       Rails.logger.info "Reservation created with search_code: #{search_code}"
     end
 
-    rooms.each do |id|
-      room = @room_service.get_room_by_id(id)
-      unless @reservation_room_services.room_exists(reservation, room)
-        @reservation_room_services.create_reservation_room(reservation, room)
+    puts "metadata #{metadata}"
+    metadata.each do |room|
+      room_id = room["roomId"] || room[:roomId]
+      room_object = @room_service.get_room_by_id(room_id)
+      Rails.logger.info "room by id #{room_object}"
+      response = @reservation_room_services.room_exists(reservation, room_object)
+      Rails.logger.info "response #{response}"
+      unless response
+        @reservation_room_services.create_reservation_room(reservation, room_object, room)
         Rails.logger.info "Reservation room service created"
       end
     end
-
 
     unless @bill_service.bill_exits_by_reservation(reservation)
       bill = @bill_service.create_bill(reservation, total)

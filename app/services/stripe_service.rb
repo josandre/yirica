@@ -12,8 +12,6 @@ class StripeService
     user = @user_service.get_by_id(user_id)
     flattened_metadata = flatten_metadata(metadata)
 
-    puts "metadata #{metadata}"
-
     begin
       @payment_intend = Stripe::PaymentIntent.create({
                                      amount: total * 100,
@@ -44,14 +42,13 @@ class StripeService
   private
   def flatten_metadata(metadata)
     flattened_metadata = {}
+
     metadata.each_with_index do |meta, index|
-      meta.each do |key, value|
-        flattened_metadata["#{key}_#{index}"] = value.is_a?(Hash) ? value.to_json : value.to_s
-      end
+      flattened_metadata["metadata_#{index}"] = meta.to_json
     end
+
     flattened_metadata
   end
-
 
 
 

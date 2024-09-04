@@ -157,7 +157,7 @@ const Header = (props) => {
                             ))}
                         </div>
                         <div className="mini-cart-action clearfix">
-                        <span className="mini-checkout-price">Subtotal: <span> ${totalPrice(carts)}</span></span>
+                        <span className="mini-checkout-price"> Subtotal:<span>${totalPrice(carts)}</span></span>
                           <div className="mini-btn">
                             <Link onClick={ClickHandler} to="/app/checkout" className="view-cart-btn s1">Checkout</Link>
                           </div>

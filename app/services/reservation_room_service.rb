@@ -9,8 +9,8 @@ class ReservationRoomService
   end
 
 
-  def create_reservation_room(reservation, room)
-    @reservation_room_repository.create_reservation_room(reservation, room)
+  def create_reservation_room(reservation, room, room_metadata)
+    @reservation_room_repository.create_reservation_room(reservation, room, room_metadata)
   end
 
 

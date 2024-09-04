@@ -37,19 +37,17 @@ const SearchRooms = ({ rooms, addToCartProduct }) => {
                           <li><strong>Children accepted</strong></li>
                         )}
                       </ul>
-
                         <h3>${room.adult_price} <span>Adult / Night</span></h3>
                         {room.room_type.kids_accepted && (
                           <h3>${room.kids_price} <span>Kid / Night</span></h3>
                         )}
-
                       <div className="add-to-cart">
                         <button
                           className="theme-btn mt-3"
                           data-bs-toggle="tooltip"
                           data-bs-html="true"
                           title="Add to Cart"
-                          onClick={() => addToCartProduct(room)}>
+                          onClick={() =>  addToCartProduct(room)}>
                           Select this room
                         </button>
                       </div>
