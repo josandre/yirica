@@ -46,7 +46,7 @@ class RoomService
       if rooms.present?
         {
           status: { code: 200, message: 'Rooms retrieved successfully.' },
-          data: rooms.as_json(include: { comments: { include: :responses }, room_type: {}, image_rooms: {} }),
+          data: rooms.as_json(include: { room_type: {}, image_rooms: {} }),
           status_code: :ok
         }
       else

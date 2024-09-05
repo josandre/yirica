@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   end
 
 
+
+
   resources :response_cancels
   resources :cancel_requests
   resources :bills

@@ -1,9 +1,13 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_request, only: [:create]
   before_action :set_comment, only: %i[ show edit update destroy ]
+  before_action :initialize_comment_service
+  load_and_authorize_resource
+
 
   # GET /comments or /comments.json
   def index
-    @comments = Comment.all
+
   end
 
   # GET /comments/1 or /comments/1.json
@@ -21,17 +25,12 @@ class CommentsController < ApplicationController
 
   # POST /comments or /comments.json
   def create
-    @comment = Comment.new(comment_params)
-
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to comment_url(@comment), notice: "Comment was successfully created." }
-        format.json { render :show, status: :created, location: @comment }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
-    end
+    comment = comment_params[:comment]
+    punctuation = comment_params[:punctuation]
+    user_id = comment_params[:user_id]
+    room_id = comment_params[:room_id]
+    json_response = @comment_service.create(comment, punctuation, user_id, room_id)
+    render json: json_response, status: json_response[:status_code]
   end
 
   # PATCH/PUT /comments/1 or /comments/1.json
@@ -58,13 +57,15 @@ class CommentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def comment_params
       params.require(:comment).permit(:comment, :punctuation, :is_legal, :user_id, :room_id)
+    end
+
+    def initialize_comment_service
+      @comment_service = CommentService.new
     end
 end

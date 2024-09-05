@@ -1,13 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import rv1 from '../../images/room/r1.jpg'
-import rv2 from '../../images/room/r2.jpg'
+import {userIsLogged} from "../../utils";
 
 
 const RoomDetails = ({ room, room_type, image_rooms, amenities, services })  => {
-    console.log("amenities", amenities)
-    console.log("services", services)
-
     const SubmitHandler = (e) => {
         e.preventDefault()
     }
@@ -15,6 +11,8 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services })  => 
     const ClickHandler = () => {
         window.scrollTo(10, 0);
     }
+
+    const isUserLogged = userIsLogged()
 
     return (
         <div className="Room-details-area pb-120">
@@ -78,17 +76,13 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services })  => 
                             </div>
                         </div>
                         <div className="pricing-area">
-
-
                         </div>
                         <div className="room-review">
                             <div className="room-title">
                                 <h2>Room Reviews</h2>
                             </div>
                             <div className="review-item">
-                                <div className="review-img">
-                                    <img src={rv1} alt=""/>
-                                </div>
+
                                 <div className="review-text">
                                     <div className="r-title">
                                         <h2>Marry Watson</h2>
@@ -105,87 +99,71 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services })  => 
                                         gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
                                 </div>
                             </div>
-                            <div className="review-item">
-                                <div className="review-img">
-                                    <img src={rv2} alt=""/>
-                                </div>
-                                <div className="review-text">
-                                    <div className="r-title">
-                                        <h2>Lily Havenly</h2>
-                                        <ul>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        </ul>
-                                    </div>
-                                    <p> Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan
-                                        lacus vel facilisis. </p>
-                                </div>
-                            </div>
                         </div>
-                        <div className="add-review">
-                            <div className="room-title">
-                                <h2>Add Review</h2>
-                            </div>
-                            <div className="wpo-blog-single-section review-form ">
-                                <div className="give-rat-sec">
-                                    <p>Your rating *</p>
-                                    <div className="give-rating">
-                                        <label>
-                                            <input type="radio" name="stars" value="1" />
-                                            <span className="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="stars" value="2" />
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="stars" value="3" />
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="stars" value="4" />
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="stars" value="5" />
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                            <span className="icon">★</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="review-add">
-                                    <div className="comment-respond">
-                                        <form id="commentform" className="comment-form" onSubmit={SubmitHandler}>
-                                            <div className="form-inputs">
-                                                <input placeholder="Your Name*" type="text" />
-                                                <input placeholder="Your Email*" type="email" />
-                                            </div>
-                                            <div className="form-textarea">
-                                                <textarea id="comment" placeholder="Your Review"></textarea>
-                                            </div>
-                                            <div className="form-check">
 
-                                            </div>
-                                            <div className="form-submit">
-                                                <input id="submit" value="Submit Now" type="submit" />
-                                            </div>
-                                        </form>
+                        { isUserLogged && (
+                            <div className="add-review">
+                                <div className="room-title">
+                                    <h2>Add Review</h2>
+                                </div>
+                                <div className="wpo-blog-single-section review-form ">
+                                    <div className="give-rat-sec">
+                                        <p>Your rating *</p>
+                                        <div className="give-rating">
+                                            <label>
+                                                <input type="radio" name="stars" value="1" />
+                                                <span className="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="2" />
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="3" />
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="4" />
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="stars" value="5" />
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                                <span className="icon">★</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="review-add">
+                                        <div className="comment-respond">
+                                            <form id="commentform" className="comment-form" onSubmit={SubmitHandler}>
+                                                <div className="form-inputs">
+                                                    <input placeholder="Your Name*" type="text" />
+                                                    <input placeholder="Your Email*" type="email" />
+                                                </div>
+                                                <div className="form-textarea">
+                                                    <textarea id="comment" placeholder="Your Review"></textarea>
+                                                </div>
+                                                <div className="form-check">
+
+                                                </div>
+                                                <div className="form-submit">
+                                                    <input id="submit" value="Submit Now" type="submit" />
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

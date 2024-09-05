@@ -13,7 +13,7 @@ Room.destroy_all
 client_role = Role.create({ role: 'Client' })
 admin_role = Role.create({ role: 'Administrator' })
 user_client_1 = User.create({name: 'Jocselyn', last_name: 'Aguilar', password: 'User123!', phone: '63399135', role_id: client_role.id, email: 'jocselynaguilarchinchilla@gmail.com' })
-user_client_2 = User.create({name: 'Andrea', last_name: 'Chinchilla', password: 'User1234!', phone: '63399135', role_id: client_role.id, email: 'jaguilarc@ucenfotec.ac.cr' })
+user_client_2 = User.create({name: 'Andrea', last_name: 'Chinchilla', password: 'User1234!', phone: '63399135', role_id: admin_role.id, email: 'jaguilarc@ucenfotec.ac.cr' })
 puts 'client and roles created'
 
 deluxe = RoomType.create(name: 'Deluxe',description: 'A deluxe room with all amenities',max_people: '4',kids_accepted: true)
