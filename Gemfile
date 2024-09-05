@@ -79,3 +79,6 @@ gem "devise", "~> 4.9"
 gem "cancancan", "~> 3.6"
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
+
+gem 'aws-sdk-comprehend'
+

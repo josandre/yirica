@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_request, except: [:create]
 
   rescue_from CanCan::AccessDenied do |exception|
-    puts " exception #{exception}"
+    Rails.logger.info "Access Denied: #{exception.action} on #{exception.subject}"
     render json: { error: 'Access denied!' }, status: :forbidden
   end
 

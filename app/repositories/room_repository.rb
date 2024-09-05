@@ -31,7 +31,7 @@ class RoomRepository
   end
 
   def get_all_rooms
-    Room.includes(:room_type, :image_rooms, comments: :responses).all
+    Room.includes(:room_type, :image_rooms).all
   end
 
   private

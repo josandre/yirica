@@ -13,10 +13,8 @@ function decodeJWT(token){
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-
         return JSON.parse(jsonPayload);
     } catch (e) {
-        console.error('Failed to parse JWT:', e);
         return null;
     }
 }
@@ -39,16 +37,9 @@ function totalByRoom(adultsPrice, kidsPrice, qty ){
 
     return (adultsPrice + kidsPrice) * qty;
 
-
 }
 
 
-function checkLengNull(data) {
-    if (data !== null) {
-        return data.length > 0;
-    }
-    return false;
-}
 
 const objectToQueryParams = (params) => {
     return new URLSearchParams(params).toString();
@@ -80,6 +71,19 @@ const queryParamsToObject = (queryParams) => {
     return paramsObject;
 };
 
+const userIsLogged = () => {
+    const  token = localStorage.getItem('token');
+
+    if(!token) {
+        return false
+    }
+
+    const decodedToken = decodeJWT(token);
+    const userId = decodedToken.user_id
+
+    return { isUserLogged: !!userId, userId, token }
+}
+
 
 export {
 
@@ -90,5 +94,6 @@ export {
     totalAdults,
     totalKids,
     totalByRoom,
-    decodeJWT
+    decodeJWT,
+    userIsLogged
 };

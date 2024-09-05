@@ -28,12 +28,31 @@ class RoomService
 
   def get_room_with_details(room_id)
     room = @room_repository.get_room_by_id(room_id)
+    comments = room.comments.includes(:response).where(is_legal: true).map do |comment|
+      {
+        id: comment.id,
+        comment: comment.comment,
+        punctuation: comment.punctuation,
+        is_legal: comment.is_legal,
+        user: comment.user,
+        responses: comment.response.map do |response|
+          {
+            id: response.id,
+            response: response.response,
+            user: response.user
+          }
+        end
+      }
+    end
+
+
     {
       room: room,
       room_type: room.room_type,
       image_rooms: room.image_rooms.select(:id, :image, :is_principal),
       amenities: room.room_type.amenities.select(:id, :name),
-      services: room.room_type.services.select(:id, :name)
+      services: room.room_type.services.select(:id, :name),
+      comments: comments,
     }
   rescue ActiveRecord::RecordNotFound
     { error: 'Room not found' }.to_json
@@ -46,7 +65,7 @@ class RoomService
       if rooms.present?
         {
           status: { code: 200, message: 'Rooms retrieved successfully.' },
-          data: rooms.as_json(include: { comments: { include: :responses }, room_type: {}, image_rooms: {} }),
+          data: rooms.as_json(include: { room_type: {}, image_rooms: {} }),
           status_code: :ok
         }
       else
