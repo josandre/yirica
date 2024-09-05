@@ -1,10 +1,8 @@
 import {
   ADD_TO_CART, CLEAR_CART,
-  DECREMENT_QUANTITY,
-  INCREMENT_QUANTITY,
   REMOVE_FROM_CART,
 } from "../actions/type";
-import { minValueOne } from "../../utils";
+
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -85,36 +83,6 @@ export const cartReducer = (state = init, action) => {
         cart: []
       }
 
-    case INCREMENT_QUANTITY:
-      const inc_productId = action.room.id;
-      const new_cart = state.cart.reduce((cartAcc, room) => {
-        if (room.id === inc_productId) {
-          cartAcc.push({
-            ...room,
-            qty: room.qty + 1,
-          });
-        } else {
-          cartAcc.push(room);
-        }
-        return cartAcc;
-      }, []);
-      return { ...state, cart: new_cart };
-
-    case DECREMENT_QUANTITY:
-      const decProductId = action.product_id;
-      const decCart = state.cart.reduce((cartAcc, product) => {
-        if (product.id === decProductId) {
-          cartAcc.push({
-            ...product,
-            qty: minValueOne(product.qty - 1),
-          });
-        } else {
-          cartAcc.push(product);
-        }
-        return cartAcc;
-      }, []);
-
-      return { ...state, cart: decCart };
 
     default:
       return state;

@@ -63,7 +63,7 @@ const CheckWrap = ({cartList, total, clearCart}) => {
             metadataObjects.push(metadata)
 
         })
-        console.log("metadata", metadataObjects)
+
     }
 
 
@@ -193,67 +193,77 @@ const CheckWrap = ({cartList, total, clearCart}) => {
                           />
                           {validator.message('card_number', value.card_number, 'required|card_format')}
                       </Grid>
-                      <Grid item sm={6} xs={12}>
-                          <TextField
-                            fullWidth
-                            label="CVV"
-                            name="cvv"
-                            value={value.cvv}
-                            onBlur={(e) => changeHandler(e)}
-                            onChange={(e) => changeHandler(e)}
-                            type="text"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            className="formInput radiusNone"
-                          />
-                          {validator.message('cvv', value.cvv, 'required|numeric|min:3|max:4')}
+
+                      <Grid item container justifyContent="center" spacing={3}>
+                          <Grid item sm={2} xs={12}>
+                              <TextField
+                                fullWidth
+                                label="CVV"
+                                name="cvv"
+                                value={value.cvv}
+                                onBlur={(e) => changeHandler(e)}
+                                onChange={(e) => changeHandler(e)}
+                                type="text"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                className="formInput radiusNone"
+                              />
+                              {validator.message('cvv', value.cvv, 'required|numeric|min:3|max:4')}
+                          </Grid>
+                          <Grid item sm={2} xs={12}>
+                              <TextField
+                                fullWidth
+                                type="number"
+                                label="Month"
+                                name="expire_month"
+                                value={value.expire_month}
+                                onBlur={(e) => changeHandler(e)}
+                                onChange={(e) => changeHandler(e)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                className="formInput radiusNone"
+                                inputProps={{ min: "1", max: "12", step: "1" }}
+                              />
+                              {validator.message('expire_month', value.expire_month, 'required|numeric|min:1|max:12')}
+                          </Grid>
+                          <Grid item sm={3} xs={12}>
+                              <TextField
+                                select
+                                fullWidth
+                                label="Year"
+                                name="expire_year"
+                                value={value.expire_year}
+                                onBlur={(e) => changeHandler(e)}
+                                onChange={(e) => changeHandler(e)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                className="formInput radiusNone"
+                              >
+                                  {years.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                  ))}
+                              </TextField>
+                              {validator.message('expire_year', value.expire_year, 'required')}
+                          </Grid>
                       </Grid>
-                      <Grid item sm={6} xs={12}>
-                          <TextField
-                            fullWidth
-                            type="number"
-                            label="Month"
-                            name="expire_month"
-                            value={value.expire_month}
-                            onBlur={(e) => changeHandler(e)}
-                            onChange={(e) => changeHandler(e)}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            className="formInput radiusNone"
-                            inputProps={{ min: "1", max: "12", step: "1" }}
-                          />
-                          {validator.message('expire_month', value.expire_month, 'required|numeric|min:1|max:12')}
-                      </Grid>
-                      <Grid item sm={3} xs={6}>
-                          <TextField
-                            select
-                            fullWidth
-                            label="Year"
-                            name="expire_year"
-                            value={value.expire_year}
-                            onBlur={(e) => changeHandler(e)}
-                            onChange={(e) => changeHandler(e)}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            SelectProps={{
-                                native: true,
-                            }}
-                            className="formInput radiusNone"
-                          >
-                              {years.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                              ))}
-                          </TextField>
-                          {validator.message('expire_year', value.expire_year, 'required')}
-                      </Grid>
+
                       <Grid item xs={12}>
                           <Grid className="formFooter mt-20">
-                              <Button fullWidth className="cBtn cBtnLarge cBtnTheme mt-20 ml-15" type="submit">Proceed to Checkout</Button>
+                              <Button
+                                fullWidth
+                                className="cBtn cBtnLarge cBtnTheme mt-20 ml-15"
+                                type="submit"
+                              >
+                                  Proceed to Checkout
+                              </Button>
                           </Grid>
                       </Grid>
                   </Grid>
@@ -262,6 +272,7 @@ const CheckWrap = ({cartList, total, clearCart}) => {
           <BookingSuccessModal show={showModal} onClose={() => setShowModal(false)} />
       </Grid>
     );
+
 };
 
 export default connect(null, { clearCart })(CheckWrap);

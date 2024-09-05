@@ -71,23 +71,8 @@ const Header = (props) => {
                           <Link onClick={ClickHandler} to="/app/sign-up">Sign up</Link>
                         </li>
                       )}
-
                       <li><Link onClick={ClickHandler} to="/app/reservations">Reservations</Link></li>
-
-                      <li className="menu-item-has-children">
-                        <Link onClick={ClickHandler} to="/">Pages</Link>
-                        <ul className="sub-menu">
-                          <li><Link onClick={ClickHandler} to="/service">Service</Link></li>
-                          <li><Link onClick={ClickHandler} to="/service-s2">Service Style2</Link></li>
-                          <li><Link onClick={ClickHandler} to="/service-single/1">Service Single</Link></li>
-                          <li><Link onClick={ClickHandler} to="/cart">Cart</Link></li>
-                          <li><Link onClick={ClickHandler} to="/checkout">Checkout</Link></li>
-                          <li><Link onClick={ClickHandler} to="/pricing">Pricing</Link></li>
-                          <li><Link onClick={ClickHandler} to="/search-result">Search Result</Link></li>
-                          <li><Link onClick={ClickHandler} to="/404">404</Link></li>
-                          <li><Link onClick={ClickHandler} to="/login">Login</Link></li>
-                          <li><Link onClick={ClickHandler} to="/register">Register</Link></li>
-                        </ul>
+                      <li className="menu-item-has-children"><Link onClick={ClickHandler} to="/">Rooms</Link>
                       </li>
                       <li><Link onClick={ClickHandler} to="/contact">Contact</Link></li>
                     </ul>
