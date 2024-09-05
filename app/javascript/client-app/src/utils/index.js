@@ -73,15 +73,15 @@ const queryParamsToObject = (queryParams) => {
 
 const userIsLogged = () => {
     const  token = localStorage.getItem('token');
-    if (token){
-        const decodedToken = decodeJWT(token);
-        const userId = decodedToken.user_id
 
-        if (userId){
-            return true;
-        }
+    if(!token) {
+        return false
     }
-    return false
+
+    const decodedToken = decodeJWT(token);
+    const userId = decodedToken.user_id
+
+    return { isUserLogged: !!userId, userId, token }
 }
 
 

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, {Fragment, useState} from 'react';
 import PageTitle from '../../components/pagetitle/PageTitle';
 import { useParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
@@ -15,7 +15,7 @@ const RoomSinglePage = () => {
   const { data: roomData, error, isLoading } = useGetRoomById(id);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading room</div>;
-  const { room, room_type, image_rooms, amenities, services } = roomData || {};
+  let { room, room_type, image_rooms, amenities, services, comments } = roomData || {};
   if (!room) return <div>No room data found</div>;
 
   return (
@@ -92,8 +92,14 @@ const RoomSinglePage = () => {
 
             </div>
           </div>
-          <RoomDetails room={room} room_type={room_type} image_rooms={image_rooms} amenities={amenities}
-                       services={services}/>
+          <RoomDetails
+            room={room}
+            room_type={room_type}
+            image_rooms={image_rooms}
+            amenities={amenities}
+            services={services}
+            comments={comments}
+          />
         </div>
       </div>
 

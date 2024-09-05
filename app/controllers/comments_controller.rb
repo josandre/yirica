@@ -32,9 +32,13 @@ class CommentsController < ApplicationController
     user_id = comment_params[:user_id]
     room_id = comment_params[:room_id]
 
-
+    puts "#{comment}"
+    puts "#{punctuation}"
+    puts "#{user_id}"
+    puts "#{room_id}"
 
     json_response = @comment_service.create(comment, punctuation, user_id, room_id)
+    puts json_response.inspect
     render json: json_response, status: json_response[:status_code]
   end
 
@@ -67,7 +71,7 @@ class CommentsController < ApplicationController
     end
 
     def comment_params
-      params.require(:comment).permit(:comment, :punctuation, :is_legal, :user_id, :room_id)
+      params.require(:comment).permit(:comment, :punctuation, :user_id, :room_id)
     end
 
     def initialize_comment_service

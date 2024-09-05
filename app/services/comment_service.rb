@@ -3,16 +3,30 @@ class CommentService
 
   def initialize
     @comment_repository = CommentRepository.new
+    @user_repository = UserRepository.new
   end
 
   def create(comment, punctuation, user_id, room_id)
     begin
       is_legal = check_if_comment_is_legal(comment)
-      puts "is legal? #{is_legal}"
+
+      user = @user_repository.get_by_id(user_id)
+
       comment = @comment_repository.create_comment(comment, punctuation, user_id, room_id, is_legal)
       {
         status: { code: 200, message: 'Comment created successfully.' },
-        data: comment.as_json,
+        data: {
+          id: comment.id,
+          comment: comment.comment,
+          punctuation: comment.punctuation,
+          is_legal: is_legal,
+          user: {
+            id: user.id,
+            name: user.name,
+            last_name: user.last_name,
+            email: user.email
+          }
+        },
         status_code: :ok
       }
     rescue StandardError => e

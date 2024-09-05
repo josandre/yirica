@@ -1,19 +1,59 @@
-import React from 'react'
+import React, {useMemo, useState} from 'react'
 import { Link } from 'react-router-dom'
 import {userIsLogged} from "../../utils";
+import {useAddComment} from "../../api/comments/comment-service";
+import {toast} from "react-toastify";
 
 
-const RoomDetails = ({ room, room_type, image_rooms, amenities, services })  => {
+const RoomDetails = ({ room, room_type, image_rooms, amenities, services, comments })  => {
+    const url = window.location.href;
+
+    const [commentsList, setCommentsList] = useState(comments);
+
+    const [rating, setRating] = useState(0);
+    const [review, setReview] = useState('');
+    const roomId = useMemo(() => url.split("/").pop(), [])
+    const { isUserLogged, userId, token} = userIsLogged()
+    const addCommentMutation = useAddComment()
+
     const SubmitHandler = (e) => {
         e.preventDefault()
+
+        if(review.length < 1){
+            toast.error("You need to add a valid comment")
+            return
+        }
+
+        const request = {
+            comment: {
+                comment: review,
+                punctuation: rating,
+                user_id: userId,
+                room_id: roomId,
+            }
+        }
+
+        addCommentMutation.mutate({ request, token }, {
+            onSuccess: (res) => {
+                if(!res.data.is_legal) {
+                    toast.warn("Your comment is under review, it will show up as soon as our moderator approves")
+                    return
+                }
+
+                setCommentsList([...commentsList, res.data])
+            }
+        })
+
+        setRating(0);
+        setReview('');
     }
 
     const ClickHandler = () => {
         window.scrollTo(10, 0);
     }
 
-    const isUserLogged = userIsLogged()
 
+    console.log(isUserLogged, token, userId)
     return (
         <div className="Room-details-area pb-120">
             <div className="container">
@@ -81,82 +121,68 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services })  => 
                             <div className="room-title">
                                 <h2>Room Reviews</h2>
                             </div>
-                            <div className="review-item">
 
-                                <div className="review-text">
-                                    <div className="r-title">
-                                        <h2>Marry Watson</h2>
-                                        <ul>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i className="fa fa-star" aria-hidden="true"></i></li>
-                                        </ul>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
-                                        gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
-                                </div>
-                            </div>
+                            {commentsList.map((comment, index) => (
+                              <div key={index} className="review-item">
+                                  <div className="review-text">
+                                      <div className="r-title">
+                                          <h2>{comment.user.name} {comment.user.last_name}</h2>
+                                          <ul>
+                                              {[...Array(comment.punctuation)].map((_, starIndex) => (
+                                                <li key={starIndex}>
+                                                    <i className="fa fa-star" aria-hidden="true"></i>
+                                                </li>
+                                              ))}
+                                          </ul>
+                                      </div>
+                                      <p>{comment.comment}</p>
+                                  </div>
+                              </div>
+                            ))}
+
                         </div>
 
-                        { isUserLogged && (
-                            <div className="add-review">
-                                <div className="room-title">
-                                    <h2>Add Review</h2>
-                                </div>
-                                <div className="wpo-blog-single-section review-form ">
-                                    <div className="give-rat-sec">
-                                        <p>Your rating *</p>
-                                        <div className="give-rating">
-                                            <label>
-                                                <input type="radio" name="stars" value="1" />
-                                                <span className="icon">★</span>
+                        {isUserLogged && (
+                          <div className="add-review">
+                              <div className="room-title">
+                                  <h2>Add Review</h2>
+                              </div>
+                              <div className="wpo-blog-single-section review-form ">
+                                  <div className="give-rat-sec">
+                                      <p>Your rating *</p>
+                                      <div className="give-rating">
+                                          {[1, 2, 3, 4, 5].map((starValue) => (
+                                            <label key={starValue}>
+                                                <input
+                                                  type="radio"
+                                                  name="stars"
+                                                  value={starValue}
+                                                  checked={rating === starValue}
+                                                  onChange={() => setRating(starValue)} // Update rating
+                                                />
+                                                {Array(starValue).fill().map((_, i) => (
+                                                  <span key={i} className="icon">★</span>
+                                                ))}
                                             </label>
-                                            <label>
-                                                <input type="radio" name="stars" value="2" />
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="stars" value="3" />
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="stars" value="4" />
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="stars" value="5" />
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                                <span className="icon">★</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="review-add">
-                                        <div className="comment-respond">
-                                            <form id="commentform" className="comment-form" onSubmit={SubmitHandler}>
-                                                <div className="form-inputs">
-                                                    <input placeholder="Your Name*" type="text" />
-                                                    <input placeholder="Your Email*" type="email" />
-                                                </div>
-                                                <div className="form-textarea">
-                                                    <textarea id="comment" placeholder="Your Review"></textarea>
-                                                </div>
-                                                <div className="form-check">
+                                          ))}
+                                      </div>
+                                  </div>
+                                  <div className="review-add">
+                                      <div className="comment-respond">
+                                          <form id="commentform" className="comment-form" onSubmit={SubmitHandler}>
+                                              <div className="form-textarea">
+                                                    <textarea
+                                                      id="comment"
+                                                      placeholder="Your Review"
+                                                      value={review}
+                                                      onChange={(e) => setReview(e.target.value)}
+                                                    ></textarea>
+                                              </div>
+                                              <div className="form-check">
 
-                                                </div>
-                                                <div className="form-submit">
-                                                    <input id="submit" value="Submit Now" type="submit" />
+                                              </div>
+                                              <div className="form-submit">
+                                                  <input id="submit" value="Submit Now" type="submit" />
                                                 </div>
                                             </form>
                                         </div>
