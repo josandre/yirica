@@ -9,10 +9,6 @@ class Ability
       can :manage, :all
 
     elsif user.client?
-      puts "user role is #{user.role.role}"
-      puts "else if"
-
-
       can :read, :Room
       can :read, :RoomType
 

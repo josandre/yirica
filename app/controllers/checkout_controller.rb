@@ -10,11 +10,6 @@ class CheckoutController < ApplicationController
     metadata = metadata_array_params(params[:metadata])
     total = params[:total].to_i
 
-    puts "user: #{user_id}"
-    puts "card_if: #{card_info}"
-    puts "reservation_info: #{reservation_info}"
-    puts "rooms: #{rooms}"
-    puts "metadata: #{metadata}"
 
     begin
       response = @stripe_service.payment_intend(user_id, reservation_info.to_h, rooms, metadata, total )

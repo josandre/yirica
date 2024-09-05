@@ -35,7 +35,7 @@ jobs:
           docker push hotelhubregistry.azurecr.io/hotel-hub:${{ github.sha }}
           docker push hotelhubregistry.azurecr.io/hotel-hub:latest
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure App services
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'hotelhub'
