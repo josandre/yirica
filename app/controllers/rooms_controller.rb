@@ -1,8 +1,8 @@
 class RoomsController < ApplicationController
-  load_and_authorize_resource except: [:most_used, :search, :show]
+  load_and_authorize_resource except: [:most_used, :search, :show, :index]
   before_action :set_room, only: %i[ show edit update destroy ]
   before_action :initialize_room_service
-  skip_before_action :authenticate_request, only: [:most_used, :search, :show]
+  skip_before_action :authenticate_request, only: [:most_used, :search, :show, :index]
 
 
   def most_used
@@ -32,7 +32,8 @@ class RoomsController < ApplicationController
   end
 
   def index
-    @rooms = Room.all
+    json_response = @room_service.get_all_rooms
+    render json: json_response, status: json_response[:status_code]
   end
 
 

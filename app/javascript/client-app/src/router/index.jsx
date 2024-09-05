@@ -8,6 +8,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import CheckoutPage from "../pages/CheckoutPage";
 import RoomSinglePage from "../pages/RoomSinglePage";
 import Reservations from "../pages/reservations/Reservations";
+import AllRooms from "../pages/AllRooms";
 
 
 const AllRoute = () => {
@@ -25,6 +26,7 @@ const AllRoute = () => {
           <Route path='/app/checkout' element={<CheckoutPage />} />
           <Route path='/app/room-single/:id' element={<RoomSinglePage />} />
           <Route path='/app/reservations' element={<Reservations />} />
+          <Route path='/app/rooms' element={<AllRooms />} />
         </Routes>
       </BrowserRouter>
 

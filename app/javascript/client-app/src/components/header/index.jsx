@@ -7,7 +7,6 @@ import { totalPrice, totalAdults, totalKids, totalByRoom } from "../../utils";
 import shape from "../../images/hotel.png"
 
 const Header = (props) => {
-  const [menuActive, setMenuState] = useState(false);
   const [cartActive, setcartState] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -34,7 +33,6 @@ const Header = (props) => {
 
   const { carts } = props;
 
-  console.log("carts", carts)
     return (
       <header id="header" className={props.topbarBlock}>
         <div className={`wpo-site-header ${props.hclass}`}>
@@ -58,11 +56,14 @@ const Header = (props) => {
                     <button className="menu-close"><i className="ti-close"></i></button>
                     <ul className="nav navbar-nav mb-2 mb-lg-0">
                       <li><Link onClick={ClickHandler} to="/app">Home</Link></li>
-                      <li><Link onClick={ClickHandler} to="/about">About</Link></li>
+                      <li><Link onClick={ClickHandler} to="/app/reservations">Reservations</Link></li>
+                      <li className="menu-item-has-children"><Link onClick={ClickHandler} to="/app/rooms">Rooms</Link>
+                      </li>
+                      <li><Link onClick={ClickHandler} to="/contact">Contact</Link></li>
                       <li>
                         {isLoggedIn ? (
                           <Link onClick={handleSignOut} to="/app">Sign out</Link>
-                        ): (
+                        ) : (
                           <Link onClick={ClickHandler} to="/app/sign-in">Sign in</Link>
                         )}
                       </li>
@@ -71,10 +72,6 @@ const Header = (props) => {
                           <Link onClick={ClickHandler} to="/app/sign-up">Sign up</Link>
                         </li>
                       )}
-                      <li><Link onClick={ClickHandler} to="/app/reservations">Reservations</Link></li>
-                      <li className="menu-item-has-children"><Link onClick={ClickHandler} to="/">Rooms</Link>
-                      </li>
-                      <li><Link onClick={ClickHandler} to="/contact">Contact</Link></li>
                     </ul>
 
                   </div>

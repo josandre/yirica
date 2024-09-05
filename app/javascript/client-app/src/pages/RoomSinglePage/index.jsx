@@ -60,18 +60,48 @@ const RoomSinglePage = () => {
                   </div>
                 </div>
               </div>
+
+
+              <div className="row" style={{ marginTop: '20px' }}>
+                <div className="col-lg-12">
+                  <div className="wpo-hotel-details-wrap">
+                    <div className="wpo-hotel-details-area">
+                      <form className="clearfix">
+                        <div className="details-sub">
+                          <span>NUMBER</span>
+                          <h2>{room.number} Room</h2>
+                        </div>
+                        <div className="details-sub">
+                          <span>LOCATION</span>
+                          <h2>{room.location}</h2>
+                        </div>
+                        <div className="details-sub">
+                          <span>BEACHFRONT</span>
+                          <h2>{room.is_beachfront ? "Yes" : "No"}</h2>
+                        </div>
+                        <div className="details-sub">
+                          <span>KIDS ACCEPTED</span>
+                          <h2>{room_type.kids_accepted ? "Yes" : "No"}</h2>
+                        </div>
+
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
-          <RoomDetails room={room} room_type={room_type} image_rooms={image_rooms} amenities={amenities} services={services} />
+          <RoomDetails room={room} room_type={room_type} image_rooms={image_rooms} amenities={amenities}
+                       services={services}/>
         </div>
       </div>
 
-      <Footer />
-      <Scrollbar />
+      <Footer/>
+      <Scrollbar/>
     </Fragment>
   );
 };
-
 
 
 export default connect(null)(RoomSinglePage);

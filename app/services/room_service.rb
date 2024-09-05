@@ -39,4 +39,29 @@ class RoomService
     { error: 'Room not found' }.to_json
   end
 
+  def get_all_rooms
+    begin
+      rooms = @room_repository.get_all_rooms
+
+      if rooms.present?
+        {
+          status: { code: 200, message: 'Rooms retrieved successfully.' },
+          data: rooms.as_json(include: { comments: { include: :responses }, room_type: {}, image_rooms: {} }),
+          status_code: :ok
+        }
+      else
+        {
+          status: { code: 422, message: 'There are not enough rooms available.' },
+          status_code: :unprocessable_entity
+        }
+      end
+    rescue => e
+      {
+        status: { code: 500, message: 'An error occurred while fetching rooms.', error: e.message },
+        status_code: :internal_server_error
+      }
+    end
+  end
+
+
 end

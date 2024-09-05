@@ -29,7 +29,6 @@ const SearchResults =({ addToCart }) => {
 
 
   const addToCartProduct = (room, qty = 1) => {
-        console.log("room")
         room.kids = searchParams.kids
         room.adults = searchParams.adults
         room.reservation = reservation

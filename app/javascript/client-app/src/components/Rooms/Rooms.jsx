@@ -11,7 +11,6 @@ const Rooms = () => {
   };
 
   const { data: rooms, error, isLoading } = useMostUsedRooms();
-  console.log("lenght", rooms)
 
   if (isLoading || !rooms) return <div>Loading...</div>;
   if (error) return <div>Error loading rooms</div>;
@@ -37,7 +36,7 @@ const Rooms = () => {
                       <img src={room.image_rooms.length > 0 ? room.image_rooms[0].image : "https://placehold.co/30/cccccc/000000/600x400.png?text=NO IMAGE"} alt=""/>
                     </div>
                     <div className="room-content">
-                      <h2><Link onClick={ClickHandler} to={`/room-single/${room.id}`}>{room.room_type.name}</Link></h2>
+                      <h2><Link onClick={ClickHandler} to={`/app/room-single/${room.id}`}>{room.room_type.name}</Link></h2>
                       <ul>
                         <li><i className="fi flaticon-expand-arrows"></i>{room.sqm} sqm</li>
                         <li><i className="fi flaticon-bed"></i>{room.beds} Bed</li>
