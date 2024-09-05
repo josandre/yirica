@@ -30,6 +30,9 @@ class RoomRepository
     Room.find(id)
   end
 
+  def get_all_rooms
+    Room.includes(:room_type, :image_rooms, comments: :responses).all
+  end
 
   private
   def available_between(check_in, check_out)
@@ -37,6 +40,5 @@ class RoomRepository
                                       .where('reservations.checking_date < ? AND reservations.checkout_date > ?', check_out, check_in)
                                       .select(:room_id))
   end
-
 
 end
