@@ -10,7 +10,7 @@ class Ability
       can :manage, :all
 
     elsif user.client?
-      puts "entra"
+
       can :read, Room
 
       can :read, RoomType

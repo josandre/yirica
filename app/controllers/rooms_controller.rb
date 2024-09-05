@@ -39,7 +39,6 @@ class RoomsController < ApplicationController
 
   def show
     json_response = @room_service.get_room_with_details(params[:id])
-
     if json_response[:error]
       render json: json_response, status: :not_found
     else

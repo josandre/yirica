@@ -5,8 +5,10 @@ class CommentsController < ApplicationController
   load_and_authorize_resource
 
 
+
   # GET /comments or /comments.json
   def index
+
 
   end
 
@@ -29,6 +31,9 @@ class CommentsController < ApplicationController
     punctuation = comment_params[:punctuation]
     user_id = comment_params[:user_id]
     room_id = comment_params[:room_id]
+
+
+
     json_response = @comment_service.create(comment, punctuation, user_id, room_id)
     render json: json_response, status: json_response[:status_code]
   end
