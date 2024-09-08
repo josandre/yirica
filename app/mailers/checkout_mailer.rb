@@ -19,7 +19,18 @@ class CheckoutMailer < ApplicationMailer
     mail(to: @user.email, subject: 'Reservation information') do |format|
       format.html {render layout: false}
     end
+  end
 
+  def reservation_admin_mail(user, metadata, reservation, admin)
+    @user = user
+    @reservation = reservation
+    @metadata = metadata
+    @state = reservation.reservation_state.state
+    @admin = admin
+
+    mail(to: admin.email, subject: 'Reservation created') do |format|
+      format.html {render layout: false}
+    end
   end
 
 end

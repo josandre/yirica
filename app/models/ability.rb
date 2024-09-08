@@ -45,9 +45,11 @@ class Ability
       end
 
       can :create, CancelRequest
+
       can :read, CancelRequest do |cancel_request|
         cancel_request.reservation.user == user
       end
+
       can :delete, CancelRequest do |cancel_request|
         cancel_request.reservation.user == user
       end

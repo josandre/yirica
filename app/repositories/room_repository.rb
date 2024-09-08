@@ -34,6 +34,21 @@ class RoomRepository
     Room.includes(:room_type, :image_rooms).all
   end
 
+  def create(adult_price, kids_price, number, location, room_type_id, is_beachfront, sqm,  bathrooms,  beds)
+    Room.create!(
+      adult_price: adult_price,
+      kids_price: kids_price,
+      number: number,
+      location: location,
+      room_type_id: room_type_id,
+      is_beachfront: is_beachfront,
+      sqm: sqm,
+      bathrooms: bathrooms,
+      beds: beds,
+      is_active: true,
+    )
+  end
+
   private
   def available_between(check_in, check_out)
     Room.where.not(id: ReservationRoom.joins(:reservation)

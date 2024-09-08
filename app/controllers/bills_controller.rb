@@ -6,8 +6,10 @@ class BillsController < ApplicationController
     @bills = Bill.all
   end
 
-  # GET /bills/1 or /bills/1.json
+  # GET /reservations/47/bill
   def show
+
+
   end
 
   # GET /bills/new

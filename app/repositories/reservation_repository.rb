@@ -1,7 +1,11 @@
 class ReservationRepository
 
   def get_reservations
-    Reservation.includes(:reservation_state, :bill, reservation_room: :room)
+    Reservation.includes(:reservation_state, :bill, :user, reservation_room: :room)
+  end
+
+  def get_reservation_by_id(reservation_id)
+    Reservation.find_by(id: reservation_id)
   end
 
   def get_reservation_by_code(search_code)

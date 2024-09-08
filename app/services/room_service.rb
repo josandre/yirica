@@ -2,6 +2,7 @@ class RoomService
 
   def initialize
     @room_repository = RoomRepository.new
+    @image_room_repository = ImageRoomService.new
   end
 
   def search_room_availability(check_in, check_out, adults, children, rooms)
@@ -56,6 +57,38 @@ class RoomService
     }
   rescue ActiveRecord::RecordNotFound
     { error: 'Room not found' }.to_json
+  end
+
+
+  def create(adult_price, kids_price, number, location, room_type_id, is_beachfront, sqm,  bathrooms,  beds, image)
+
+    ActiveRecord::Base.transaction do
+      room = @room_repository.create(adult_price, kids_price, number, location, room_type_id, is_beachfront, sqm,  bathrooms,  beds)
+      image = @image_room_repository.create(room.id, image)
+
+
+      if image.persisted?
+        {
+          status: { code: 200, message: 'Room and image created successfully.' },
+          data: room.as_json(
+            only: [:id, :adult_price, :kids_price, :number, :location, :room_type_id, :is_beachfront, :sqm, :bathrooms, :beds],
+            include: {
+              image_rooms: {
+                            only: [:id, :image, :is_principal, :created_at, :updated_at]
+              }
+            }
+          ),
+          status_code: :ok
+        }
+      else
+        raise ActiveRecord::Rollback, "Image was not saved"
+      end
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    {
+      status: { code: 500, message: 'An error occurred while creating a room.', error: e.message },
+      status_code: :internal_server_error
+    }
   end
 
   def get_all_rooms

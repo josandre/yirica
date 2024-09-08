@@ -32,13 +32,7 @@ class CommentsController < ApplicationController
     user_id = comment_params[:user_id]
     room_id = comment_params[:room_id]
 
-    puts "#{comment}"
-    puts "#{punctuation}"
-    puts "#{user_id}"
-    puts "#{room_id}"
-
     json_response = @comment_service.create(comment, punctuation, user_id, room_id)
-    puts json_response.inspect
     render json: json_response, status: json_response[:status_code]
   end
 

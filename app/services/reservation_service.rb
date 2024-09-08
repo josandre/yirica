@@ -10,7 +10,51 @@ class ReservationService
   end
 
   def get_reservations
-    @reservation_repository.get_reservations
+
+    begin
+      reservations = @reservation_repository.get_reservations
+
+      if reservations.present?
+        {
+          status: { code: 200, message: 'List successfully retrieved' },
+          data: reservations.as_json(only: [:id, :checking_date, :checkout_date, :is_refunded, :created_at, :updated_at, :payment_id, :search_code ],
+                                     include: {
+                                       reservation_state: {
+                                         only: [:id, :state],
+                                       },
+                                       bill: {
+                                         only: [:id, :discount,  :taxes, :total, :refund_price]
+                                       },
+                                       reservation_room: {
+                                         only: [:id, :room_id, :reservation_id, :created_at, :updated_at, :kids_amount, :adults_amount],
+                                         include: {
+                                           room: {
+                                             only: [:id, :usage_amount, :adult_price, :kids_price, :number, :location, :room_type_id, :created_at, :updated_at, :is_active, :is_beachfront, :sqm, :bathrooms, :beds],
+                                             include: {
+                                               room_type: {
+                                                 only: [:id, :name, :description, :max_people, :kids_accepted, :created_at, :updated_at]
+                                               }
+                                             }
+                                          }
+                                         }
+                                       }
+                                     }),
+          status_code: :ok
+        }
+
+      else
+        {
+          status: { code: 404, message: 'There is not reservations' },
+          status_code: :not_found
+        }
+      end
+
+    rescue StandardError => e
+      {
+        status: { code: 500, message: 'An error occurred while creating the comment.', error: e.message },
+        status_code: :internal_server_error
+      }
+    end
   end
 
   def get_reservations_by_code(search_code)
@@ -36,7 +80,6 @@ class ReservationService
       Rails.logger.info "Reservation created with search_code: #{search_code}"
     end
 
-    puts "metadata #{metadata}"
     metadata.each do |room|
       room_id = room["roomId"] || room[:roomId]
       room_object = @room_service.get_room_by_id(room_id)
@@ -55,6 +98,10 @@ class ReservationService
     end
 
     [reservation, bill]
+  end
+
+  def get_reservation_by_id(reservation_id)
+    @reservation_repository.get_reservation_by_id(reservation_id)
   end
 
 
