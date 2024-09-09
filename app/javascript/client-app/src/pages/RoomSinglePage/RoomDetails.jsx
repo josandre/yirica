@@ -33,7 +33,7 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services, commen
             }
         }
 
-        addCommentMutation.mutate({ request, token }, {
+        addCommentMutation.mutate({ request }, {
             onSuccess: (res) => {
                 if(!res.data.is_legal) {
                     toast.warn("Your comment is under review, it will show up as soon as our moderator approves")
@@ -52,8 +52,6 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services, commen
         window.scrollTo(10, 0);
     }
 
-
-    console.log(isUserLogged, token, userId)
     return (
         <div className="Room-details-area pb-120">
             <div className="container">

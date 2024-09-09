@@ -12,7 +12,6 @@ class UserRepository
 
 
   def get_admin
-    admin_role = Role.find_by(role: 'Administrator')
-    User.where(role_id: admin_role.id)
+    User.joins(:role).where(roles: { role: 'Administrator' }).first
   end
 end

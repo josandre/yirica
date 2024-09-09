@@ -3,41 +3,49 @@ class CancelRequestService
   def initialize
     @cancel_request_repository = CancelRequestRepository.new
     @reservation_service = ReservationService.new
+    @state_reservation_service = ReservationStateService.new
   end
 
   def create_cancel_request(reason, reservation_id, current_user)
-    begin
-      reservation = @reservation_service.get_reservation_by_id(reservation_id)
+    ActiveRecord::Base.transaction do
+      begin
+        reservation = @reservation_service.get_reservation_by_id(reservation_id)
+        if reservation and reservation.user_id == current_user.id
+          cancel_request = @cancel_request_repository.create_cancel_request(reason, reservation_id)
+          cancel_request_state = @state_reservation_service.get_cancel_request_state
+          @reservation_service.update_reservation_state(reservation, cancel_request_state)
+          {
+            status: { code: 200, message: 'Cancel request created' },
+            data: {
+              id: cancel_request.reservation_id,
+              reason: cancel_request.reason,
+              is_confirmed: cancel_request.is_confirmed
+            },
+            status_code: :ok
+          }
+        else
+          {
+            status: { code: 404, message: 'Not found' },
+            data: {
+              id: reservation_id,
+              reason: "The reservation provided do not exists",
+            },
+            status_code: :not_found
+          }
+        end
 
-      if reservation and reservation.user_id == current_user.id
-        cancel_request = @cancel_request_repository.create_cancel_request(reason, reservation_id)
+      rescue StandardError => e
         {
-          status: { code: 200, message: 'Cancel request created' },
-          data: {
-            id: cancel_request.reservation_id,
-            reason: cancel_request.reason,
-            is_confirmed: cancel_request.is_confirmed
-          },
-          status_code: :ok
-        }
-      else
-        {
-          status: { code: 404, message: 'Not found' },
-          data: {
-            id: reservation_id,
-            reason: "The reservation provided do not exists",
-          },
-          status_code: :not_found
+          status: { code: 500, message: 'An error occurred while creating the comment.', error: e.message },
+          status_code: :internal_server_error
         }
       end
-
     rescue StandardError => e
       {
         status: { code: 500, message: 'An error occurred while creating the comment.', error: e.message },
         status_code: :internal_server_error
       }
     end
-
   end
 
   def get_all_cancel_requests

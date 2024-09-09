@@ -2,6 +2,7 @@
 ReservationRoom.destroy_all
 Reservation.destroy_all
 ReservationState.destroy_all
+Comment.destroy_all
 User.destroy_all
 RoomTypeAmenity.destroy_all
 RoomTypeService.destroy_all
@@ -9,16 +10,15 @@ Amenity.destroy_all
 Service.destroy_all
 Room.destroy_all
 
-
 client_role = Role.create({ role: 'Client' })
 admin_role = Role.create({ role: 'Administrator' })
 user_client_1 = User.create({name: 'Jocselyn', last_name: 'Aguilar', password: 'User123!', phone: '63399135', role_id: client_role.id, email: 'jocselynaguilarchinchilla@gmail.com' })
 user_client_2 = User.create({name: 'Andrea', last_name: 'Chinchilla', password: 'User1234!', phone: '63399135', role_id: admin_role.id, email: 'jaguilarc@ucenfotec.ac.cr' })
 puts 'client and roles created'
 
-deluxe = RoomType.create(name: 'Deluxe',description: 'A deluxe room with all amenities',max_people: '4',kids_accepted: true)
-suite = RoomType.create(name: 'Suite',description: 'A luxurious suite with multiple rooms',max_people: '6',kids_accepted: true)
-standard = RoomType.create(name: 'Standard',description: 'A standard room with basic amenities',max_people: '2',kids_accepted: false)
+deluxe = RoomType.create(name: 'Deluxe',description: 'The Deluxe room offers a comfortable and elegant stay with all modern amenities. It is spacious and comes equipped with a king-size bed, a luxurious bathroom, a work desk, and a seating area. Guests can enjoy a scenic view from the large windows or balcony. The room also includes complimentary Wi-Fi, flat-screen TV, minibar, and in-room safe. Ideal for families, this room can accommodate up to four people, and children are welcome.',max_people: '4',kids_accepted: true)
+suite = RoomType.create(name: 'Suite',description: 'The Suite is a luxurious accommodation that offers unparalleled comfort and style. It includes multiple rooms, such as a master bedroom with a king-size bed, a spacious living area, and a separate dining space. The suite is furnished with premium furniture, and the decor is designed to offer a modern yet cozy atmosphere. The bathroom features a large bathtub and a rain shower, perfect for relaxation. With access to exclusive services such as a private butler, this suite is perfect for families or groups of up to six people. Children are welcome, and additional amenities include high-speed internet, smart TV, minibar, and room service.',max_people: '6',kids_accepted: true)
+standard = RoomType.create(name: 'Standard',description: 'Our Standard room is designed for travelers who need a simple yet comfortable stay. This room features essential amenities, including a queen-size bed, a compact bathroom with a shower, a flat-screen TV, and a small desk for work or leisure activities. Although smaller in size compared to our other offerings, the Standard room ensures a pleasant stay for up to two guests. It is perfect for business travelers or couples looking for a budget-friendly option. Please note that this room does not accommodate children.',max_people: '2',kids_accepted: false)
 puts 'room types created'
 
 amenities = [
@@ -190,6 +190,8 @@ room_9.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.wind
 active_reservation_state = ReservationState.create(state: "Active", description: "The reservation is active")
 canceled_reservation_state = ReservationState.create(state: "Canceled", description: "The reservation was canceled")
 pending_reservation_state = ReservationState.create(state: "Pending payment", description: "The reservation needs to be paid")
+canceled_request_state = ReservationState.create(state: "Cancel requested", description: "The reservation has a canceled request")
+
 
 client_1 = User.find_by(email: 'jocselynaguilarchinchilla@gmail.com')
 client_2 = User.find_by(email: 'jaguilarc@ucenfotec.ac.cr')

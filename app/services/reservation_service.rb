@@ -9,6 +9,11 @@ class ReservationService
     @reservation_state_service = ReservationStateService.new
   end
 
+
+  def update_reservation_state(reservation, state)
+    @reservation_repository.update_state(reservation, state)
+  end
+
   def get_reservations
 
     begin

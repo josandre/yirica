@@ -21,10 +21,8 @@ class CheckoutMailer < ApplicationMailer
     end
   end
 
-  def reservation_admin_mail(user, metadata, reservation, admin)
-    @user = user
+  def reservation_admin_mail(reservation, admin)
     @reservation = reservation
-    @metadata = metadata
     @state = reservation.reservation_state.state
     @admin = admin
 

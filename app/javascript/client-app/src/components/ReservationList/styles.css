@@ -11,6 +11,15 @@
     justify-content: center;
 }
 
+.display-box{
+    display: flex;
+    justify-content: center;
+}
+
+.width-reason{
+
+}
+
 
 .dates-in-out{
     font-size: 13px;
