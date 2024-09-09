@@ -1,5 +1,7 @@
 
 ReservationRoom.destroy_all
+Bill.destroy_all
+CancelRequest.destroy_all
 Reservation.destroy_all
 ReservationState.destroy_all
 Comment.destroy_all
@@ -206,13 +208,23 @@ room_301 = Room.find_by(number: 301)
 room_302 = Room.find_by(number: 302)
 room_304 = Room.find_by(number: 304)
 
+def generate_search_code
+  loop do
+    middle_part = rand(1000..9999)
+    last_part = rand(10..99)
+    code = "RS_#{middle_part}_#{last_part}"
+    break code unless Reservation.exists?(search_code: code)
+  end
+end
+
 reservation_1 = Reservation.create(
   checking_date: Date.today,
   checkout_date: Date.today + 3.days,
   user_notes: 'First time visiting.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_2 = Reservation.create(
@@ -221,7 +233,8 @@ reservation_2 = Reservation.create(
   user_notes: 'Would like an extra bed.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_3 = Reservation.create(
@@ -230,7 +243,8 @@ reservation_3 = Reservation.create(
   user_notes: 'Ocean view requested.',
   is_refunded: true,
   reservation_state_id: canceled_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_4 = Reservation.create(
@@ -239,7 +253,8 @@ reservation_4 = Reservation.create(
   user_notes: 'Late check-in requested.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_5 = Reservation.create(
@@ -248,7 +263,8 @@ reservation_5 = Reservation.create(
   user_notes: 'Honeymoon package.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_6 = Reservation.create(
@@ -257,7 +273,8 @@ reservation_6 = Reservation.create(
   user_notes: 'Business trip.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_7 = Reservation.create(
@@ -266,7 +283,8 @@ reservation_7 = Reservation.create(
   user_notes: 'Family vacation, need extra beds.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_8 = Reservation.create(
@@ -275,7 +293,8 @@ reservation_8 = Reservation.create(
   user_notes: 'Anniversary celebration.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_9 = Reservation.create(
@@ -284,7 +303,8 @@ reservation_9 = Reservation.create(
   user_notes: 'Quiet room needed for work.',
   is_refunded: true,
   reservation_state_id: canceled_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_10 = Reservation.create(
@@ -293,16 +313,17 @@ reservation_10 = Reservation.create(
   user_notes: 'Large group, connecting rooms requested.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
-ReservationRoom.create(reservation_id: reservation_1.id,room_id: room_101.id)
-ReservationRoom.create(reservation_id: reservation_2.id, room_id: room_201.id)
-ReservationRoom.create(reservation_id: reservation_3.id, room_id: room_301.id)
-ReservationRoom.create(reservation_id: reservation_4.id, room_id: room_304.id)
-ReservationRoom.create(reservation_id: reservation_5.id, room_id: room_101.id)
-ReservationRoom.create(reservation_id: reservation_6.id, room_id: room_102.id)
-ReservationRoom.create(reservation_id: reservation_7.id, room_id: room_202.id)
-ReservationRoom.create(reservation_id: reservation_8.id, room_id: room_103.id)
-ReservationRoom.create(reservation_id: reservation_9.id, room_id: room_302.id)
-ReservationRoom.create(reservation_id: reservation_10.id, room_id: room_203.id)
+ReservationRoom.create(reservation_id: reservation_1.id,room_id: room_101.id, kids_amount: 2, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_2.id, room_id: room_201.id, kids_amount: 1, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_3.id, room_id: room_301.id, kids_amount: 0, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_4.id, room_id: room_304.id, kids_amount: 0, adults_amount: 3)
+ReservationRoom.create(reservation_id: reservation_5.id, room_id: room_101.id, kids_amount: 2, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_6.id, room_id: room_102.id, kids_amount: 3, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_7.id, room_id: room_202.id, kids_amount: 1, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_8.id, room_id: room_103.id, kids_amount: 2, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_9.id, room_id: room_302.id, kids_amount: 2, adults_amount: 1)
+ReservationRoom.create(reservation_id: reservation_10.id, room_id: room_203.id, kids_amount: 2, adults_amount: 2)

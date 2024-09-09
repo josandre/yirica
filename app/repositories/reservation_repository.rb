@@ -18,7 +18,7 @@ class ReservationRepository
     user.reservations
         .includes(:reservation_state, :bill, reservation_room: :room)
         .left_joins(:reservation_state)
-        .order(Arel.sql("CASE WHEN reservation_states.state = 'Canceled' THEN 1 ELSE 0 END, reservations.created_at DESC"))
+        .order(Arel.sql("CASE WHEN reservation_states.state = 'Active'  THEN 0 ELSE 1 END, reservations.created_at DESC"))
   end
 
   def get_user_reservation_by_id(user, reservation_id)

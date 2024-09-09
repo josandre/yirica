@@ -4,11 +4,13 @@ class CancelRequestService
     @cancel_request_repository = CancelRequestRepository.new
     @reservation_service = ReservationService.new
     @state_reservation_service = ReservationStateService.new
+    @user_service = UserService.new
   end
 
   def create_cancel_request(reason, reservation_id, current_user)
     ActiveRecord::Base.transaction do
       begin
+        admin = @user_service.get_admin
         reservation = @reservation_service.get_reservation_by_id(reservation_id)
         if reservation and reservation.user_id == current_user.id
           cancel_request = @cancel_request_repository.create_cancel_request(reason, reservation_id)
@@ -23,6 +25,7 @@ class CancelRequestService
             },
             status_code: :ok
           }
+          CancelRequestJob.perform_later(reservation, current_user, admin, reason)
         else
           {
             status: { code: 404, message: 'Not found' },

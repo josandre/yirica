@@ -11,7 +11,6 @@ class StripeService
   def payment_intend(user_id, reservation_info, rooms, metadata, total)
     user = @user_service.get_by_id(user_id)
     admin = @user_service.get_admin
-    puts "admin: #{admin.id}"
     flattened_metadata = flatten_metadata(metadata)
 
     begin

@@ -5,4 +5,5 @@ class Reservation < ApplicationRecord
   has_one :cancel_request, dependent: :destroy
   has_many :reservation_room
   has_many :rooms, through: :reservation_room
+
 end

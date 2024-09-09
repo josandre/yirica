@@ -97,11 +97,17 @@ class ReservationService
       end
     end
 
-    unless @bill_service.bill_exits_by_reservation(reservation)
+    bill = @bill_service.bill_exits_by_reservation(reservation)
+
+    if bill
+      Rails.logger.info "Bill already exists: #{bill}. Returning the existing bill."
+      Rails.logger.info "Bill already exists for reservation ID: #{reservation.id}. Returning the existing bill."
+    else
       bill = @bill_service.create_bill(reservation, total)
       Rails.logger.info "Bill created for reservation ID: #{reservation.id}"
     end
 
+    Rails.logger.info "Bill already exists bill returned: #{bill}. Returning bill."
     [reservation, bill]
   end
 
@@ -110,10 +116,23 @@ class ReservationService
   end
 
 
+  # def create_search_code
+  #   middle_part = rand(1000..9999)
+  #   last_part = rand(10..99)
+  #   "RS_#{middle_part}_#{last_part}"
+  # end
+
+
   def create_search_code
-    middle_part = rand(1000..9999)
-    last_part = rand(10..99)
-    "RS_#{middle_part}_#{last_part}"
+    loop do
+      middle_part = rand(1000..9999)
+      last_part = rand(10..99)
+      code_generated = "RS_#{middle_part}_#{last_part}"
+      unless Reservation.exists?(search_code: code_generated)
+         code_generated
+        break
+      end
+    end
   end
 
   private

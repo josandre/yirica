@@ -26,8 +26,8 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
 
   const amountOfKids = (reservation) => {
     const reservationRoom = reservation.reservation_room[0];
-    const kids = reservationRoom.kids_amount;
-    const adults = reservationRoom.adults_amount;
+    const kids = reservationRoom.kids_amount ;
+    const adults = reservationRoom.adults_amount ;
     return [kids, adults];
   };
 
@@ -199,7 +199,7 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
                       <span className="children-accepted">Adults {adults}</span>
                     </p>
 
-                    {!reservation.is_refunded || reservation.reservation_state === 'Active' && (
+                    {reservation.reservation_state.state === 'Active' && (
                       <div className="add-to-cart display-box">
                         <button
                           className="theme-btn mt-3"
