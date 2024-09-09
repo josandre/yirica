@@ -28,7 +28,6 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services, commen
             comment: {
                 comment: review,
                 punctuation: rating,
-                user_id: userId,
                 room_id: roomId,
             }
         }

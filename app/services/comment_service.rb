@@ -6,13 +6,12 @@ class CommentService
     @user_repository = UserRepository.new
   end
 
-  def create(comment, punctuation, user_id, room_id)
+  def create(comment, punctuation, user, room_id)
     begin
       is_legal = check_if_comment_is_legal(comment)
-
-      user = @user_repository.get_by_id(user_id)
-
-      comment = @comment_repository.create_comment(comment, punctuation, user_id, room_id, is_legal)
+      admin = @user_repository.get_admin
+      comment = @comment_repository.create_comment(comment, punctuation, user.id, room_id, is_legal)
+      CommentsJob.perform_later(user, comment, admin, is_legal)
       {
         status: { code: 200, message: 'Comment created successfully.' },
         data: {
@@ -29,6 +28,7 @@ class CommentService
         },
         status_code: :ok
       }
+
     rescue StandardError => e
       {
         status: { code: 500, message: 'An error occurred while creating the comment.', error: e.message },
@@ -42,7 +42,6 @@ class CommentService
   private
   def check_if_comment_is_legal(comment)
     sentiment = detect_sentiment(comment)
-    puts "sentiment: #{sentiment}"
     sentiment == 'NEUTRAL' || sentiment == 'POSITIVE'
   end
 end

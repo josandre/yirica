@@ -29,35 +29,14 @@ class CommentsController < ApplicationController
   def create
     comment = comment_params[:comment]
     punctuation = comment_params[:punctuation]
-    user_id = comment_params[:user_id]
     room_id = comment_params[:room_id]
+    puts "current user #{@current_user.id}"
 
-    json_response = @comment_service.create(comment, punctuation, user_id, room_id)
+    json_response = @comment_service.create(comment, punctuation, @current_user, room_id)
     render json: json_response, status: json_response[:status_code]
   end
 
-  # PATCH/PUT /comments/1 or /comments/1.json
-  def update
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to comment_url(@comment), notice: "Comment was successfully updated." }
-        format.json { render :show, status: :ok, location: @comment }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
-  # DELETE /comments/1 or /comments/1.json
-  def destroy
-    @comment.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to comments_url, notice: "Comment was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
 
   private
     def set_comment
@@ -65,7 +44,7 @@ class CommentsController < ApplicationController
     end
 
     def comment_params
-      params.require(:comment).permit(:comment, :punctuation, :user_id, :room_id)
+      params.require(:comment).permit(:comment, :punctuation, :room_id)
     end
 
     def initialize_comment_service
