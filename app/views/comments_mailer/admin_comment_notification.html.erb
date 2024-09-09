@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 0;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+      }
+      .container {
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+          background-color: #081424;
+          padding: 20px;
+          text-align: center;
+          color: #ffffff;
+      }
+      .header h1 {
+          margin: 0;
+          font-size: 24px;
+      }
+      .content {
+          padding: 20px;
+      }
+      .content h2 {
+          font-size: 22px;
+          color: #333333;
+      }
+      .content p {
+          font-size: 16px;
+          color: #666666;
+          line-height: 1.5;
+      }
+      .footer {
+          background-color: #081424;
+          padding: 10px;
+          text-align: center;
+          color: #ffffff;
+          font-size: 14px;
+      }
+      .footer a {
+          color: #ffffff;
+          text-decoration: none;
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <%= image_tag 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/logo.png', alt: 'Yiri Ca Logo', style: 'max-width: 100px;' %>
+    <h1>Room commented</h1>
+  </div>
+  <div class="content">
+    <h2>Hello Admin,</h2>
+    <p>A new comment has been added by <%= @user.name %>  <%= @user.last_name %> about a room.</p>
+
+    <h3>Comment Details:</h3>
+    <p><strong>Comment:</strong> <%= @comment.comment %></p>
+    <p><strong>Punctuation:</strong> <%= @comment.punctuation %></p>
+    <p><strong>Is Legal:</strong> <%= @is_legal ? 'Yes' : 'No' %></p>
+    <p><strong>It is published:</strong> <%= @is_legal ? 'Yes' : 'No' %></p>
+    <p><strong>Sentiment:</strong> <%= @is_legal ? 'Positive' : 'Negative' %></p>
+
+    <h3>About the room:</h3>
+    <p><strong>Room Type:</strong> <%= @room_type.name %></p>
+    <p><strong>Room Number:</strong> <%= @room.number %></p>
+    <p><strong>Location:</strong> <%= @room.location %></p>
+
+    <p>Thank you!</p>
+  </div>
+  <div class="footer">
+    <p>&copy; 2024 Your Hotel. All rights reserved.</p>
+    <p><a href="mailto:support@yourhotel.com">Contact Support</a></p>
+  </div>
+</div>
+</body>
+</html>

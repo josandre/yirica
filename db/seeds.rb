@@ -1,7 +1,10 @@
 
 ReservationRoom.destroy_all
+Bill.destroy_all
+CancelRequest.destroy_all
 Reservation.destroy_all
 ReservationState.destroy_all
+Comment.destroy_all
 User.destroy_all
 RoomTypeAmenity.destroy_all
 RoomTypeService.destroy_all
@@ -9,16 +12,15 @@ Amenity.destroy_all
 Service.destroy_all
 Room.destroy_all
 
-
 client_role = Role.create({ role: 'Client' })
 admin_role = Role.create({ role: 'Administrator' })
 user_client_1 = User.create({name: 'Jocselyn', last_name: 'Aguilar', password: 'User123!', phone: '63399135', role_id: client_role.id, email: 'jocselynaguilarchinchilla@gmail.com' })
 user_client_2 = User.create({name: 'Andrea', last_name: 'Chinchilla', password: 'User1234!', phone: '63399135', role_id: admin_role.id, email: 'jaguilarc@ucenfotec.ac.cr' })
 puts 'client and roles created'
 
-deluxe = RoomType.create(name: 'Deluxe',description: 'A deluxe room with all amenities',max_people: '4',kids_accepted: true)
-suite = RoomType.create(name: 'Suite',description: 'A luxurious suite with multiple rooms',max_people: '6',kids_accepted: true)
-standard = RoomType.create(name: 'Standard',description: 'A standard room with basic amenities',max_people: '2',kids_accepted: false)
+deluxe = RoomType.create(name: 'Deluxe',description: 'The Deluxe room offers a comfortable and elegant stay with all modern amenities. It is spacious and comes equipped with a king-size bed, a luxurious bathroom, a work desk, and a seating area. Guests can enjoy a scenic view from the large windows or balcony. The room also includes complimentary Wi-Fi, flat-screen TV, minibar, and in-room safe. Ideal for families, this room can accommodate up to four people, and children are welcome.',max_people: '4',kids_accepted: true)
+suite = RoomType.create(name: 'Suite',description: 'The Suite is a luxurious accommodation that offers unparalleled comfort and style. It includes multiple rooms, such as a master bedroom with a king-size bed, a spacious living area, and a separate dining space. The suite is furnished with premium furniture, and the decor is designed to offer a modern yet cozy atmosphere. The bathroom features a large bathtub and a rain shower, perfect for relaxation. With access to exclusive services such as a private butler, this suite is perfect for families or groups of up to six people. Children are welcome, and additional amenities include high-speed internet, smart TV, minibar, and room service.',max_people: '6',kids_accepted: true)
+standard = RoomType.create(name: 'Standard',description: 'Our Standard room is designed for travelers who need a simple yet comfortable stay. This room features essential amenities, including a queen-size bed, a compact bathroom with a shower, a flat-screen TV, and a small desk for work or leisure activities. Although smaller in size compared to our other offerings, the Standard room ensures a pleasant stay for up to two guests. It is perfect for business travelers or couples looking for a budget-friendly option. Please note that this room does not accommodate children.',max_people: '2',kids_accepted: false)
 puts 'room types created'
 
 amenities = [
@@ -190,6 +192,8 @@ room_9.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.wind
 active_reservation_state = ReservationState.create(state: "Active", description: "The reservation is active")
 canceled_reservation_state = ReservationState.create(state: "Canceled", description: "The reservation was canceled")
 pending_reservation_state = ReservationState.create(state: "Pending payment", description: "The reservation needs to be paid")
+canceled_request_state = ReservationState.create(state: "Cancel requested", description: "The reservation has a canceled request")
+
 
 client_1 = User.find_by(email: 'jocselynaguilarchinchilla@gmail.com')
 client_2 = User.find_by(email: 'jaguilarc@ucenfotec.ac.cr')
@@ -204,13 +208,23 @@ room_301 = Room.find_by(number: 301)
 room_302 = Room.find_by(number: 302)
 room_304 = Room.find_by(number: 304)
 
+def generate_search_code
+  loop do
+    middle_part = rand(1000..9999)
+    last_part = rand(10..99)
+    code = "RS_#{middle_part}_#{last_part}"
+    break code unless Reservation.exists?(search_code: code)
+  end
+end
+
 reservation_1 = Reservation.create(
   checking_date: Date.today,
   checkout_date: Date.today + 3.days,
   user_notes: 'First time visiting.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_2 = Reservation.create(
@@ -219,7 +233,8 @@ reservation_2 = Reservation.create(
   user_notes: 'Would like an extra bed.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_3 = Reservation.create(
@@ -228,7 +243,8 @@ reservation_3 = Reservation.create(
   user_notes: 'Ocean view requested.',
   is_refunded: true,
   reservation_state_id: canceled_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_4 = Reservation.create(
@@ -237,7 +253,8 @@ reservation_4 = Reservation.create(
   user_notes: 'Late check-in requested.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_5 = Reservation.create(
@@ -246,7 +263,8 @@ reservation_5 = Reservation.create(
   user_notes: 'Honeymoon package.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_6 = Reservation.create(
@@ -255,7 +273,8 @@ reservation_6 = Reservation.create(
   user_notes: 'Business trip.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_7 = Reservation.create(
@@ -264,7 +283,8 @@ reservation_7 = Reservation.create(
   user_notes: 'Family vacation, need extra beds.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_8 = Reservation.create(
@@ -273,7 +293,8 @@ reservation_8 = Reservation.create(
   user_notes: 'Anniversary celebration.',
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
 reservation_9 = Reservation.create(
@@ -282,7 +303,8 @@ reservation_9 = Reservation.create(
   user_notes: 'Quiet room needed for work.',
   is_refunded: true,
   reservation_state_id: canceled_reservation_state.id,
-  user_id: client_1.id
+  user_id: client_1.id,
+  search_code: generate_search_code
 )
 
 reservation_10 = Reservation.create(
@@ -291,16 +313,17 @@ reservation_10 = Reservation.create(
   user_notes: 'Large group, connecting rooms requested.',
   is_refunded: false,
   reservation_state_id: pending_reservation_state.id,
-  user_id: client_2.id
+  user_id: client_2.id,
+  search_code: generate_search_code
 )
 
-ReservationRoom.create(reservation_id: reservation_1.id,room_id: room_101.id)
-ReservationRoom.create(reservation_id: reservation_2.id, room_id: room_201.id)
-ReservationRoom.create(reservation_id: reservation_3.id, room_id: room_301.id)
-ReservationRoom.create(reservation_id: reservation_4.id, room_id: room_304.id)
-ReservationRoom.create(reservation_id: reservation_5.id, room_id: room_101.id)
-ReservationRoom.create(reservation_id: reservation_6.id, room_id: room_102.id)
-ReservationRoom.create(reservation_id: reservation_7.id, room_id: room_202.id)
-ReservationRoom.create(reservation_id: reservation_8.id, room_id: room_103.id)
-ReservationRoom.create(reservation_id: reservation_9.id, room_id: room_302.id)
-ReservationRoom.create(reservation_id: reservation_10.id, room_id: room_203.id)
+ReservationRoom.create(reservation_id: reservation_1.id,room_id: room_101.id, kids_amount: 2, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_2.id, room_id: room_201.id, kids_amount: 1, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_3.id, room_id: room_301.id, kids_amount: 0, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_4.id, room_id: room_304.id, kids_amount: 0, adults_amount: 3)
+ReservationRoom.create(reservation_id: reservation_5.id, room_id: room_101.id, kids_amount: 2, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_6.id, room_id: room_102.id, kids_amount: 3, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_7.id, room_id: room_202.id, kids_amount: 1, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_8.id, room_id: room_103.id, kids_amount: 2, adults_amount: 2)
+ReservationRoom.create(reservation_id: reservation_9.id, room_id: room_302.id, kids_amount: 2, adults_amount: 1)
+ReservationRoom.create(reservation_id: reservation_10.id, room_id: room_203.id, kids_amount: 2, adults_amount: 2)

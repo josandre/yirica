@@ -23,11 +23,11 @@ Rails.application.routes.draw do
     end
   end
 
+
+
   resources :users do
     resources :reservations, only: [:index, :show], controller: 'user_reservations'
   end
-
-
 
 
   resources :response_cancels
@@ -41,6 +41,15 @@ Rails.application.routes.draw do
   resources :room_types
   resources :users
   resources :roles
+
+  #Admin Routes
+  namespace :admin do
+    resources :cancel_requests, only: [:index], controller: 'cancel_request'
+    resources :reservations, only: [:index]
+    resources :users, only: [:index]
+    resources :room_types, only: [:index]
+    resources :rooms, only: [:index, :create]
+  end
 
   if Rails.env.development? || Rails.env.production?
     Sidekiq::Web.use ActionDispatch::Cookies

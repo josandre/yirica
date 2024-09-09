@@ -1,7 +1,7 @@
 class BillRepository
 
   def bill_exits_by_reservation(reservation)
-    Bill.exists?(reservation_id: reservation.id)
+    Bill.find_by(reservation_id: reservation.id)
   end
 
   def create_bill(reservation, total)
@@ -14,5 +14,7 @@ class BillRepository
       refund_price: 100
     )
   end
+
+
 
 end

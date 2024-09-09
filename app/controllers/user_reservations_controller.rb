@@ -2,7 +2,7 @@
     before_action :set_user
     before_action :initialize_reservation_service
 
-    # GET /user/47/reservations
+    # GET /users/47/reservations
     def index
       begin
         @reservations = @reservation_service.get_reservations_by_user(@user)
@@ -58,7 +58,6 @@
 
     private
       def set_user
-        puts "user #{params[:user_id]}"
         @user = User.find(params[:user_id])
       end
 

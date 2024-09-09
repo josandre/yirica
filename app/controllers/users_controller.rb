@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :initialize_user_service
   respond_to :json
+  load_and_authorize_resource
 
   # GET /users or /users.json
   def index
-    @users = User.all
+
   end
 
   # GET /users/1 or /users/1.json
@@ -81,6 +83,10 @@ class UsersController < ApplicationController
           status: {message: "User couldn't be created successfully. #{current_user.errors.full_messages.to_sentence}"}
         }, status: :unprocessable_entity
       end
-  end
+    end
+
+    def initialize_user_service
+      @user_service = UserService.new
+    end
 
 end

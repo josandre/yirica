@@ -17,7 +17,11 @@ class User < ApplicationRecord
   end
 
   def jwt_payload
-    super.merge('user_id' => id)
+    super.merge(
+      'user_id' => id,
+      'role' => role.role
+    )
+
   end
 
   def client?
@@ -26,7 +30,12 @@ class User < ApplicationRecord
 
   private
   def nullify_comments
-    comments.update_all(user_id: nil)
+    anonymous_user = User.find_or_create_by(email: 'anonymous@gmail.com') do |user|
+      user.name = 'Anonymous'
+      user.last_name = 'User'
+      user.password = SecureRandom.hex(10)
+    end
+    comments.update_all(user_id: anonymous_user.id)
   end
 
   def set_default_role

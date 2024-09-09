@@ -10,6 +10,7 @@ class StripeService
 
   def payment_intend(user_id, reservation_info, rooms, metadata, total)
     user = @user_service.get_by_id(user_id)
+    admin = @user_service.get_admin
     flattened_metadata = flatten_metadata(metadata)
 
     begin
@@ -30,7 +31,7 @@ class StripeService
       if @payment_intend.status == 'succeeded'
         search_code = @reservation_service.create_search_code
         payment_id = @payment_intend.id
-        PaymentSuccessJob.perform_later(user, reservation_info, rooms, metadata, total, search_code, payment_id)
+        PaymentSuccessJob.perform_later(user, reservation_info, rooms, metadata, total, search_code, payment_id, admin)
       end
       return @payment_intend
     rescue Stripe::StripeError => e

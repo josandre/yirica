@@ -1,13 +1,9 @@
 import React, {Fragment} from "react";
-import { Link } from "react-router-dom";
-import SectionTitleS2 from "../../components/SectionTitleS2";
 import Navbar from "../../components/Navbar";
 import Logo from "../../images/logo.png";
 import PageTitle from "../../components/pagetitle/PageTitle";
-import SearchRooms from "../../components/SearchRooms/SearchRooms";
 import Footer from "../../components/footer";
 import Scrollbar from "../../components/scrollbar";
-import SearchSection from "../../components/SearchSection";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
 

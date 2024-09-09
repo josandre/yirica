@@ -9,8 +9,57 @@ class ReservationService
     @reservation_state_service = ReservationStateService.new
   end
 
+
+  def update_reservation_state(reservation, state)
+    @reservation_repository.update_state(reservation, state)
+  end
+
   def get_reservations
-    @reservation_repository.get_reservations
+
+    begin
+      reservations = @reservation_repository.get_reservations
+
+      if reservations.present?
+        {
+          status: { code: 200, message: 'List successfully retrieved' },
+          data: reservations.as_json(only: [:id, :checking_date, :checkout_date, :is_refunded, :created_at, :updated_at, :payment_id, :search_code ],
+                                     include: {
+                                       reservation_state: {
+                                         only: [:id, :state],
+                                       },
+                                       bill: {
+                                         only: [:id, :discount,  :taxes, :total, :refund_price]
+                                       },
+                                       reservation_room: {
+                                         only: [:id, :room_id, :reservation_id, :created_at, :updated_at, :kids_amount, :adults_amount],
+                                         include: {
+                                           room: {
+                                             only: [:id, :usage_amount, :adult_price, :kids_price, :number, :location, :room_type_id, :created_at, :updated_at, :is_active, :is_beachfront, :sqm, :bathrooms, :beds],
+                                             include: {
+                                               room_type: {
+                                                 only: [:id, :name, :description, :max_people, :kids_accepted, :created_at, :updated_at]
+                                               }
+                                             }
+                                          }
+                                         }
+                                       }
+                                     }),
+          status_code: :ok
+        }
+
+      else
+        {
+          status: { code: 404, message: 'There is not reservations' },
+          status_code: :not_found
+        }
+      end
+
+    rescue StandardError => e
+      {
+        status: { code: 500, message: 'An error occurred while creating the comment.', error: e.message },
+        status_code: :internal_server_error
+      }
+    end
   end
 
   def get_reservations_by_code(search_code)
@@ -36,7 +85,6 @@ class ReservationService
       Rails.logger.info "Reservation created with search_code: #{search_code}"
     end
 
-    puts "metadata #{metadata}"
     metadata.each do |room|
       room_id = room["roomId"] || room[:roomId]
       room_object = @room_service.get_room_by_id(room_id)
@@ -49,19 +97,42 @@ class ReservationService
       end
     end
 
-    unless @bill_service.bill_exits_by_reservation(reservation)
+    bill = @bill_service.bill_exits_by_reservation(reservation)
+
+    if bill
+      Rails.logger.info "Bill already exists: #{bill}. Returning the existing bill."
+      Rails.logger.info "Bill already exists for reservation ID: #{reservation.id}. Returning the existing bill."
+    else
       bill = @bill_service.create_bill(reservation, total)
       Rails.logger.info "Bill created for reservation ID: #{reservation.id}"
     end
 
+    Rails.logger.info "Bill already exists bill returned: #{bill}. Returning bill."
     [reservation, bill]
   end
 
+  def get_reservation_by_id(reservation_id)
+    @reservation_repository.get_reservation_by_id(reservation_id)
+  end
+
+
+  # def create_search_code
+  #   middle_part = rand(1000..9999)
+  #   last_part = rand(10..99)
+  #   "RS_#{middle_part}_#{last_part}"
+  # end
+
 
   def create_search_code
-    middle_part = rand(1000..9999)
-    last_part = rand(10..99)
-    "RS_#{middle_part}_#{last_part}"
+    loop do
+      middle_part = rand(1000..9999)
+      last_part = rand(10..99)
+      code_generated = "RS_#{middle_part}_#{last_part}"
+      unless Reservation.exists?(search_code: code_generated)
+         code_generated
+        break
+      end
+    end
   end
 
   private

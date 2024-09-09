@@ -1,9 +1,13 @@
 class CancelRequestsController < ApplicationController
   before_action :set_cancel_request, only: %i[ show edit update destroy ]
+  before_action :initialize_cancel_request_service
+  before_action :authenticate_request
+  load_and_authorize_resource
 
   # GET /cancel_requests or /cancel_requests.json
   def index
-    @cancel_requests = CancelRequest.all
+
+
   end
 
   # GET /cancel_requests/1 or /cancel_requests/1.json
@@ -12,7 +16,7 @@ class CancelRequestsController < ApplicationController
 
   # GET /cancel_requests/new
   def new
-    @cancel_request = CancelRequest.new
+
   end
 
   # GET /cancel_requests/1/edit
@@ -21,30 +25,19 @@ class CancelRequestsController < ApplicationController
 
   # POST /cancel_requests or /cancel_requests.json
   def create
-    @cancel_request = CancelRequest.new(cancel_request_params)
+    reason = cancel_request_params[:reason]
+    reservation_id = cancel_request_params[:reservation_id]
 
-    respond_to do |format|
-      if @cancel_request.save
-        format.html { redirect_to cancel_request_url(@cancel_request), notice: "Cancel request was successfully created." }
-        format.json { render :show, status: :created, location: @cancel_request }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @cancel_request.errors, status: :unprocessable_entity }
-      end
-    end
+    puts "reason #{reason}"
+    puts "reservation #{reservation_id}"
+    current_user = @current_user
+    json_response = @cancel_request_service.create_cancel_request(reason, reservation_id, current_user)
+    render json: json_response, status: json_response[:status_code]
   end
 
   # PATCH/PUT /cancel_requests/1 or /cancel_requests/1.json
   def update
-    respond_to do |format|
-      if @cancel_request.update(cancel_request_params)
-        format.html { redirect_to cancel_request_url(@cancel_request), notice: "Cancel request was successfully updated." }
-        format.json { render :show, status: :ok, location: @cancel_request }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @cancel_request.errors, status: :unprocessable_entity }
-      end
-    end
+
   end
 
   # DELETE /cancel_requests/1 or /cancel_requests/1.json
@@ -57,7 +50,12 @@ class CancelRequestsController < ApplicationController
     end
   end
 
+  def initialize_cancel_request_service
+    @cancel_request_service = CancelRequestService.new
+  end
+
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_cancel_request
       @cancel_request = CancelRequest.find(params[:id])
@@ -65,6 +63,8 @@ class CancelRequestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def cancel_request_params
-      params.require(:cancel_request).permit(:reason, :date, :is_confirmed, :reservation_id)
+      params.require(:cancel_request).permit(:reason, :reservation_id)
     end
+
+
 end

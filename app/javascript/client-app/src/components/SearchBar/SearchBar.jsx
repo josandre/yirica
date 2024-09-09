@@ -60,7 +60,6 @@ const SearchBar = () => {
   const handleSearchInputChange = (e) => {
     const value = e.target.value;
 
-    console.log(value)
     if(isUserLoggedIn) {
       setFilteredReservations(allReservations.filter(reservation => {
         return reservation.search_code?.includes(value)

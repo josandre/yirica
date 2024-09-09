@@ -1,7 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import SectionTitleS2 from "../SectionTitleS2";
 import "./styles.css"
 import { Link } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import SimpleReactValidator from "simple-react-validator";
+import {useAddComment} from "../../api/comments/comment-service";
+import {useCreateCancelRequest} from "../../api/cancelRequests/cancel-request-service";
+import {toast} from "react-toastify";
+
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -12,13 +20,68 @@ const formatDate = (dateString) => {
 };
 
 const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedReservationId, setSelectedReservationId] = useState(null);
+  const cancelRequestMutation = useCreateCancelRequest()
 
   const amountOfKids = (reservation) => {
     const reservationRoom = reservation.reservation_room[0];
-    const kids = reservationRoom.kids_amount;
-    const adults = reservationRoom.adults_amount;
+    const kids = reservationRoom.kids_amount ;
+    const adults = reservationRoom.adults_amount ;
     return [kids, adults];
   };
+
+  const [value, setValue] = useState({
+    reason: ''});
+
+  const cancelRequest = (reservationId) => {
+    setShowModal(true)
+    setSelectedReservationId(reservationId)
+  }
+
+  const handleClose = () => {
+    setShowModal(false)
+    setSelectedReservationId(null)
+  }
+
+  const [validator] = React.useState(new SimpleReactValidator({
+    className: 'errorMessage'
+  }));
+
+  const changeHandler = (e) => {
+    setValue({...value, [e.target.name]: e.target.value});
+    validator.showMessages();
+  };
+
+  const handleSaveChange = (e) => {
+    if (validator.allValid()) {
+      const params = {
+        reason: value.reason,
+        reservationId: selectedReservationId
+
+      }
+
+
+      cancelRequestMutation.mutate({ params }, {
+
+        onSuccess: (res) => {
+          toast.success(res.data.status.message)
+          handleClose();
+        },
+        onError: (err) => {
+          console.log("error", err);
+          toast.error("The request can not be created, contact support.")
+        }
+      })
+
+
+    } else {
+
+      setValue({...value, [e.target.name]: e.target.value});
+      validator.showMessages();
+
+    }
+  }
 
   const notLoggedInEmptyState = () => {
     return (
@@ -45,10 +108,48 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
       </div>
     )
   }
+  let subtitle;
 
   const reservationListComponent = () => {
-    return (
+    return <>
+
       <div className="destination-wrap">
+
+        <Modal show={showModal} onHide={handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Reason to request a cancellation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+           <TextField
+             label="Reason"
+             placeholder="Enter the reason for cancellation"
+             fullWidth
+             multiline
+             rows={4}
+             value={value.reason}
+             variant="outlined"
+             name="reason"
+             InputLabelProps={{
+               shrink: true,
+             }}
+             onBlur={(e) => changeHandler(e)}
+             onChange={(e) => changeHandler(e)}
+           />{validator.message('reason', value.reason, 'required|alpha_space')}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={(e) => handleSaveChange(e)}
+                    className="theme-btn"
+                    data-bs-toggle="tooltip"
+                    data-bs-html="true"
+            >Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+
         <div className={`row ${reservations.length === 1 ? 'justify-content-center' : ''}`}>
           {reservations.map((reservation, index) => {
             const [kids, adults] = amountOfKids(reservation);
@@ -97,6 +198,20 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
                       <span className="separator">|</span>
                       <span className="children-accepted">Adults {adults}</span>
                     </p>
+
+                    {reservation.reservation_state.state === 'Active' && (
+                      <div className="add-to-cart display-box">
+                        <button
+                          className="theme-btn mt-3"
+                          data-bs-toggle="tooltip"
+                          data-bs-html="true"
+                          title="Add to Cart"
+                          onClick={() => cancelRequest(reservation.id)}
+                        >
+                          Cancel request
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -104,7 +219,7 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
           })}
         </div>
       </div>
-    )
+    </>
   }
 
   return (
