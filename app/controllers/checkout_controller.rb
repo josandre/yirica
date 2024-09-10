@@ -4,7 +4,6 @@ class CheckoutController < ApplicationController
 
   def create
     user_id = params[:user_id]
-    card_info = card_params(params[:card])
     reservation_info = reservation_params(params[:reservation])
     rooms = params[:rooms].map(&:to_i)
     metadata = metadata_array_params(params[:metadata])

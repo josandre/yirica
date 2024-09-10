@@ -3,7 +3,7 @@ class ResponseCancelsController < ApplicationController
 
   # GET /response_cancels or /response_cancels.json
   def index
-    @response_cancels = ResponseCancel.all
+    @response_cancels = ResponseCancelRequest.all
   end
 
   # GET /response_cancels/1 or /response_cancels/1.json
@@ -12,7 +12,7 @@ class ResponseCancelsController < ApplicationController
 
   # GET /response_cancels/new
   def new
-    @response_cancel = ResponseCancel.new
+    @response_cancel = ResponseCancelRequest.new
   end
 
   # GET /response_cancels/1/edit
@@ -21,7 +21,7 @@ class ResponseCancelsController < ApplicationController
 
   # POST /response_cancels or /response_cancels.json
   def create
-    @response_cancel = ResponseCancel.new(response_cancel_params)
+    @response_cancel = ResponseCancelRequest.new(response_cancel_params)
 
     respond_to do |format|
       if @response_cancel.save
@@ -60,7 +60,7 @@ class ResponseCancelsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_response_cancel
-      @response_cancel = ResponseCancel.find(params[:id])
+      @response_cancel = ResponseCancelRequest.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

@@ -27,12 +27,19 @@ class ReservationRepository
         .find(reservation_id)
   end
 
+
+
   def find_or_initialized_by_search_code(search_code)
     Reservation.find_or_initialize_by(search_code: search_code)
   end
 
   def update_state(reservation, state)
     reservation.update(reservation_state_id: state.id)
+  end
+
+
+  def update_is_refunded(reservation, is_refunded)
+    reservation.update(is_refunded: is_refunded)
   end
 
   def assign_atributes_to_reservation(reservation, reservation_info, user, default_reservation_state, payment_id, search_code)
@@ -49,6 +56,11 @@ class ReservationRepository
 
     reservation.save!
     reservation
+  end
+
+
+  def change_reservation_state(new_state, reservation)
+    reservation.update(reservation_state: new_state)
   end
 
 end

@@ -42,7 +42,11 @@ class ReservationService
                                              }
                                           }
                                          }
+                                       },
+                                       cancel_request: {
+                                         only: [:id, :reason]
                                        }
+
                                      }),
           status_code: :ok
         }
@@ -73,6 +77,8 @@ class ReservationService
   def get_user_reservation_by_id(user, reservation_id)
     @reservation_repository.get_user_reservation_by_id(user, reservation_id)
   end
+
+
 
 
   def create_reservation(user, metadata, reservation_info, rooms, total, search_code, payment_id)
@@ -115,25 +121,34 @@ class ReservationService
     @reservation_repository.get_reservation_by_id(reservation_id)
   end
 
-
-  # def create_search_code
-  #   middle_part = rand(1000..9999)
-  #   last_part = rand(10..99)
-  #   "RS_#{middle_part}_#{last_part}"
-  # end
+  def change_reservation_state(reservation)
+    canceled_state = @reservation_state_service.get_canceled_state
+    @reservation_repository.update_state(reservation, canceled_state)
+  end
 
 
   def create_search_code
-    loop do
-      middle_part = rand(1000..9999)
-      last_part = rand(10..99)
-      code_generated = "RS_#{middle_part}_#{last_part}"
-      unless Reservation.exists?(search_code: code_generated)
-         code_generated
-        break
-      end
-    end
+    middle_part = rand(1000..9999)
+    last_part = rand(10..99)
+    "RS_#{middle_part}_#{last_part}"
   end
+
+  def update_is_refunded(reservation, is_refunded)
+    @reservation_repository.update_is_refunded(reservation, is_refunded)
+  end
+
+
+  # def create_search_code
+  #   loop do
+  #     middle_part = rand(1000..9999)
+  #     last_part = rand(10..99)
+  #     code_generated = "RS_#{middle_part}_#{last_part}"
+  #     unless Reservation.exists?(search_code: code_generated)
+  #        code_generated
+  #       break
+  #     end
+  #   end
+  # end
 
   private
   def default_reservation_state

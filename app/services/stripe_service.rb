@@ -5,6 +5,7 @@ class StripeService
   def initialize
     @user_service = UserService.new
     @reservation_service = ReservationService.new
+    @response_cancel_reservation_service = ResponseCancelService.new
   end
 
 
@@ -38,6 +39,61 @@ class StripeService
       raise e
     end
   end
+
+
+  def make_a_refund(reservation_id, cancel_request_id, response, user)
+
+    begin
+      reservation = @reservation_service.get_reservation_by_id(reservation_id)
+      puts "reservation #{reservation}"
+
+      if reservation.present?
+        admin = @user_service.get_admin
+        payment_id = reservation.payment_id
+        payment_intent = Stripe::PaymentIntent.retrieve(payment_id)
+        puts "payment_intent from stripe #{payment_intent}"
+        charge_id = payment_intent.latest_charge
+        refund = Stripe::Refund.create({
+                                         charge: charge_id,
+                                         reason: "requested_by_customer"
+                                       })
+
+
+        is_refunded = false
+        refund_information = "The refund could not be created because of an error, contact support. To make the refund manually."
+
+        if refund.status == 'succeeded'
+          is_refunded = true
+          @reservation_service.update_is_refunded(reservation, is_refunded)
+          refund_information = "The refunded was created and executed successfully to the reservation #{reservation.search_code}. It may take a few days for the money to reach the bank account. Refund id: #{refund.id},  Payment: #{payment_intent.id}, charge: #{charge_id}"
+        end
+        @reservation_service.change_reservation_state(reservation)
+        response_cancel_requested = @response_cancel_reservation_service.create_response_cancel_reservation(response, refund_information, is_refunded, cancel_request_id)
+        CancelResponseJob.perform_later(response, response_cancel_requested.date, response_cancel_requested.refund_information, response_cancel_requested.is_refunded, user, admin)
+
+        {
+          status: { code: 200, message: 'The cancellation and refund was successful.' },
+          data:
+            response_cancel_requested.as_json(only: [:id, :response, :date, :refund_information, :is_refunded, :cancel_request_id]),
+          status_code: :ok
+        }
+
+      else
+        {
+          status: { code: 404, message: 'The reservation does not exist' },
+          status_code: :not_found
+        }
+      end
+
+    rescue StandardError => e
+      {
+        status: { code: 500, message: 'An error occurred while responding the cancel request.', error: e.message },
+        status_code: :internal_server_error
+      }
+    end
+
+  end
+
 
 
   private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_09_144832) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_10_145923) do
   create_table "amenities", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -93,15 +93,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_09_144832) do
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
-  create_table "response_cancels", force: :cascade do |t|
-    t.text "response"
+  create_table "response_cancel_requests", force: :cascade do |t|
+    t.boolean "response"
     t.date "date"
     t.text "refund_information"
     t.boolean "is_refunded"
     t.integer "cancel_request_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cancel_request_id"], name: "index_response_cancels_on_cancel_request_id"
+    t.index ["cancel_request_id"], name: "index_response_cancel_requests_on_cancel_request_id"
   end
 
   create_table "responses", force: :cascade do |t|
@@ -199,7 +199,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_09_144832) do
   add_foreign_key "reservation_rooms", "rooms"
   add_foreign_key "reservations", "reservation_states"
   add_foreign_key "reservations", "users"
-  add_foreign_key "response_cancels", "cancel_requests"
+  add_foreign_key "response_cancel_requests", "cancel_requests"
   add_foreign_key "responses", "comments"
   add_foreign_key "responses", "users"
   add_foreign_key "room_type_amenities", "amenities"

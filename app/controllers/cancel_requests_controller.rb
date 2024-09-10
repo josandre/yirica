@@ -27,11 +27,14 @@ class CancelRequestsController < ApplicationController
   def create
     reason = cancel_request_params[:reason]
     reservation_id = cancel_request_params[:reservation_id]
+    current_user = @current_user
 
     puts "reason #{reason}"
-    puts "reservation #{reservation_id}"
-    current_user = @current_user
+    puts "reservation_id #{reservation_id}"
+    puts "current user #{current_user}"
+
     json_response = @cancel_request_service.create_cancel_request(reason, reservation_id, current_user)
+    puts "response #{json_response}"
     render json: json_response, status: json_response[:status_code]
   end
 

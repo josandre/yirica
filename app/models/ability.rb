@@ -57,7 +57,7 @@ class Ability
         cancel_request.reservation.user == user
       end
 
-      can :read, ResponseCancel do |response_cancel|
+      can :read, ResponseCancelRequest do |response_cancel|
         response_cancel.cancel_request.reservation.user == user
       end
 

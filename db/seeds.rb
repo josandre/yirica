@@ -187,8 +187,8 @@ room_9 = Room.create(
   bathrooms: 3,
   beds: 5
 )
-room_9.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/beach-front-standard-single.png')
 
+room_9.image_rooms.create!(image: 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/rooms/beach-front-standard-single.png')
 active_reservation_state = ReservationState.create(state: "Active", description: "The reservation is active")
 canceled_reservation_state = ReservationState.create(state: "Canceled", description: "The reservation was canceled")
 pending_reservation_state = ReservationState.create(state: "Pending payment", description: "The reservation needs to be paid")

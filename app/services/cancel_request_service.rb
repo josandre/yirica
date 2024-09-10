@@ -15,6 +15,7 @@ class CancelRequestService
         if reservation and reservation.user_id == current_user.id
           cancel_request = @cancel_request_repository.create_cancel_request(reason, reservation_id)
           cancel_request_state = @state_reservation_service.get_cancel_request_state
+          CancelRequestJob.perform_later(reservation, current_user, admin, reason)
           @reservation_service.update_reservation_state(reservation, cancel_request_state)
           {
             status: { code: 200, message: 'Cancel request created' },
@@ -25,7 +26,7 @@ class CancelRequestService
             },
             status_code: :ok
           }
-          CancelRequestJob.perform_later(reservation, current_user, admin, reason)
+
         else
           {
             status: { code: 404, message: 'Not found' },

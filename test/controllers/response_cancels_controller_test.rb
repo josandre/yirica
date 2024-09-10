@@ -20,7 +20,7 @@ class ResponseCancelsControllerTest < ActionDispatch::IntegrationTest
       post response_cancels_url, params: { response_cancel: { cancel_request_id: @response_cancel.cancel_request_id, date: @response_cancel.date, is_refunded: @response_cancel.is_refunded, refund_information: @response_cancel.refund_information, response: @response_cancel.response } }
     end
 
-    assert_redirected_to response_cancel_url(ResponseCancel.last)
+    assert_redirected_to response_cancel_url(ResponseCancelRequest.last)
   end
 
   test "should show response_cancel" do
