@@ -23,7 +23,16 @@ ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 FROM base as build
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git libvips node-gyp pkg-config python-is-python3
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    curl \
+    git \
+    libvips \
+    node-gyp \
+    pkg-config \
+    python-is-python3 \
+    freetds-dev \
+    freetds-bin
 
 ARG NODE_VERSION=22.4.0
 ARG YARN_VERSION=1.22.19
