@@ -18,8 +18,20 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: storage/generated.sqlite3
+  database: storage/development.sqlite3
 
 production:
-  <<: *default
-  database: storage/production.sqlite3
+  adapter: sqlserver
+  host: hotelhub-db-server.database.windows.net
+  database: hotel-hub-db
+  username: appadmin@hotelhub-db-server
+  password: <%= Rails.application.credentials.dig(:azure_sql, :password) %>
+  port: 1433
+  azure: true
+  encrypt: true
+  trustServerCertificate: false
+  hostNameInCertificate: "*.database.windows.net"
+  loginTimeout: 30
+  pool: 5
+  timeout: 5000
+

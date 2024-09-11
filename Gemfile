@@ -82,3 +82,7 @@ gem 'jsonapi-serializer'
 
 gem 'aws-sdk-comprehend'
 
+gem 'tiny_tds'
+
+gem 'activerecord-sqlserver-adapter'
+
