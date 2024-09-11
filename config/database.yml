@@ -29,7 +29,7 @@ production:
   port: 1433
   azure: true
   encrypt: true
-  trustServerCertificate: false
+  trustServerCertificate: true
   hostNameInCertificate: "*.database.windows.net"
   loginTimeout: 30
   pool: 5
