@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_request
-    return if controller_name == 'client_app' && action_name == 'client_app'
+    return if (controller_name == 'client_app' && action_name == 'client_app') ||
+      (controller_name == 'admin_app' && action_name == 'admin_app')
     token = request.headers['Authorization']&.split(' ')&.last
     decoded_token = JWT.decode(token, Rails.application.credentials.devise_jwt_secret_key!).first
     @current_user = User.find(decoded_token['sub'])

@@ -71,8 +71,11 @@ Rails.application.routes.draw do
   root to: redirect('/app')
 
   get 'app', to: 'client_app#client_app'
-
   get '/app/*path', to: 'client_app#client_app', constraints: ->(req) { !req.xhr? && req.format.html? }
+
+  get '/admin-app', to: 'admin_app#admin_app'
+  get '/admin-app/*path', to: 'admin_app#admin_app', constraints: ->(req) { !req.xhr? && req.format.html? }
+
 
   get 'roles', to: 'roles#index'
 
