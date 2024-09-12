@@ -4,7 +4,7 @@ import { Card, Row, Col } from "antd";
 import { useSelector } from 'react-redux';
 
 const backgroundStyle = {
-	backgroundImage: 'url(/img/others/img-17.jpg)',
+	backgroundImage: 'url(/assets/others/img-17.jpg)',
 	backgroundRepeat: 'no-repeat',
 	backgroundSize: 'cover'
 }
@@ -19,7 +19,7 @@ const Login = props => {
 						<Card>
 							<div className="my-4">
 								<div className="text-center">
-									<img className="img-fluid" src={`/img/${theme === 'light' ? 'logo.png': 'logo-white.png'}`} alt="" />
+									<img className="img-fluid" src={`/assets/${theme === 'light' ? 'logo.png': 'logo-white.png'}`} alt="" />
 								</div>
 								<Row justify="center">
 									<Col xs={24} sm={24} md={20} lg={20}>

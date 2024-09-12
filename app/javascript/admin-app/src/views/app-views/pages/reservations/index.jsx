@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React, {useEffect, useMemo, useState} from 'react'
-import { Button, Dropdown,  Card, Table, Select, Input, Menu, Tag } from 'antd';
+import {Button, Dropdown, Card, Table, Select, Input, Menu, Tag, message} from 'antd';
 import { DownOutlined, LikeOutlined, DislikeOutlined, SearchOutlined } from '@ant-design/icons';
 import Flex from '../../../../components/shared-components/Flex'
 import NumberFormat from 'react-number-format';
 import utils from '../../../../utils'
-import { useGetAllReservations, useGetReservationStates } from '../../../../services/admin/ReservationService';
+import {
+	useApproveOrRejectCancelRequest,
+	useGetAllReservations,
+	useGetReservationStates
+} from '../../../../services/admin/ReservationService';
+import {useQueryClient} from "react-query";
 
 const { Option } = Select
 
@@ -27,12 +32,13 @@ const getReservationState = state => {
 }
 
 const ReservationsList = () => {
-
+	const queryClient = useQueryClient();
 	const [filteredReservations, setFilteredReservations] = useState([])
 
 	const {data: reservationsResponse, error, loading} = useGetAllReservations()
 	const {data: reservationStatesResponse} = useGetReservationStates()
 
+	const cancelRequestRespMutation = useApproveOrRejectCancelRequest()
 	const reservationStates = reservationStatesResponse?.data ?? []
 
 	const reservations = useMemo(() => {
@@ -68,6 +74,7 @@ const ReservationsList = () => {
 				stateId: rd.reservation_state.id,
 				state: rd.reservation_state.state,
 				total: total,
+				cancelId: rd.cancel_request?.id,
 				cancelReason: rd.cancel_request?.reason
 			}
 	})
@@ -79,24 +86,29 @@ const ReservationsList = () => {
 		}
 	}, [reservations])
 
-	const handleCancellationMenuClick = (action, reservationId) => {
-		if (action === 'approve') {
-			console.log('Approve clicked for row:', reservationId);
-		} else if (action === 'reject') {
-			console.log('Reject clicked for row:', reservationId);
-		}
+	const handleCancellationMenuClick = (action, reservationId, cancelRequestId) => {
+		cancelRequestRespMutation.mutate({
+			reservationId,
+			response: action,
+			cancelRequestId
+		}, {
+			onSuccess: () => {
+				queryClient.invalidateQueries('reservations');
+				message.success(`The cancel request was ${action ? 'approved' : 'rejected'}`);
+			}
+		})
 	};
 
 	const dropdownMenu = row => (
 		
 		<Menu>
-			<Menu.Item onClick={() => handleCancellationMenuClick('approve', row.id)}>
+			<Menu.Item onClick={() => handleCancellationMenuClick(true, row.id, row.cancelId)}>
 				<Flex alignItems="center">
 					<LikeOutlined />
 					<span className="ml-2">Approve</span>
 				</Flex>
 			</Menu.Item>
-			<Menu.Item onClick={() => handleCancellationMenuClick('reject', row.id)}>
+			<Menu.Item onClick={() => handleCancellationMenuClick(false, row.id, row.cancelId)}>
 				<Flex alignItems="center">
 					<DislikeOutlined />
 					<span className="ml-2">Reject</span>

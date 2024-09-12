@@ -4,7 +4,7 @@ import { MailOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
 const backgroundStyle = {
-	backgroundImage: 'url(/img/others/img-17.jpg)',
+	backgroundImage: 'url(/assets/others/img-17.jpg)',
 	backgroundRepeat: 'no-repeat',
 	backgroundSize: 'cover'
 }

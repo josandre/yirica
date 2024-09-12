@@ -20,6 +20,10 @@ export const useCreateNewRoom = () => {
   return useMutation(createNewRoom)
 }
 
+export const useUpdateRoom = () => {
+  return useMutation(updateRoom)
+}
+
 const createNewRoom = (data) => {
 	const { token } = userIsLogged()
   
@@ -39,6 +43,33 @@ const createNewRoom = (data) => {
 };
 
   const response = axios.post(BASE_ADMIN_ROOM_URL, request, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+
+  return response
+}
+
+const updateRoom = (data) => {
+	const { token } = userIsLogged()
+
+  const request = {
+    room: {
+        adult_price: data.adultPrice,
+        kids_price: data.kidsPrice,
+        number: parseInt(data.number, 10),
+        location: data.location,
+        room_type_id: data.type,
+        is_beachfront: data.isBeachFront,
+        sqm: parseInt(data.sqm, 10),
+        bathrooms: parseInt(data.bathrooms, 10),
+        beds: parseInt(data.beds, 10),
+        image: data.image
+    }
+};
+
+  const response = axios.put(`${BASE_ADMIN_ROOM_URL}/${data.id}`, request, {
     headers: {
       "Authorization": `Bearer ${token}`
     }

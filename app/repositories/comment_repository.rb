@@ -3,7 +3,6 @@
 class CommentRepository
 
   def create_comment(comment, punctuation, user_id, room_id, is_legal)
-    puts "entra"
     comment_created = Comment.create!(
       comment: comment,
       punctuation: punctuation,
@@ -11,9 +10,17 @@ class CommentRepository
       room_id: room_id,
       is_legal: is_legal
     )
-
-    puts "Ante de traer comment"
     Comment.includes(room: :room_type).find_by(id: comment_created.id)
+  end
+
+
+  def get_all_comments
+    Comment.all.includes(:user, room: :room_type)
+  end
+
+
+  def get_comment_by_id(comment_id)
+    Comment.find(comment_id)
   end
 
 end

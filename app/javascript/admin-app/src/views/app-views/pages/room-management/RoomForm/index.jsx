@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import PageHeaderAlt from '../../../../../components/layout-components/PageHeaderAlt'
 import { Tabs, Form, Button, message } from 'antd';
 import Flex from '../../../../../components/shared-components/Flex'
 import GeneralField from './GeneralField'
 import { useNavigate } from "react-router-dom";
-import { useCreateNewRoom } from '../../../../../services/admin/RoomService';
+import {useCreateNewRoom, useUpdateRoom} from '../../../../../services/admin/RoomService';
 import { useQueryClient } from 'react-query';
 
 const ADD = 'ADD'
@@ -18,18 +18,46 @@ const RoomForm = props => {
 	const [submitLoading, setSubmitLoading] = useState(false)
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
-	const newRoomMutation = useCreateNewRoom();
+	const createOrUpdateRoomMutation =  mode === ADD ? useCreateNewRoom() : useUpdateRoom();
+
+	useEffect(() => {
+		if(mode === EDIT) {
+			const roomInfo = props.param
+
+			form.setFieldsValue({
+				id: roomInfo.id,
+				number: roomInfo.number,
+				image: roomInfo.image_rooms && roomInfo.image_rooms.length > 0  ? roomInfo.image_rooms[0].image : undefined,
+				location: roomInfo.location,
+				type: roomInfo.room_type_id,
+				isBeachFront: roomInfo.is_beachfront,
+				sqm: roomInfo.sqm,
+				bathrooms: roomInfo.bathrooms,
+				beds: roomInfo.beds,
+				description: roomInfo.room_type.description,
+				adultPrice: parseInt(roomInfo.adult_price),
+				kidsPrice: parseInt(roomInfo.kids_price)
+			})
+
+		}
+	}, [mode]);
 
 	const onFinish = () => {
 		setSubmitLoading(true)
 		form.validateFields().then(values => {
-			newRoomMutation.mutate(values, {
+			if(mode === EDIT) {
+				const roomInfo = props.param
+				values = { ...values, id: roomInfo.id }
+			}
+
+			createOrUpdateRoomMutation.mutate(values, {
 				onSuccess: () => {
 					queryClient.invalidateQueries('rooms');
-					message.success('The room was added successfully');
+					message.success(`The room was ${mode === ADD ? 'created' : 'updated'} successfully`);
 					navigate(`/admin-app/rooms`)
 				}
 			})
+
 
 		}).catch(info => {
 			setSubmitLoading(false)

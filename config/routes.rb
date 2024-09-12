@@ -47,9 +47,11 @@ Rails.application.routes.draw do
     resources :reservations, only: [:index]
     resources :users, only: [:index]
     resources :room_types, only: [:index]
-    resources :rooms, only: [:index, :create]
+    resources :rooms, only: [:index, :create, :update]
     resources :reservation_states, only: [:index]
     resources :response_cancel_requests, only: [:create]
+    resources :comments, only: [:index]
+    resources :responses, only: [:create]
   end
 
   if Rails.env.development? || Rails.env.production?

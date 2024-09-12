@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 
 const UploadComponent = (props) => {
+  const { form } = props
+  const image = form?.getFieldValue("image")
+
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState(image);
+
+  useEffect(() => {
+    setImageUrl(image)
+  }, [image]);
 
   const beforeUpload = async (file) => {
     setLoading(true);
@@ -25,11 +32,10 @@ const UploadComponent = (props) => {
 
       const data = await response.json();
 
-      console.log(data)
       if (response.ok) {
         setImageUrl(data.secure_url);
         setLoading(false);
-        props.form.setFieldValue("image", data.secure_url);
+        form.setFieldValue("image", data.secure_url);
       } else {
         message.error('Upload failed.');
         setLoading(false);
@@ -49,7 +55,6 @@ const UploadComponent = (props) => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
-
 
   return (
     <Upload

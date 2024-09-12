@@ -7,6 +7,7 @@ import NumberFormat from 'react-number-format';
 import { useNavigate } from "react-router-dom";
 import utils from '../../../../../utils'
 import { useGetAllRooms } from '../../../../../services/admin/RoomService';
+import EllipsisDropdown from "../../../../../components/shared-components/EllipsisDropdown";
 
 
 const booleanLabel = (flag, positiveText, negativeText) => {
@@ -60,13 +61,7 @@ const RoomList = () => {
 			<Menu.Item onClick={() => viewDetails(row)}>
 				<Flex alignItems="center">
 					<EyeOutlined />
-					<span className="ml-2">View Details</span>
-				</Flex>
-			</Menu.Item>
-			<Menu.Item>
-				<Flex alignItems="center">
-					<DeleteOutlined />
-					<span className="ml-2">{'Deactivate'}</span>
+					<span className="ml-2">Update room</span>
 				</Flex>
 			</Menu.Item>
 		</Menu>
@@ -77,6 +72,8 @@ const RoomList = () => {
 	}
 	
 	const viewDetails = row => {
+		const room = roomsResponse.data.find(room => room.id === row.id)
+		localStorage.setItem("adminSelectedRoom", JSON.stringify(room));
 		navigate(`/admin-app/rooms/edit/${row.id}`)
 	}
 	
@@ -139,16 +136,16 @@ const RoomList = () => {
 			render: isActive => (
 				<Flex alignItems="center">{booleanLabel(isActive, "Active", "Inactive")}</Flex>
 			)
+		},
+		{
+			title: '',
+			dataIndex: 'actions',
+			render: (_, elm) => (
+				<div className="text-right">
+					<EllipsisDropdown menu={dropdownMenu(elm)}/>
+				</div>
+			)
 		}
-		// {
-		// 	title: '',
-		// 	dataIndex: 'actions',
-		// 	render: (_, elm) => (
-		// 		<div className="text-right">
-		// 			<EllipsisDropdown menu={dropdownMenu(elm)}/>
-		// 		</div>
-		// 	)
-		// }
 	];
 
 	const onSearch = e => {

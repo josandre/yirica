@@ -15,6 +15,8 @@ class AdminController < ApplicationController
     @room_service = RoomService.new
     @reservation_states_service = ReservationStateService.new
     @stripe_service = StripeService.new
+    @comment_service = CommentService.new
+    @response_service = ResponseService.new
   end
 
   def authenticate_admin!

@@ -43,15 +43,15 @@ export const Logo = ({ mobileLogo, logoType }) => {
 	const getLogo = () => {
 		if(logoType === 'light') {
 			if(navCollapsed) {
-			return '/assets/img/logo-sm-white.png'
+			return '/assets/logo-sm-white.png'
 			}
-			return '/assets/img/logo-white.png'
+			return '/assets/logo-white.png'
 		}
 	
 		if (navCollapsed) {
-			return '/assets/img/logo-sm.png'
+			return '/assets/logo-sm.png'
 		}
-		return '/assets/img/logo.png'
+		return '/assets/logo.png'
 	}
 
 	return (

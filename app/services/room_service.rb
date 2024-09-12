@@ -115,5 +115,36 @@ class RoomService
     end
   end
 
+  def update_room(room_id, adult_price, kids_price, number, location, room_type_id, is_beachfront, sqm, bathrooms, beds, image)
+
+    begin
+      room = @room_repository.get_room_by_id(room_id)
+
+
+      if room.present?
+        room_updated = @room_repository.update_room(room, adult_price, kids_price, number, location, room_type_id, is_beachfront, sqm, bathrooms, beds)
+        @image_room_repository.delete_images_by_room_id(room_id)
+        @image_room_repository.create(room.id, image)
+        {
+          status: { code: 200, message: 'Rooms updated successfully.' },
+          data: room_updated.as_json(only: [:id, :adult_price, :kids_price, :number, :location, :room_type_id, :is_beachfront, :sqm, :bathrooms, :beds, :image]),
+          status_code: :ok
+        }
+      else
+        {
+          status: { code: 404, message: 'The room do not exists' },
+          status_code: :not_found
+        }
+      end
+
+    rescue => e
+      {
+        status: { code: 500, message: 'An error occurred while updating rooms.', error: e.message },
+        status_code: :internal_server_error
+      }
+    end
+
+  end
+
 
 end

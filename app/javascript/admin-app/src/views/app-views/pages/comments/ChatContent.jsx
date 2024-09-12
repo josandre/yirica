@@ -5,7 +5,7 @@ import Conversation from './Conversation';
 const ConversationEmpty = () => (
   <div className="chat-content-empty">
     <div className="text-center">
-      <img src="/img/others/img-11.png" alt="People want your responses" />
+      <img src="/assets/others/img-11.png" alt="People want your responses" />
       <h1 className="font-weight-light">See what people is talking about</h1>
     </div>
   </div>

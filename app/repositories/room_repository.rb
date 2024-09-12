@@ -49,6 +49,23 @@ class RoomRepository
     )
   end
 
+
+  def update_room(room, adult_price, kids_price, number, location, room_type_id, is_beachfront, sqm, bathrooms, beds)
+    room.update(
+      adult_price: adult_price,
+      kids_price: kids_price,
+      number: number,
+      location: location,
+      room_type_id: room_type_id,
+      is_beachfront: is_beachfront,
+      sqm: sqm,
+      bathrooms: bathrooms,
+      beds: beds,
+    )
+
+    room
+  end
+
   private
   def available_between(check_in, check_out)
     Room.where.not(id: ReservationRoom.joins(:reservation)

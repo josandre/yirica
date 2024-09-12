@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {
+  useMutation,
   useQuery
 } from 'react-query'
 import { BASE_ADMIN_URL } from './constants'
@@ -15,6 +16,29 @@ export const useGetAllReservations = () => {
 export const useGetReservationStates = () => {
   return useQuery('reservation-states', getReservationStates)
 }
+
+export const useApproveOrRejectCancelRequest = () => {
+  return useMutation(approveOrRejectCancelRequest)
+}
+
+const approveOrRejectCancelRequest = (data) => {
+  const { token } = userIsLogged()
+
+  const request = {
+    reservation_id: data.reservationId,
+    response: data.response,
+    cancel_request_id: data.cancelRequestId
+  };
+
+  const response = axios.post(`${BASE_ADMIN_URL}/response_cancel_requests`, request, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+
+  return response
+}
+
 
 const  getAllReservations = async () => {
 	const { token } = userIsLogged()

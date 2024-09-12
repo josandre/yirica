@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Badge, Input, Row, Col, Card, Empty, Form, InputNumber, message, Select } from 'antd';
 import { useGetRoomTypes } from '../../../../../services/admin/RoomService';
 import UploadComponent from '../../../../../components/util-components/UploadComponent';
@@ -89,6 +89,14 @@ const GeneralField = props => {
 	const {data: roomsTypesResponse, error, loading} = useGetRoomTypes()
 	
 	const roomTypes = roomsTypesResponse?.data ?? []
+	const selectedRoomTypeId = props.form.getFieldValue('type')
+
+	useEffect(() => {
+		if(roomTypes.length > 0) {
+			const roomType = roomTypes.find(rt => rt.id === selectedRoomTypeId)
+			setSelectedRoomType(roomType)
+		}
+	}, [selectedRoomTypeId, roomTypes]);
 
 	const onRoomTypeSelected = (roomTypeId) => {
 		const roomType = roomTypes.find(rt => rt.id === roomTypeId)
@@ -140,8 +148,8 @@ const GeneralField = props => {
 								className="w-100" 
 								placeholder="Is beach front?">
 
-									<Option key={"yes"} value={true}>Yes</Option>
-									<Option key={"no"} value={false}>No</Option>
+									<Option key={true} value={true}>Yes</Option>
+									<Option key={false} value={false}>No</Option>
 
 							</Select>
 						</Form.Item>

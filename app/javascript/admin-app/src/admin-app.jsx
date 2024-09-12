@@ -12,8 +12,8 @@ import {
 } from 'react-query'
 
 const themes = {
-  dark: `./assets/css/dark-theme.css`,
-  light: `./assets/css/light-theme.css`,
+  dark: `/assets/dark-theme.css`,
+  light: `/assets/light-theme.css`,
 };
 
 

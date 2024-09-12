@@ -39,6 +39,48 @@ class CommentService
   end
 
 
+  def get_comments
+    begin
+      comments = @comment_repository.get_all_comments
+
+
+      if comments.any?
+        {
+          status: { code: 200, message: 'Comment list retrieved successfully.' },
+          data: comments.as_json(only: [:id, :comment, :punctuation, :is_legal, :created_at ],
+          include: {
+            user: {
+              only: [:id, :email, :name, :last_name],
+            },
+            room: {
+              only: [:id, :number],
+              include:{
+                room_type: {only: [:id, :name]},
+              }
+            }
+          }),
+        status_code: :ok
+        }
+      else
+        {
+          status: { code: 404, message: 'There is not comments available.'},
+          status_code: :not_found
+        }
+      end
+    rescue StandardError => e
+      {
+        status: { code: 500, message: 'An error occurred while retrieving the comment.', error: e.message },
+        status_code: :internal_server_error
+      }
+    end
+  end
+
+
+  def get_comment_by_id(comment_id)
+    @comment_repository.get_comment_by_id(comment_id)
+  end
+
+
   private
   def check_if_comment_is_legal(comment)
     sentiment = detect_sentiment(comment)
