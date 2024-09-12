@@ -11,6 +11,7 @@ RoomTypeService.destroy_all
 Amenity.destroy_all
 Service.destroy_all
 Room.destroy_all
+RoomType.destroy_all
 
 client_role = Role.create({ role: 'Client' })
 admin_role = Role.create({ role: 'Administrator' })

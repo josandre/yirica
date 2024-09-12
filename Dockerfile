@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 ARG RUBY_VERSION=3.3.2
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-bullseye as base
 
 WORKDIR /rails
 
@@ -22,7 +22,11 @@ ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 FROM base as build
 
-RUN apt-get update -qq && \
+# Switch to root to install dependencies
+USER root
+
+# Update and install FreeTDS and other necessary packages
+RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     build-essential \
     curl \
@@ -31,8 +35,10 @@ RUN apt-get update -qq && \
     node-gyp \
     pkg-config \
     python-is-python3 \
-    freetds-dev \
-    freetds-bin
+    && apt-get install -y freetds-bin freetds-dev tdsodbc \
+    && apt-get install --reinstall -y build-essential \
+    && apt-get clean \
+    && echo "FreeTDS installed successfully" || (echo "FreeTDS installation failed" && exit 1)
 
 ARG NODE_VERSION=22.4.0
 ARG YARN_VERSION=1.22.19
@@ -68,8 +74,14 @@ RUN ./bin/rails assets:precompile --trace
 FROM base
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    apt-get install --no-install-recommends -y \
+    curl \
+    libsqlite3-0 \
+    libvips \
+    freetds-bin \
+    freetds-dev \
+    tdsodbc \
+    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails

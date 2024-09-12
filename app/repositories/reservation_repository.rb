@@ -9,9 +9,15 @@ class ReservationRepository
   end
 
   def get_reservation_by_code(search_code)
-    Reservation
+    puts "entra"
+
+    reservation = Reservation
       .includes(:reservation_state, :bill, reservation_room: :room)
       .find_by(search_code: search_code)
+
+    puts "reservation #{reservation}"
+
+    reservation
   end
 
   def get_reservations_by_user(user)

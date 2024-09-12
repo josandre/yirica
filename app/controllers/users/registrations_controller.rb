@@ -4,6 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(user_params)
+    resource.role_id = Role.find_by(role: 'Client').id
     if resource.save
       UserMailer.welcome_email(resource).deliver_now
     end

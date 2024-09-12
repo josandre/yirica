@@ -9,6 +9,7 @@ import './style.scss';
 import {useSignUp} from "../../api/users/user-service";
 
 const SignUp = (props) => {
+    console.log("hello")
     const push = useNavigate()
 
     const signUpMutation = useSignUp()
@@ -166,7 +167,7 @@ const SignUp = (props) => {
                                     shrink: true,
                                 }}
                                 type={"password"}
-                                onBlur={(e) => changeHandler(e)}
+                                onBlur={(e) =>  changeHandler(e)}
                                 onChange={(e) => changeHandler(e)}
                             />
                             {validator.message('password', value.password, 'required|min:6',
@@ -180,19 +181,38 @@ const SignUp = (props) => {
                             )}
                         </Grid>
                         <Grid item xs={12}>
+                            {/*<TextField*/}
+                            {/*    className="inputOutline"*/}
+                            {/*    fullWidth*/}
+                            {/*    placeholder="Confirm Password"*/}
+                            {/*    value={value.confirm_password}*/}
+                            {/*    variant="outlined"*/}
+                            {/*    name="confirm_password"*/}
+                            {/*    label="Confirm Password"*/}
+                            {/*    InputLabelProps={{*/}
+                            {/*        shrink: true,*/}
+                            {/*    }}*/}
+                            {/*    type="password"*/}
+                            {/*    onBlur={(e) => {*/}
+                            {/*        changeHandler(e)}*/}
+                            {/*    }*/}
+                            {/*    onChange={(e) => changeHandler(e)}*/}
+                            {/*/>*/}
+
                             <TextField
-                                className="inputOutline"
-                                fullWidth
-                                placeholder="Confirm Password"
-                                value={value.confirm_password}
-                                variant="outlined"
-                                name="confirm_password"
-                                label="Confirm Password"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                onBlur={(e) => changeHandler(e)}
-                                onChange={(e) => changeHandler(e)}
+                              className="inputOutline"
+                              fullWidth
+                              placeholder="Password"
+                              value={value.password}
+                              variant="outlined"
+                              name="password"
+                              label="Password"
+                              InputLabelProps={{
+                                  shrink: true,
+                              }}
+                              type={"password"}
+                              onBlur={(e) =>  changeHandler(e)}
+                              onChange={(e) => changeHandler(e)}
                             />
                             {validator.message('confirm_password', value.confirm_password, `in:${value.password}`)}
                         </Grid>

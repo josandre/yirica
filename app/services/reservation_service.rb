@@ -2,11 +2,12 @@ class ReservationService
 
 
   def initialize
-    @reservation_repository = ReservationRepository.new
+
     @room_service = RoomService.new
     @reservation_room_services = ReservationRoomService.new
     @bill_service = BillService.new
     @reservation_state_service = ReservationStateService.new
+    @reservation_repository = ReservationRepository.new
   end
 
 
@@ -67,6 +68,8 @@ class ReservationService
   end
 
   def get_reservations_by_code(search_code)
+
+    puts "entra"
     @reservation_repository.get_reservation_by_code(search_code)
   end
 
