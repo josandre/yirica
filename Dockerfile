@@ -63,7 +63,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 ENV SECRET_KEY_BASE="dummy_secret_key_base"
 ENV DEVISE_JWT_SECRET_KEY="dummy_secret_key"
 
-RUN ./bin/rails assets:precompile
+RUN ./bin/rails assets:precompile --trace
 
 FROM base
 

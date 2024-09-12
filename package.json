@@ -5,18 +5,13 @@
     "autoprefixer": "^10.4.20",
     "esbuild": "^0.23.1",
     "esbuild-sass-plugin": "^3.3.1",
-    "postcss": "^8.4.40",
-    "gulp": "^4.0.2",
-    "gulp-csso": "^4.0.1",
-    "gulp-debug": "^4.0.0",
-    "gulp-less": "^4.0.1",
-    "gulp-postcss": "^8.0.0",
-    "less-plugin-npm-import": "^2.1.0"
+    "postcss": "^8.4.40"
   },
   "scripts": {
     "build": "node esbuild.config.js"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.4.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@hotwired/stimulus": "^3.2.2",
@@ -24,7 +19,6 @@
     "@mui/material": "^5.11.0",
     "@mui/styled-engine-sc": "^5.11.0",
     "@reduxjs/toolkit": "^1.8.5",
-    "@ant-design/icons": "^5.4.0",
     "antd": "^5.3.0",
     "axios": "^1.7.4",
     "bootstrap": "^5.1.3",
