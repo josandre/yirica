@@ -230,7 +230,7 @@ reservation_1 = Reservation.create(
   reservation_state_id: active_reservation_state.id,
   user_id: client_1.id,
   search_code: generate_search_code,
-  payment_id: 'pi_3PxJwiI6PsAVXKxq1VgrjO4B'
+  payment_id: 'pi_3PyMx7I6PsAVXKxq1SNsng0I'
 )
 
 reservation_2 = Reservation.create(
