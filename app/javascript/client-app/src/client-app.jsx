@@ -6,7 +6,14 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store/index";
 import { Provider } from "react-redux";
 import {QueryClientProvider, QueryClient} from "react-query";
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false
+    },
+  },
+});
 
 const ClientApp = () => {
     return (

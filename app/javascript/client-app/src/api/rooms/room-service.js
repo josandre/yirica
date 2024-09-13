@@ -18,7 +18,7 @@ export const useSearchAvailableRooms = (params) => {
 }
 
 export const useGetRoomById = (id) => {
-  return useQuery('roomById', () =>fetchById(id));
+  return useQuery(`roomById-${id}`, () =>fetchById(id));
 }
 
 export const useGetAllRooms = () => {

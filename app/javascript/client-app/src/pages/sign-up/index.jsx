@@ -202,17 +202,18 @@ const SignUp = (props) => {
                             <TextField
                               className="inputOutline"
                               fullWidth
-                              placeholder="Password"
+                              placeholder="Confirm password"
                               value={value.password}
                               variant="outlined"
                               name="password"
-                              label="Password"
+                              label="Confirm password"
                               InputLabelProps={{
                                   shrink: true,
                               }}
                               type={"password"}
                               onBlur={(e) =>  changeHandler(e)}
                               onChange={(e) => changeHandler(e)}
+                              disabled
                             />
                             {validator.message('confirm_password', value.confirm_password, `in:${value.password}`)}
                         </Grid>

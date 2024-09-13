@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import PageTitle from '../../components/pagetitle/PageTitle';
 import { useParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
@@ -12,11 +12,12 @@ import { useGetRoomById } from "../../api/rooms/room-service";
 
 const RoomSinglePage = () => {
   const { id } = useParams();
-  const { data: roomData, error, isLoading } = useGetRoomById(id);
+  let { data: roomData, error, isLoading } = useGetRoomById(id);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading room</div>;
   let { room, room_type, image_rooms, amenities, services, comments } = roomData || {};
   if (!room) return <div>No room data found</div>;
+  console.log("room data when running")
 
   return (
     <Fragment>

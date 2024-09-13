@@ -39,4 +39,8 @@ class ReservationStateService
   def get_canceled_state
    @reservation_state_repository.get_canceled_state
   end
+
+  def get_active_state
+    @reservation_state_repository.get_active_state
+  end
 end

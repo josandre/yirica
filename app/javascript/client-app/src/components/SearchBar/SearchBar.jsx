@@ -4,6 +4,7 @@ import "./styles.css";
 import { decodeJWT } from "../../utils";
 import {useGetReservationBySearchCode, useGetReservationByUser} from "../../api/reservations/reservation-service";
 import ReservationList from "../ReservationList/ReservationList";
+import SectionTitleS2 from "../SectionTitleS2";
 
 
 const SearchBar = () => {
@@ -40,7 +41,6 @@ const SearchBar = () => {
   const { data: reservations, error, isLoading } = useGetReservationByUser(userId, token, {
     enabled: isUserLoggedIn
   });
-
 
   useEffect(() => {
     if (isUserLoggedIn && reservations) {
@@ -89,7 +89,19 @@ const SearchBar = () => {
   }
 
   if (error || searchByCodeLoading) {
-    return <div>Error loading reservations</div>;
+
+    return <div className={`wpo-destination-area`} style={{margin: '24px'}}>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-lg-6 col-md-8 col-12">
+            <div className="card text-center p-4">
+              <h2>No reservations found</h2>
+              <p>You currently don't have any reservations. <a href="/app">Start booking now! </a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   }
 
   return (
@@ -117,7 +129,7 @@ const SearchBar = () => {
             </div>
           </div>
         </div>
-        <ReservationList reservations={filteredReservations} isUserLogged={isUserLoggedIn} manualSearch={manualSearch || searched} />
+        <ReservationList reservations={filteredReservations} isUserLogged={isUserLoggedIn} manualSearch={manualSearch || searched} userId={userId} />
       </div>
     </div>
   );

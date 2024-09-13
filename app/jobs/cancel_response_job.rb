@@ -3,19 +3,20 @@ class CancelResponseJob < ApplicationJob
 
   def perform(response, date, refund_information, is_refunded, user, admin)
     Rails.logger.info "CancelResponseJob started for User: #{user} and Admin: #{admin} at #{Time.current}"
+
     begin
+      Rails.logger.info "email user #{user} : #{user.email} at #{Time.current}"
       CancelReservationMailer.response_to_cancel_request_reservation_user(response, date, refund_information, is_refunded, user).deliver_now
     rescue => e
       Rails.logger.error "Failed to send email to User: #{user.email}, error: #{e.message}"
     end
 
     begin
+      Rails.logger.info "email admin #{admin} : #{admin.email} at #{Time.current}"
       CancelReservationMailer.response_to_cancel_request_reservation_admin(response, date, refund_information, is_refunded, admin).deliver_now
     rescue => e
       Rails.logger.error "Failed to send email to Admin: #{admin.email}, error: #{e.message}"
     end
-
-
 
     Rails.logger.info "CancelResponseJob finished for User: #{user} and Admin: #{admin} at #{Time.current}"
   end

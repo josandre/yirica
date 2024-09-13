@@ -6,9 +6,9 @@ import Modal from 'react-bootstrap/Modal';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SimpleReactValidator from "simple-react-validator";
-import {useAddComment} from "../../api/comments/comment-service";
 import {useCreateCancelRequest} from "../../api/cancelRequests/cancel-request-service";
 import {toast} from "react-toastify";
+import { useQueryClient } from 'react-query';
 
 
 const formatDate = (dateString) => {
@@ -19,7 +19,8 @@ const formatDate = (dateString) => {
   return `${parts[0]} ${parts[1]}  ${parts[2]}`;
 };
 
-const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
+const ReservationList = ({ reservations, isUserLogged, manualSearch, userId }) => {
+  const queryClient = useQueryClient()
   const [showModal, setShowModal] = useState(false);
   const [selectedReservationId, setSelectedReservationId] = useState(null);
   const cancelRequestMutation = useCreateCancelRequest()
@@ -65,6 +66,7 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
       cancelRequestMutation.mutate({ params }, {
 
         onSuccess: (res) => {
+          queryClient.invalidateQueries(`reservationByUser-${userId}`);
           toast.success(res.data.status.message)
           handleClose();
         },

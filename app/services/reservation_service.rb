@@ -129,6 +129,11 @@ class ReservationService
     @reservation_repository.update_state(reservation, canceled_state)
   end
 
+  def change_reservation_state_active(reservation)
+    active_state = @reservation_state_service.get_active_state
+    @reservation_repository.update_state(reservation, active_state)
+  end
+
 
   def create_search_code
     middle_part = rand(1000..9999)

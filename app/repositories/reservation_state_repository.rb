@@ -15,4 +15,9 @@ class ReservationStateRepository
   def get_canceled_state
     ReservationState.find_by(state: 'Canceled')
   end
+
+
+  def get_active_state
+    ReservationState.find_by(state: 'Active')
+  end
 end

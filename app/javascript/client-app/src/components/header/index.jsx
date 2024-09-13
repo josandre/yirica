@@ -59,7 +59,7 @@ const Header = (props) => {
                       <li><Link onClick={ClickHandler} to="/app/reservations">Reservations</Link></li>
                       <li className="menu-item-has-children"><Link onClick={ClickHandler} to="/app/rooms">Rooms</Link>
                       </li>
-                      <li><Link onClick={ClickHandler} to="/contact">Contact</Link></li>
+                      
                       <li>
                         {isLoggedIn ? (
                           <Link onClick={handleSignOut} to="/app">Sign out</Link>

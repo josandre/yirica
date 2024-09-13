@@ -13,7 +13,7 @@ class CancelReservationMailer < ApplicationMailer
 
 
   def response_to_cancel_request_reservation_user(response, date, refund_information, is_refunded, user)
-    puts "entra"
+    puts "email to user #{user.email}"
     @response = response
     @date = date
     @refund_information = refund_information
@@ -27,6 +27,7 @@ class CancelReservationMailer < ApplicationMailer
 
 
   def response_to_cancel_request_reservation_admin(response, date, refund_information, is_refunded, admin)
+    puts "c #{admin.email}"
     @response = response
     @date = date
     @refund_information = refund_information

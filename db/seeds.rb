@@ -2,16 +2,20 @@
 ReservationRoom.destroy_all
 Bill.destroy_all
 CancelRequest.destroy_all
+ResponseCancelRequest.destroy_all
 Reservation.destroy_all
 ReservationState.destroy_all
+Response.destroy_all
 Comment.destroy_all
 User.destroy_all
+Role.destroy_all
 RoomTypeAmenity.destroy_all
 RoomTypeService.destroy_all
 Amenity.destroy_all
 Service.destroy_all
 Room.destroy_all
 RoomType.destroy_all
+
 
 client_role = Role.create({ role: 'Client' })
 admin_role = Role.create({ role: 'Administrator' })
@@ -225,7 +229,8 @@ reservation_1 = Reservation.create(
   is_refunded: false,
   reservation_state_id: active_reservation_state.id,
   user_id: client_1.id,
-  search_code: generate_search_code
+  search_code: generate_search_code,
+  payment_id: 'pi_3PxJwiI6PsAVXKxq1VgrjO4B'
 )
 
 reservation_2 = Reservation.create(

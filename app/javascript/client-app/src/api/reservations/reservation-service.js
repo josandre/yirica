@@ -7,7 +7,7 @@ const base_url_reservations = 'http://localhost:3000'
 
 export const useGetReservationByUser = (user_id, token, options) => {
   return useQuery(
-    'reservationByUser',
+    `reservationByUser-${user_id}`,
     () =>fetchReservationByUserId(user_id, token),
     options);
 }
