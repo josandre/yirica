@@ -134,9 +134,21 @@ const RoomDetails = ({ room, room_type, image_rooms, amenities, services, commen
                                       </div>
                                       <p>{comment.comment}</p>
                                   </div>
+                                  {comment.responses?.length > 0 && (
+                                    <div className="review-text" style={{paddingLeft: 200}}>
+                                        <div className="r-title">
+                                            <h2>Response from Administrator</h2>
+                                        </div>
+                                        <div>
+                                            <p>{comment.responses[0].response}</p>
+                                        </div>
+
+                                    </div>
+                                  )}
+                                  <hr/>
                               </div>
                             ))}
-
+                            
                         </div>
 
                         {isUserLogged && (

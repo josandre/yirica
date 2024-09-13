@@ -57,6 +57,9 @@ class CommentService
               include:{
                 room_type: {only: [:id, :name]},
               }
+            },
+            response: {
+              only: [:id, :response],
             }
           }),
         status_code: :ok

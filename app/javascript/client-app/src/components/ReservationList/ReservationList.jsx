@@ -6,9 +6,9 @@ import Modal from 'react-bootstrap/Modal';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SimpleReactValidator from "simple-react-validator";
+import {useAddComment} from "../../api/comments/comment-service";
 import {useCreateCancelRequest} from "../../api/cancelRequests/cancel-request-service";
 import {toast} from "react-toastify";
-import { useQueryClient } from 'react-query';
 
 
 const formatDate = (dateString) => {
@@ -19,8 +19,7 @@ const formatDate = (dateString) => {
   return `${parts[0]} ${parts[1]}  ${parts[2]}`;
 };
 
-const ReservationList = ({ reservations, isUserLogged, manualSearch, userId }) => {
-  const queryClient = useQueryClient()
+const ReservationList = ({ reservations, isUserLogged, manualSearch }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedReservationId, setSelectedReservationId] = useState(null);
   const cancelRequestMutation = useCreateCancelRequest()
@@ -66,7 +65,6 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch, userId }) =
       cancelRequestMutation.mutate({ params }, {
 
         onSuccess: (res) => {
-          queryClient.invalidateQueries(`reservationByUser-${userId}`);
           toast.success(res.data.status.message)
           handleClose();
         },
@@ -201,7 +199,7 @@ const ReservationList = ({ reservations, isUserLogged, manualSearch, userId }) =
                       <span className="children-accepted">Adults {adults}</span>
                     </p>
 
-                    {reservation.reservation_state.state === 'Active' && (
+                    {reservation.reservation_state.state === 'Active' && isUserLogged && (
                       <div className="add-to-cart display-box">
                         <button
                           className="theme-btn mt-3"

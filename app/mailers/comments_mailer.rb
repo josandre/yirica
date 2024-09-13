@@ -11,4 +11,17 @@ class CommentsMailer < ApplicationMailer
       format.html {render layout: false}
     end
   end
+
+
+  def response_user_notification(user, response, comment)
+
+    @user = user
+    @response = response
+    @comment = comment
+
+    mail(to: @user.email, subject: 'Your comment have a response.') do |format|
+      format.html {render layout: false}
+    end
+
+  end
 end

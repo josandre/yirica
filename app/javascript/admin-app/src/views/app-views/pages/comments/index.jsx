@@ -1,14 +1,14 @@
 import React from 'react'
 import InnerAppLayout from '../../../../layouts/inner-app-layout';
-import ChatContent from './ChatContent';
-import ChatMenu from './ChatMenu';
+import CommentContent from './CommentContent';
+import CommentsMenu from './CommentsMenu';
 
-const Chat = props => {
+const Comments = props => {
 	return (
 		<div className="chat">
 			<InnerAppLayout 
-				sideContent={<ChatMenu {...props}/>}
-				mainContent={<ChatContent {...props}/>}
+				sideContent={<CommentsMenu {...props}/>}
+				mainContent={<CommentContent {...props}/>}
 				sideContentWidth={450}
 				sideContentGutter={false}
 				border
@@ -17,4 +17,4 @@ const Chat = props => {
 	)
 }
 
-export default Chat
+export default Comments

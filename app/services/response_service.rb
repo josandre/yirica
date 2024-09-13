@@ -13,6 +13,8 @@ class ResponseService
 
       if comment
         response = @response_repository.create_response(response_text, current_user_id, comment_id)
+        user_owner_comment = @user_service.get_by_id(comment.user_id)
+        ResponseJob.perform_later(user_owner_comment, response, comment)
         {
           status: { code: 200, message: 'Response created successfully.' },
           data: response.as_json(only: [:id, :response]),

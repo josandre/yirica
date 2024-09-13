@@ -11,7 +11,7 @@ const ConversationEmpty = () => (
   </div>
 )
 
-const ChatContent = () => {
+const CommentContent = () => {
   return (
     <Routes>
       <Route path={`:id`} element={<Conversation />} />
@@ -20,4 +20,4 @@ const ChatContent = () => {
   )
 }
 
-export default ChatContent
+export default CommentContent

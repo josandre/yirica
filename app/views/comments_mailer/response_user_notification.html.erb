@@ -58,26 +58,22 @@
 <body>
 <div class="container">
   <div class="header">
-    <%= image_tag 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/logo.png', alt: 'Yiri Ca Logo', style: 'max-width: 100px;' %>
-    <h1>Room commented</h1>
+    <%= image_tag 'https://hotelhubstorageaccount.blob.core.windows.net/hotelhubblobcontainer/logo.png', alt: 'Hotel Logo', style: 'max-width: 100px;' %>
+    <h1>Response to Your Comment</h1>
   </div>
   <div class="content">
-    <h2>Hello Admin,</h2>
-    <p>A new comment has been added by <%= @user.name %>  <%= @user.last_name %> about a room.</p>
+    <h2>Hello <%= @user.name %> <%= @user.last_name %></h2>
+    <p>The admin has responded to your comment about a room. Below are the details:</p>
 
-    <h3>Comment Details:</h3>
+    <h3>Your Comment:</h3>
     <p><strong>Comment:</strong> <%= @comment.comment %></p>
     <p><strong>Punctuation:</strong> <%= @comment.punctuation %></p>
-    <p><strong>Is Legal:</strong> <%= @is_legal ? 'Yes' : 'No' %></p>
-    <p><strong>It is published:</strong> <%= @is_legal ? 'Yes' : 'No' %></p>
-    <p><strong>Sentiment:</strong> <%= @is_legal ? 'Positive' : 'Negative' %></p>
+    <p><strong>Is Legal:</strong> <%= @comment.is_legal ? 'Yes' : 'No' %></p>
 
-    <h3>About the room:</h3>
-    <p><strong>Room Type:</strong> <%= @room_type.name %></p>
-    <p><strong>Room Number:</strong> <%= @room.number %></p>
-    <p><strong>Location:</strong> <%= @room.location %></p>
+    <h3>Admin's Response:</h3>
+    <p><strong>Response:</strong> <%= @response.response %></p>
 
-    <p>Thank you!</p>
+    <p>Thank you for your feedback, and please feel free to reach out if you have further questions!</p>
   </div>
   <div class="footer">
     <p>&copy; 2024 Your Hotel. All rights reserved.</p>

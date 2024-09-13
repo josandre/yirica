@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { 
 	AUTH_PREFIX_PATH, 
@@ -12,8 +12,13 @@ const ProtectedRoute = () => {
 	const { token } = userIsLogged()
 	const location = useLocation()
 
+	useEffect(() => {
+		if(!token) {
+			window.location.reload()
+		}
+	}, [token]);
+
 	if (!token) {
-		window.location.reload() 
 		return <Navigate to={`${AUTH_PREFIX_PATH}${UNAUTHENTICATED_ENTRY}?${REDIRECT_URL_KEY}=${location.pathname}`} replace />;
 	}
 

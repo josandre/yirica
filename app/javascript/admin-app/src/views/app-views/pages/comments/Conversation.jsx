@@ -1,59 +1,34 @@
 import React, { useRef, useState, useEffect } from 'react'
-import ChatData from "../../../../assets/data/chat.data.json"
 import { Avatar, Divider, Input, Form, Button, Menu } from 'antd';
 import { 
 	FileOutlined, 
 	SendOutlined, 
-	PaperClipOutlined, 
-	SmileOutlined, 
-	AudioMutedOutlined,
-	UserOutlined,
-	DeleteOutlined
+	WarningOutlined
 } from '@ant-design/icons';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import Flex from '../../../../components/shared-components/Flex';
-import EllipsisDropdown from '../../../../components/shared-components/EllipsisDropdown'
 import { useParams } from 'react-router-dom';
+import { useSendResponse } from '../../../../services/admin/CommentService';
 
-const menu = () => (
-	<Menu>
-		<Menu.Item key="0">
-			<UserOutlined />
-			<span>User Info</span>
-		</Menu.Item>
-		<Menu.Item key="1">
-			<AudioMutedOutlined />
-			<span>Mute Chat</span>
-		</Menu.Item>
-		<Menu.Divider />
-		<Menu.Item key="3">
-			<DeleteOutlined />
-			<span>Delete Chat</span>
-		</Menu.Item>
-	</Menu>
-);
 
 const Conversation = () => {
-
 	const formRef = useRef();
 	const chatBodyRef = useRef();
 
 	const params = useParams();
+	const { id } = params
 
 	const [ info, setInfo ] = useState({});
 	const [ msgList, setMsgList ] = useState([]);
-
-	const { id } = params
-
-	const getUserId = () => {
-		return parseInt(parseInt(id))
-	}
+	const responseMutation = useSendResponse()
 	
 	const getConversation = currentId => {
-		const data = ChatData.filter(elm => elm.id === currentId)
+		const data = JSON.parse(localStorage.getItem("selectedComment"))
 
-		setInfo(data[0])
-		setMsgList(data[0].msg)
+		console.log(data)
+
+		setInfo(data)
+		setMsgList(data.msg)
 	}
 
 	const getMsgType = obj => {
@@ -82,48 +57,50 @@ const Conversation = () => {
 
 	const onSend = values => {
 		if (values.newMsg) {
-			const newMsgData = {
-				avatar: "",
-				from: "me",
-				msgType: "text",
-				text: values.newMsg,
-				time: "",
-			};
-
-			formRef.current.setFieldsValue({
-				newMsg: ''
-			});
-
-			setMsgList([...msgList, newMsgData]);
+			responseMutation.mutate({
+				commentId: id,
+				message: values.newMsg
+			}, {
+				onSuccess: () => {
+					const newMsgData = {
+						avatar: "",
+						from: "me",
+						msgType: "text",
+						text: values.newMsg,
+						time: "",
+					};
+		
+					formRef.current.setFieldsValue({
+						newMsg: ''
+					});
+		
+					setMsgList([...msgList, newMsgData]);
+					setInfo({...info, hasResponse: true})
+				}
+			})
 		}
 	};
 	
-	const emptyClick = (e) => {
-    	e.preventDefault();
-	};
-
 	useEffect(() => {
-		getConversation(getUserId())
+		const userId = parseInt(parseInt(id))
+		getConversation(userId)
 		scrollToBottom()
 	}, [id])
 	
-	const chatContentHeader = name => (
+	const comentContentHeader = title => (
 		<div className="chat-content-header">
-			<h4 className="mb-0">{name}</h4>
-			<div>
-				<EllipsisDropdown menu={menu}/>
-			</div>
+			<h4 className="mb-0">{title}</h4>
 		</div>
 	)
 
-	const chatContentBody = (props, id) => (
+	const commentContentBody = (props, id) => (
 		<div className="chat-content-body">
 			<Scrollbars ref={chatBodyRef} autoHide>
 				{
 					props.map((elm, i) => (
 						<div 
 							key={`msg-${id}-${i}`} 
-							className={`msg ${elm.msgType === 'date'? 'datetime' : ''} ${elm.from === 'opposite'? 'msg-recipient' : elm.from === 'me'? 'msg-sent' : ''}`}
+							className={`msg ${elm.msgType === 'warning'? 'datetime' : ''} ${elm.from === 'opposite'? 'msg-recipient' : elm.from === 'me'? 'msg-sent' : ''}`}
 						>
 							{
 								elm.avatar? 
@@ -144,8 +121,12 @@ const Conversation = () => {
 								null
 							}
 							{
-								elm.msgType === 'date'?
-								<Divider>{elm.time}</Divider>
+								elm.msgType === 'warning'?
+								<Divider>
+									 <span style={{ color: 'red' }}>
+										<WarningOutlined style={{ marginRight: 8 }} /> {elm.warning}
+									</span>
+								</Divider>
 								: 
 								null
 							}
@@ -165,13 +146,7 @@ const Conversation = () => {
 						placeholder="Type a message..."
 						suffix={
 							<div className="d-flex align-items-center">
-								<a href="/#"  className="text-dark font-size-lg mr-3" onClick={emptyClick}>
-									<SmileOutlined />
-								</a>
-								<a href="/#" className="text-dark font-size-lg mr-3" onClick={emptyClick}>
-									<PaperClipOutlined />
-								</a>
-								<Button shape="circle" type="primary" size="small" onClick={onSend} htmlType="submit">
+								<Button shape="circle" type="primary" size="small" onClick={onSend} htmlType="submit" disabled={info.hasResponse}>
 									<SendOutlined />
 								</Button>
 							</div>
@@ -184,8 +159,8 @@ const Conversation = () => {
 
 	return (
 		<div className="chat-content">
-				{chatContentHeader(info.name)}
-				{chatContentBody(msgList, params.id)}
+				{comentContentHeader(info.title)}
+				{commentContentBody(msgList, params.id)}
 				{chatContentFooter()}
 			</div>
 	)

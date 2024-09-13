@@ -15,7 +15,7 @@ class CommentRepository
 
 
   def get_all_comments
-    Comment.all.includes(:user, room: :room_type)
+    Comment.all.includes(:user, :response, room: :room_type)
   end
 
 
