@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 
+const base_url = "https://hotelhub-hdhrg0gsfmg9ahbr.centralus-01.azurewebsites.net/users"
+// const base_url = 'http://localhost:3000/users'
 
-const base_url = 'http://localhost:3000/users'
-const base_url_reservations = 'http://localhost:3000'
+const base_url_reservations = 'https://hotelhub-hdhrg0gsfmg9ahbr.centralus-01.azurewebsites.net'
+// const base_url_reservations = 'http://localhost:3000'
 
 export const useGetReservationByUser = (user_id, token, options) => {
   return useQuery(

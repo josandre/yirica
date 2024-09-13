@@ -2,7 +2,9 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 
-const base_url = 'http://localhost:3000/rooms'
+const base_url = 'https://hotelhub-hdhrg0gsfmg9ahbr.centralus-01.azurewebsites.net/rooms'
+// const base_url = 'http://localhost:3000/rooms'
+
 
 
 export const useMostUsedRooms = () => {
@@ -46,7 +48,7 @@ const fetchAllRooms = async () => {
 }
 
 const fetchById = async (id) => {
-  const endpoint = `http://localhost:3000/rooms/${id}`
+  const endpoint = `${base_url}/${id}`
   try {
     const response = await axios.get(endpoint);
     return response.data;
